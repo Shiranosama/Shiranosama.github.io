@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>「折腾日记」hexo-butterfly自改记录</title>
+    <url>/posts/653f0679/</url>
+    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.16更新:
+
+修改了默认的loading动画，增加了Hitokoto文本
+增加动态标题
+参考Heo同款loading动画增加了Hitokoto文本
+
+
+
+正文修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
+
+2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
+
+3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
+
+4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
+
+5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
+
+6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
+
+7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
+
+添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
+此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
+2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
+
+测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
+
+loading效果
+]]></content>
+  </entry>
+  <entry>
+    <title>「折腾日记」 个人Windows开源软件集</title>
+    <url>/posts/12f010f8/</url>
+    <content><![CDATA[「折腾日记」 个人Windows开源软件集
+Bulk-Crap-Uninstaller
+
+强大的软件管理工具
+如果你不熟悉Windows，请谨慎使用
+
+
+EcoPaste
+
+剪贴板管理工具
+
+
+PowerToys
+
+微软官方出品的开源Windows工具集
+PowerToys-run插件
+
+
+Nanazip
+
+7zip分支，支持win11右键菜单，UI现代化
+
+
+Watt Toolkit
+
+Steam工具箱
+反代加速
+
+
+Clash Verge rev
+
+Clash GUI
+
+
+PowerShell 7
+
+主题框架：oh-my-posh
+配置文件备份：oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-Expression #载入oh-my-posh主题Set-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27; #设置eza为ls的别名Set-Alias -Name &#x27;which&#x27; -Value &#x27;Get-Command&#x27; #设置which为Get-Command的别名Set-PSReadLineOption -PredictionSource History #设置预测源为历史记录Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete #设置Tab键为菜单补全Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123; [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; #设置上箭头为历史搜索Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; #设置下箭头为历史搜索
+
+
+eza
+
+命令行文件管理工具
+
+
+ShareX
+
+功能强大的截图工具
+
+
+vscode
+
+强大的代码编辑器
+
+
+weasel
+
+Rime输入法框架
+雾凇
+
+
+MPC-BE
+
+开源播放器
+建议结合MadVR使用
+
+
+Nilesoft Shell
+
+自定义右键菜单，替换掉恼人的Win11右键菜单
+
+
+
+记录完]]></content>
+      <tags>
+        <tag>折腾日记</tag>
+        <tag>Windows</tag>
+        <tag>开源软件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」 记录Windows下基于MSYS2的开发环境搭建</title>
+    <url>/posts/58031fe8/</url>
+    <content><![CDATA[记录Windows下基于MSYS2的开发环境搭建0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人。做此记录，以便日后查阅。
+1. 安装MSYS2MSYS2 是一套工具和库的集合，提供构建、安装和运行原生 Windows 软件的易于使用的环境，相比与MSVC的臃肿，它更加小巧，功能也更强大。
+
+下载 MSYS2 并安装。
+MSYS2 提供了不同的环境，首先需要决定使用哪个。这些环境之间的主要区别在于环境变量、默认编译器&#x2F;链接器、架构、使用的系统库等。如果不确定，请选择 UCRT64，下表列出了它们的详细信息：
+
+
+
+
+Name
+Prefix
+Toolchain
+Architecture
+C Library
+C++ Library
+
+
+
+MSYS
+&#x2F;usr
+gcc
+x86_64
+cygwin
+libstdc++
+
+
+UCRT64
+&#x2F;ucrt64
+gcc
+x86_64
+ucrt
+libstdc++
+
+
+CLANG64
+&#x2F;clang64
+llvm
+x86_64
+ucrt
+libc++
+
+
+CLANGARM64
+&#x2F;clangarm64
+llvm
+aarch64
+ucrt
+libc++
+
+
+MINGW64
+&#x2F;mingw64
+gcc
+x86_64
+msvcrt
+libstdc++
+
+
+
+Note: 
+
+Perfix 是 MSYS2 安装目录下的子目录，例如： MSYS2 安装在 C:\msys2，那么 UCRT64 的路径就是 C:\msys2\ucrt64。
+当你在msys2中安装软件时，软件会被安装到对应环境的目录下，例如：pacboy -S gcc，软件会被安装到 C:\msys2\ucrt64\ 目录下。
+MSYS环境包含基于unix-like&#x2F;cygwin的工具，位于&#x2F;usr下，且特别之处在于它始终处于激活状态。所有其他环境都继承自MSYS环境，并在其基础上添加各种功能，例如：在UCRT64环境中，$PATH变量以&#x2F;ucrt64&#x2F;bin:&#x2F;usr&#x2F;bin开头，因此您将获得所有基于ucrt64的工具以及所有msys工具。
+
+
+
+打开 MSYS2 UCRT64，如果你使用的不是 UCRT64，请使用对应环境的命令行工具，例如：MSYS2 ClANG64，输入以下命令更新软件包数据库并安装C++编译工具：
+
+#可选：使用tuna镜像sed -i &quot;s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g&quot; /etc/pacman.d/mirrorlist*pacman -Syu # 更新软件包数据库并升级系统pacman -S pactoys # 安装pactoyspacboy -S neovim zsh # 安装neovim, zshpacman -S git # 安装git
+
+Note:
+
+pactoys 是MSYS2提供的软件包管理工具，它功能与pacman基本相同，但是它可以直接安装对应环境的软件包，例如：UCRT64环境下pacboy -S gcc等价于pacboy -S gcc。
+Toolchain 包含了编译工具链，包括：gcc, gdb, make等。
+cmake 需要单独安装。
+
+
+2. 配置环境变量与Windows Terminal
+将MSYS2的对应环境bin目录添加到系统环境变量中，例如：C:\msys2\ucrt64\bin。2 不建议C:\msys2\ucrt64\usr\bin添加到系统环境变量中，因为该目录下包含的是基于unix-like&#x2F;cygwin的工具，可能会与系统自带的工具冲突。
+
+这之后，你就可以在命令行中直接使用UCRT64环境下的工具了，例如：gcc --version，gdb --version，nvim等。
+
+
+
+在 Windows Terminal 的配置文件中，添加如下内容：
+
+&quot;list&quot;: [   &#123;       &quot;commandline&quot;: &quot;C:\\msys2\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell zsh&quot;,      &quot;guid&quot;: &quot;&#123;fd57d26d-d3d0-448a-8bd5-e44632685d72&#125;&quot;,      &quot;hidden&quot;: false,      &quot;icon&quot;: &quot;C:\\msys2\\ucrt64.ico&quot;,      &quot;name&quot;: &quot;MSYS2 UCRT64&quot;,      &quot;startingDirectory&quot;: &quot;C:\\msys2\\ucrt64\\home\\%USERNAME%&quot;   &#125;]
+
+Note:
+
+如果你不使用zsh，可以将-shell zsh修改为-shell bash等。
+你也可以在GUI中添加，以上参数分别对应：
+
+
+参数
+说明
+
+
+
+commandline
+命令行
+
+
+icon
+图标
+
+
+name
+名称
+
+
+startingDirectory
+启动目录
+
+
+
+
+
+保存配置文件后，在 Windows Terminal 中，选择 MSYS2 UCRT64，即可打开UCRT64环境的zsh。
+
+
+有关zsh的相关配置，这里不再赘述
+
+
+3. 配置vscode的C++开发环境
+在 vscode 中安装以下插件：
+C&#x2F;C++：用于C&#x2F;C++代码的语法高亮、代码补全、调试等功能。
+C&#x2F;C++ Extensions：用于C&#x2F;C++代码的代码补全、代码导航、代码片段等功能。
+CMake Tools：用于CMake项目的构建和调试。
+Code Runner：用于运行代码。
+
+
+新建一个C++项目，用vscode打开，按Ctrl+Shift+P，选择C/C++: Edit Configurations (UI)，在新页面中，配置如下：
+编译器路径：选择MSYS2的gcc编译器路径，例如：C:\msys2\ucrt64\bin\gcc.exe
+包含路径(include path)：添加MSYS2的include路径，例如：C:\msys2\ucrt64\include\**
+其余按需配置
+
+
+这会生成一个.vscode目录，其中包含一个c_cpp_properties.json文件，用于配置C&#x2F;C++项目。
+
+
+新建test.cpp文件，编写一个简单的C++程序，例如：
+
+#include &lt;iostream&gt;int main() &#123;    std::cout &lt;&lt; &quot;Hello, World!&quot; &lt;&lt; std::endl;    return 0;&#125;
+
+
+按Ctrl+Alt+N 运行代码，如果一切正常，应该会输出Hello, World!。
+
+3. 安装Qt
+打开 MSYS2 UCRT64，输入以下命令安装Qt：
+
+pacboy -S qt-creator # 安装qt-creatorpacboy -S qt6 # 安装qt6pacboy -S qt6-static # 安装qt6静态库pacboy -S cmake # 安装cmake
+
+在 PowerShell或UCRT64 中，运行以下命令，启动Qt Creator：
+
+qtcreator
+
+4. 安装Node.js
+打开 MSYS2 UCRT64，输入以下命令安装fnm：
+
+curl -fsSL https://fnm.vercel.app/install | bash
+
+
+修改你使用的shell的配置文件，例如：~/.zshrc，添加以下内容以启用tuna镜像：
+
+export FNM_NODE_DIST_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/exec zsh #使配置生效
+
+
+安装Node.js：
+
+fnm install # 安装最新版本的Node.js# fnm install 14.17.0 # 安装指定版本的Node.js
+
+
+这会将Node.js安装到C:\Users\%USERNAME%\AppData\Roaming\fnm\node-versions目录下，如果你需要在PowerShell中使用Node.js，请将C:\Users\%USERNAME%\AppData\Roaming\fnm\node-versions\版本号添加到系统环境变量中。
+注意⚠️，只能添加一个版本的Node.js到系统环境变量中。
+
+5. 安装Python
+对于Python，我推荐使用MiniConda，方便管理Python版本和依赖。
+下载MiniConda安装即可。
+Conda常用命令：
+
+conda create -n myenv python=3.8 # 创建一个名为myenv的虚拟环境，并安装Python 3.8conda activate myenv # 激活myenv虚拟环境conda deactivate # 退出虚拟环境conda install numpy # 在当前虚拟环境中安装numpyconda remove numpy # 在当前虚拟环境中卸载numpyconda env list # 列出所有虚拟环境conda env remove -n myenv # 删除myenv虚拟环境
+
+记录完]]></content>
+      <tags>
+        <tag>折腾日记</tag>
+        <tag>Windows</tag>
+        <tag>C++</tag>
+        <tag>Node.js</tag>
+        <tag>Qt</tag>
+        <tag>MSYS2</tag>
+        <tag>vscode</tag>
+        <tag>Python</tag>
+        <tag>MiniConda</tag>
+        <tag>Conda</tag>
+      </tags>
+  </entry>
+</search>
