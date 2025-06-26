@@ -34,6 +34,11 @@ if hexo-config('darkmode.enable') || hexo-config('display_mode') == 'dark'
     --zoom-bg: #121212
     --mark-bg: alpha($dark-black, .6)
 
+    #loading-box
+      .loading-bg
+        background: linear-gradient(-135deg, #3A0D4F 10%, #5C1A4D 30%, #0F305F 90%, #0A4838 100%)
+        background-size: 400% 400%
+
     #web_bg:before
       position: absolute
       width: 100%
@@ -69,6 +74,23 @@ if hexo-config('darkmode.enable') || hexo-config('display_mode') == 'dark'
       &.not-top-img > #nav
         background: alpha(#121212, .8)
         box-shadow: 0 5px 6px -5px rgba(133, 133, 133, 0)
+    
+    #bg-wave
+      .wave-layer
+        background: $dark-wave
+        mix-blend-mode: lighten
+
+        &.wave-1
+          mix-blend-mode: screen
+
+        &::before
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.05) 0%,
+            transparent 100%,
+            rgba(0, 0, 0, 0.1) 100%,
+          )
+          opacity: .3
 
     #post-comment
       .comment-switch
