@@ -1,15 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
   if (GLOBAL_CONFIG.dynamic_title && GLOBAL_CONFIG.dynamic_title.enable) {
     const { leave, enter } = GLOBAL_CONFIG.dynamic_title;
-    let originalTitle = document.title;
+    const originalTitle = document.title;
     let titleTime;
+
+    const randomSelect = (arr) => {
+      if (!Array.isArray(arr)) return arr || '';
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
 
     document.addEventListener('visibilitychange', function () {
       if (document.visibilityState === 'hidden') {
-        document.title = leave;
+        document.title = randomSelect(leave) || originalTitle;
         clearTimeout(titleTime);
       } else {
-        document.title = enter;
+        document.title = randomSelect(enter) || originalTitle;
         titleTime = setTimeout(() => {
           document.title = originalTitle;
         }, 5000);
