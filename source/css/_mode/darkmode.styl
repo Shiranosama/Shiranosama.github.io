@@ -75,22 +75,9 @@ if hexo-config('darkmode.enable') || hexo-config('display_mode') == 'dark'
         background: alpha(#121212, .8)
         box-shadow: 0 5px 6px -5px rgba(133, 133, 133, 0)
     
-    #bg-wave
-      .wave-layer
-        background: $dark-wave
-        mix-blend-mode: lighten
-
-        &.wave-1
-          mix-blend-mode: screen
-
-        &::before
-          background: linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.05) 0%,
-            transparent 100%,
-            rgba(0, 0, 0, 0.1) 100%,
-          )
-          opacity: .3
+    #wave-container
+      &:before, .wave-inner
+        background-image: $dark-wave, $dark-wave, $dark-wave
 
     #post-comment
       .comment-switch
