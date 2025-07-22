@@ -1,127 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>「折腾日记」hexo-butterfly自改记录</title>
-    <url>/posts/653f0679/</url>
-    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
-
-此文不再更新，修改后的主题已同步至theme分支，不定时更新
-修改了默认的loading动画，增加了Hitokoto文本
-增加动态标题
-参考Heo同款loading动画增加了Hitokoto文本
-
-
-
-正文修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
-
-2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
-
-3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
-
-4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
-
-5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
-
-6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
-
-7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
-
-添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
-此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
-2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
-
-测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
-
-loading效果
-]]></content>
-  </entry>
-  <entry>
-    <title>「折腾日记」 个人Windows开源软件集</title>
-    <url>/posts/12f010f8/</url>
-    <content><![CDATA[「折腾日记」 个人Windows开源软件集
-Bulk-Crap-Uninstaller
-
-强大的软件管理工具
-如果你不熟悉Windows，请谨慎使用
-
-
-EcoPaste
-
-剪贴板管理工具
-
-
-PowerToys
-
-微软官方出品的开源Windows工具集
-PowerToys-run插件
-
-
-Nanazip
-
-7zip分支，支持win11右键菜单，UI现代化
-
-
-Watt Toolkit
-
-Steam工具箱
-反代加速
-
-
-Clash Verge rev
-
-Clash GUI
-
-
-PowerShell 7
-
-主题框架：oh-my-posh
-配置文件备份：oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-Expression #载入oh-my-posh主题Set-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27; #设置eza为ls的别名Set-Alias -Name &#x27;which&#x27; -Value &#x27;Get-Command&#x27; #设置which为Get-Command的别名Set-PSReadLineOption -PredictionSource History #设置预测源为历史记录Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete #设置Tab键为菜单补全Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123; [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; #设置上箭头为历史搜索Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; #设置下箭头为历史搜索
-
-
-eza
-
-命令行文件管理工具
-
-
-ShareX
-
-功能强大的截图工具
-
-
-vscode
-
-强大的代码编辑器
-
-
-weasel
-
-Rime输入法框架
-雾凇
-
-
-MPC-BE
-
-开源播放器
-建议结合MadVR使用
-
-
-Nilesoft Shell
-
-自定义右键菜单，替换掉恼人的Win11右键菜单
-
-
-
-记录完]]></content>
-      <tags>
-        <tag>折腾日记</tag>
-        <tag>Windows</tag>
-        <tag>开源软件</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「折腾日记」 记录Windows下基于MSYS2的开发环境搭建</title>
     <url>/posts/58031fe8/</url>
-    <content><![CDATA[记录Windows下基于MSYS2的开发环境搭建0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人。做此记录，以便日后查阅。
+    <content><![CDATA[记录Windows下基于MSYS2的开发环境搭建0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人做此记录，以便日后查阅
 
 主要优势：
 
@@ -188,28 +70,24 @@ libstdc++
 
 Note:路径说明：安装路径示例：C:\msys2\ucrt64软件安装路径：对应环境的bin目录，例如：C:\msys2\ucrt64\bin
 
-
-安装基本编译器：
-
-#可选：使用tuna镜像sed -i &quot;s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g&quot; /etc/pacman.d/mirrorlist*pacman -Syu # 更新软件包数据库并升级系统，需要重启MSYS2pacman -S pactoys # 安装pactoyspacboy -S neovim zsh # 安装neovim, zshpacman -S git # 安装git
+安装基本编译器：#可选：使用tuna镜像sed -i &quot;s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g&quot; /etc/pacman.d/mirrorlist*pacman -Syu # 更新软件包数据库并升级系统，需要重启MSYS2pacman -S pactoys # 安装pactoyspacboy -S toolchain zsh # 安装工具链、zshpacman -S git # 安装git
 
 Note:
 
-pactoys 是MSYS2提供的软件包管理工具，它功能与pacman基本相同，但是它可以直接安装对应环境的软件包，例如：UCRT64环境下pacboy -S gcc等价于pacboy -S gcc。
-Toolchain 包含了编译工具链，包括：gcc, gdb, make等。
-cmake 需要单独安装。
+pactoys 是MSYS2提供的软件包管理工具，它功能与pacman基本相同，但是它可以直接安装对应环境的软件包，例如：UCRT64环境下pacboy -S gcc等价于pacman -S mingw-w64-ucrt-x86_64-gcc。
 
 
-2. 配置环境变量（如需要）环境变量注意：
+2. 配置环境变量环境变量注意：
 ⚠️危险操作（避免冲突）：不要将 &#x2F;usr&#x2F;bin 加入系统PATH
 
 推荐配置：只添加对应环境的bin目录：C:\msys2\ucrt64\bin
 
 
-Windows Terminal配置
+Windows Terminal配置替代方案详见Step.7
+
 在 Windows Terminal 的配置文件中，添加如下内容：
 
-&quot;list&quot;: [   &#123;       &quot;commandline&quot;: &quot;C:\\msys2\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell zsh&quot;,      &quot;guid&quot;: &quot;&#123;fd57d26d-d3d0-448a-8bd5-e44632685d72&#125;&quot;,      &quot;hidden&quot;: false,      &quot;icon&quot;: &quot;C:\\msys2\\ucrt64.ico&quot;,      &quot;name&quot;: &quot;MSYS2 UCRT64&quot;,      &quot;startingDirectory&quot;: &quot;C:\\msys2\\ucrt64\\home\\%USERNAME%&quot;   &#125;]
+&quot;list&quot;: [   &#123;       &quot;commandline&quot;: &quot;C:\\msys2\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell zsh&quot;,      &quot;guid&quot;: &quot;&#123;fd57d26d-d3d0-448a-8bd5-e44632685d72&#125;&quot;,      &quot;hidden&quot;: false,      &quot;icon&quot;: &quot;C:\\msys2\\ucrt64.ico&quot;,      &quot;name&quot;: &quot;MSYS2 UCRT64&quot;,      &quot;startingDirectory&quot;: &quot;C:\\msys2\\home\\%USERNAME%&quot;   &#125;]
 
 Note:
 
@@ -244,6 +122,7 @@ startingDirectory
 
 3. 配置开发环境VSCode + gccVSCode + clangNeovim + clang
 vscode 必备插件：
+
 C&#x2F;C++
 C&#x2F;C++ Extensions
 CMake Tools
@@ -252,8 +131,10 @@ Code Runner
 
 C++插件配置(.vscode/c_cpp_properties.json)示例：
 
-&#123;    &quot;configurations&quot;: [        &#123;            &quot;name&quot;: &quot;Win32&quot;,                    &quot;includePath&quot;: [                &quot;$&#123;workspaceFolder&#125;/**&quot;                &quot;C:/msys2/ucrt64/include/**&quot;            ],            &quot;defines&quot;: [],            &quot;compilerPath&quot;: &quot;C:/msys2/ucrt64/bin/gcc.exe&quot;,  //编译器路径            &quot;cStandard&quot;: &quot;c11&quot;,            &quot;cppStandard&quot;: &quot;c++17&quot;,            &quot;intelliSenseMode&quot;: &quot;gcc-x64&quot;        &#125;    ],    &quot;version&quot;: 4&#125;
+
+&#123;    &quot;configurations&quot;: [        &#123;            &quot;name&quot;: &quot;Win32&quot;,                    &quot;includePath&quot;: [                &quot;$&#123;workspaceFolder&#125;/**&quot;,                &quot;C:/msys2/ucrt64/include/**&quot;            ],            &quot;defines&quot;: [],            &quot;compilerPath&quot;: &quot;C:/msys2/ucrt64/bin/gcc.exe&quot;,  //编译器路径            &quot;cStandard&quot;: &quot;c11&quot;,            &quot;cppStandard&quot;: &quot;c++17&quot;,            &quot;intelliSenseMode&quot;: &quot;gcc-x64&quot;        &#125;    ],    &quot;version&quot;: 4&#125;
 vscode 必备插件：
+
 Clangd
 Cmake Tools
 Code Runner
@@ -261,45 +142,715 @@ Code Runner
 
 配置clangd与coderunner，在settings.json中添加如下内容：
 
-&#123;  &quot;clangd.path&quot;: &quot;C:\\msys2\\clang64\\bin\\clangd.exe&quot;,  &quot;code-runner.executorMap&quot;: &#123;    &quot;c&quot;: &quot;cd $dir &amp;&amp; clang $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;,    &quot;cpp&quot;: &quot;cd $dir &amp;&amp; clang++ $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;  &#125;&#125;Still learning…
+
+&#123;  &quot;clangd.path&quot;: &quot;C:\\msys2\\clang64\\bin\\clangd.exe&quot;,  &quot;code-runner.executorMap&quot;: &#123;    &quot;c&quot;: &quot;cd $dir &amp;&amp; clang $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;,    &quot;cpp&quot;: &quot;cd $dir &amp;&amp; clang++ $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;  &#125;&#125;这部分内容算是提供一种思路 实际上我不太习惯neovim，所以没有深入研究(*&#x2F;ω＼*)
+
+在msys2中安装neovim：
+
+pacboy -S neovim
+
+
+配置LazyVim：
+官方文档：LazyVim
+
+
+
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvimRemove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Forcenvim
+等待安装即可
+
+配置基本语言服务器：
+在Neovim中，按下&lt;Space&gt;cm，打开Mason
+选择clangd，按下i安装
+
+
+
+推荐阅读Dusty Phillips的模态编辑书籍：LazyVim for Ambitious Developers
 
 4. Qt环境
 在 MSYS2，输入以下命令安装Qt：
 
-pacboy -S qt-creator # 安装qt-creatorpacboy -S qt6 # 安装qt6、#按需安装pacboy -S qt6-static # 安装qt6静态库
+pacboy -S qt-creator # 安装qt-creatorpacboy -S qt6 # 安装qt6#按需安装pacboy -S qt6-static # 安装qt6静态库
+
 
 在 PowerShell或MSYS2 中，运行以下命令，启动Qt Creator：
 
 qtcreator
 
-5. Node.js环境使用fnm管理Node.js版本# 安装fnmcurl -fsSL https://fnm.vercel.app/install | bash# 配置镜像 (~/.zshrc)export FNM_NODE_DIST_MIRROR=https://mirrors.tuna.tsinghua.edu.cn/nodejs-release/# 安装LTS版本fnm install --lts# 安装其他版本# fnm install 16.14.0# 切换版本fnm use 16.14.0
+5. Node.js环境使用nvm管理Node.js版本
+安装 nvm for Windows
 
+nvm node_mirror https://npmmirror.com/mirrors/node/ # 设置nodejs镜像nvm npm_mirror https://npmmirror.com/mirrors/npm/ # 设置npm镜像nvm install lts # 安装最新的LTS版本nvm use lts # 使用最新的LTS版本
 
-这会将Node.js安装到C:\Users\%USERNAME%\AppData\Roaming\fnm\node-versions目录下.
-
-6. Python环境
-使用MiniConda
+关于配置文件详见：nvm wiki
+6. Python环境使用MiniConda管理Python版本
+MiniConda
+常用命令：
 
 conda create -n myenv python=3.8 # 创建一个名为myenv的虚拟环境，并安装Python 3.8conda activate myenv # 激活myenv虚拟环境conda deactivate # 退出虚拟环境conda install numpy # 在当前虚拟环境中安装numpyconda remove numpy # 在当前虚拟环境中卸载numpyconda env list # 列出所有虚拟环境conda env remove -n myenv # 删除myenv虚拟环境
 
-7. 结语完成后，你将获得：
+7. Powershell增强使用 PowerShell 7
+提示符美化
+主题框架：oh-my-posh  
+字体：Nerd Fonts
 
+
+PSReadLine
+历史命令预测
+Tab菜单补全
+上下箭头历史搜索
+
+
+实用工具别名
+常用别名：’which’、’pnpmAL’、’pnpmALG’
+Conda环境管理：’MiniConda’、’condaA’、’condaD’
+MSYS2快捷启动：’msys2’
+Eza用作ls，并沿用Linux使用习惯
+
+
+详细配置文件（记得替换Conda和Msys2路径）：
+
+oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-Expression # 初始化oh-my-poshSet-Alias -Name &#x27;which&#x27; -Value &#x27;Get-Command&#x27;Set-PSReadLineOption -PredictionSource History # 设置预测源为历史记录Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete # 设置Tab键为菜单补全Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123; [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; # 设置向上箭头为历史搜索Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125; # 设置向下箭头为历史搜索#Pnpm AliasesFunction Allow-PnpmBuilds &#123;    pnpm approve-builds&#125;Function Allow-PnpmGlobalBuilds &#123;    pnpm approve-builds --global&#125;Set-Alias -Name &#x27;pnpmAL&#x27; -Value &#x27;Allow-PnpmBuilds&#x27;Set-Alias -Name &#x27;pnpmALG&#x27; -Value &#x27;Allow-PnpmGlobalBuilds&#x27;#End Of Pnpm Aliases#Conda AliasesFunction Init-Conda &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    &amp; &#x27;Path to conda-hook.ps1&#x27; # 改为你自己的conda路径    conda activate &#x27;Path to Conda&#x27; # 改为你自己的conda路径    if ($EnvName) &#123;        conda activate $EnvName    &#125;&#125;Function Activate-CondaEnv &#123;    param(        [Parameter(Mandatory = $true)]        [string]$EnvName    )    conda activate $EnvName&#125;Function Deactivate-CondaEnv &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    if ($EnvName) &#123;        conda deactivate $EnvName    &#125; else &#123;        conda deactivate    &#125;&#125;Set-Alias -Name &#x27;MiniConda&#x27; -Value &#x27;Init-Conda&#x27;Set-Alias -Name &#x27;condaA&#x27; -Value &#x27;Activate-CondaEnv&#x27;Set-Alias -Name &#x27;condaD&#x27; -Value &#x27;Deactivate-CondaEnv&#x27;#End Of Conda Aliases#MSYS2 FunctionsFunction Init-Msys2 &#123;    &amp; &#x27;Path to msys2_shell.cmd&#x27; -defterm -no-start -clang64 -shell zsh # 改为你自己的msys2路径&#125;Set-Alias -Name &#x27;msys2&#x27; -Value &#x27;Init-Msys2&#x27;#End Of MSYS2 Functions#Eza Functionsif (-not (Get-Command -Name &#x27;eza&#x27;)) &#123;    winget install eza-community.eza&#125;$eza_params = @(    &#x27;--git&#x27;, &#x27;--icons&#x27;, &#x27;--group&#x27;, &#x27;--group-directories-first&#x27;,    &#x27;--time-style=long-iso&#x27;, &#x27;--color-scale=all&#x27;)Function ezals &#123; eza @eza_params &#125;Set-Alias -Name &#x27;ls&#x27; -Value &#x27;ezals&#x27;Function l &#123; eza --git-ignore @eza_params &#125;Function ll &#123; eza --all --header --long @eza_params &#125;Function llm &#123; eza --all --header --long --sort=modified @eza_params &#125;Function la &#123; eza -lbhHigUmuSa &#125;Function lx &#123; eza -lbhHigUmuSa@ &#125;Function lt &#123; eza --tree @eza_params &#125;Function tree &#123; eza --tree @eza_params &#125;#End Of Eza Functions
+
+8. 结语完成后，你将获得：
+
+✅ MSYS2
 ✅ C&#x2F;C++
 ✅ Qt
 ✅ Node.js
 ✅ Python
 
 记录完]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
       <tags>
-        <tag>折腾日记</tag>
-        <tag>Windows</tag>
         <tag>C++</tag>
         <tag>Node.js</tag>
         <tag>Qt</tag>
         <tag>MSYS2</tag>
         <tag>vscode</tag>
+        <tag>Windows</tag>
         <tag>Python</tag>
         <tag>MiniConda</tag>
+        <tag>折腾日记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」 优质开源软件集</title>
+    <url>/posts/12f010f8/</url>
+    <content><![CDATA[「折腾日记」 优质开源软件集系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
+Bulk-Crap-Uninstaller  
+
+强大的Windows软件管理工具  
+如果你不熟悉Windows，请谨慎使用
+
+
+PowerToys  
+
+微软官方出品的开源Windows工具集
+
+
+Nilesoft Shell  
+
+自定义右键菜单，替换Win11右键菜单
+
+
+bleachbit  
+
+开源清理工具  
+请谨慎使用
+
+
+Rufus
+
+启动盘制作工具
+
+
+
+PowerShell 7  
+主题框架：oh-my-posh  
+字体：Nerd Fonts
+必备配置：
+
+
+
+oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-ExpressionSet-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27;Set-PSReadLineOption -PredictionSource HistorySet-PSReadLineKeyHandler -Key Tab -Function MenuCompleteSet-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;     [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;    [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;
+
+
+Git  
+
+项目开发必备
+
+
+vscode  
+
+强大的代码编辑器  
+注意：Microsoft发布的Visual Studio Code含有遥测代码
+
+
+
+
+AutoHotKey  
+
+强大的脚本工具
+
+
+
+EcoPaste  
+
+跨平台剪贴板管理工具
+
+
+ShareX  
+
+功能强大的截图工具
+
+
+weasel  
+
+Rime输入法框架  
+雾凇
+
+
+
+MPC-BE  
+
+开源播放器（推荐替代PotPlayer）  
+配套组件：  
+LAVFilters  
+xy-VSFilter  
+madvr
+
+
+配置指南：万年冷冻库
+
+
+MusicPlayer2  
+
+开源音乐播放器
+
+
+
+Nanazip  
+
+7zip分支，支持Win11右键菜单，UI现代化
+
+
+eza  
+
+命令行文件管理工具（替代ls命令）
+
+
+
+Watt Toolkit  
+
+Steam工具箱  
+反代加速服务
+
+
+Clash Verge rev  
+
+Clash图形用户界面
+
+
+Gopeed  
+
+Go语言实现的高性能下载工具
+
+
+
+fastfetch  
+
+快捷打印系统信息
+
+
+thefuck  
+
+命令行神器，自动纠正错误命令
+
+
+
+scriptcat
+
+国产开源浏览器脚本管理工具
+
+
+uBlock Origin
+
+强大的广告拦截工具
+
+
+cat-catch
+
+网页媒体下载工具
+
+
+pixiv-toolkit
+
+Pixiv工具箱
+
+
+
+
+记录完]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>Windows</tag>
+        <tag>折腾日记</tag>
+        <tag>开源软件</tag>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」hexo-butterfly自改记录</title>
+    <url>/posts/653f0679/</url>
+    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
+
+此文不再更新，修改后的主题已同步至theme分支，不定时更新
+修改了默认的loading动画，增加了Hitokoto文本
+增加动态标题
+参考Heo同款loading动画增加了Hitokoto文本
+
+
+
+正文修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
+
+2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
+
+3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
+
+4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
+
+5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
+
+6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
+
+7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
+
+添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
+此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
+2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
+
+测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
+
+loading效果
+]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>折腾日记</tag>
+        <tag>hexo</tag>
+        <tag>butterfly</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」基于MPC-BE+MadVR+LAVFilters的播放器配置指南</title>
+    <url>/posts/608b9288/</url>
+    <content><![CDATA[长文注意⚠️
+「折腾日记」基于MPC-BE+MadVR+LAVFilters的播放器配置指南前言本文参考
+万年冷冻库的播放器教程
+维基百科
+以及一些论坛
+
+一些碎碎念Potplayer 被广泛推荐，但它因使用开源项目代码（如 FFmpeg）却闭源发布，被认为可能违反 GPL 协议，且部分版本包含推广内容，引起了一些争议，故本文不推荐开源的MPC-BE且功能同样强大，且积极维护当然MPC-BE并非唯一选择，也可以选择mpv，它更加强大，且跨平台，具体参见mpv_lazy本文主要介绍基于MPC-BE的配置，我并非音视频相关专业人士，主要提供一个参考，不会去深入讲解 (因为我也不会)，有需要请自行查阅相关资料
+Video Helper是一个很实用的，多数音视频相关的软件都可以在这里找到甚至溯源
+内容太多啦，脑袋晕晕的(っ °Д °;)っ，可能会有错误，欢迎指正
+安装
+MPC-BE —— 播放器本体
+也可以选择K-Lite Codec Pack，这是一个 MPC-HC(非MPC-BE) 懒人整合包，包含MPC-HC、LAVFilters、madVR等
+MadVR —— 视频渲染
+下载后解压，运行install.bat即可
+madshi目前对MadVR提供了Test Build，包含更专业的配置项目，尤其是HDR部分，普通用户可选性安装
+madVRhdrMeasure(Test Build)版本过期时会在播放器提示更新，获取更新的方式为当前版本号+1，例如：http://madshi.net/madVRhdrMeasure208.zip ，过期后更新为 http://madshi.net/madVRhdrMeasure209.zip
+
+
+LAVFilters —— 分离器&#x2F;解码器
+xy-VSFilter —— 字幕渲染器
+下载后解压，运行Install_XySubFilter.bat即可
+
+配置前言：除了给出推荐配置外，还会尽可能告诉你每个配置项的含义，可能会有些啰唆(。・ω・。)
+MPC-BE
+右键-选项-视频
+
+
+视频渲染器，选择MadVR
+
+
+字幕
+
+
+字幕，选择XySubFilter
+
+
+滤镜
+
+
+内置滤镜：把源滤镜、视频解码器、音频解码器下的所有滤镜取消勾选，以保证不使用播放器自带的解码器
+拓展滤镜：添加滤镜，在弹出的窗口中选择LAV Splitter、LAV Splitter Source、LAV Video Decoder以及LAV Audio Decoder，并确保勾选
+拓展滤镜：将LAV Video Decoder和LAV Audio Decoder优先级改为“首选”
+
+LAVFiltersLAV Video Configuration
+建议配置如下：  
+Settings：
+Threads for Multi-Threading(多线程)，选择Auto即可
+Use Stream Aspect Ratio(使用流宽高比)，选择 Indeterminate(Auto) 即可
+Settings for Interlaced Video Streams(交错视频流设置)：
+Field Ordering(场序)，选择Auto：注意Auto可能误判老式DVD，错误的场序会导致画面出现跳帧、画面撕裂等，如果遇到判断错误的情况可以尝试手动启用top-field-first(顶部优先)或bottom-field-first(底部优先)
+Deinterlace Mode(反交错模式)选择Auto即可，如果遇到判断错误的情况可以尝试手动启用
+选项解读：
+Auto：使用帧标志来确定内容类型
+Aggressive：强制处理所有疑似隔行扫描的帧(可能误判)
+Force：无视帧标记，全部按隔行处理（老片源救星）
+Disabled：将所有帧都按逐行扫描处理
+
+
+
+
+右下角的Software Deinterlace，是软件反交错，显卡正常的情况下不建议启用
+概念解读：
+逐行扫描：将每一帧从左至右、由上至下，逐一的将所有的像素显示出来
+隔行扫描：将一帧图像的奇数行像素及偶数行像素分开，分成为两个场域(field)。轮流扫描奇数行所构成的场及偶数行所构成的场域
+现在新式的显示设备大多都是使用逐行扫描，在这些新型的显示设备上直接播放隔行信号会产生严重的闪烁现象，而且因隔行信号两行只有一行有影像另一行则是全黑的，所以亮度看起来会减少一半。由于有上述这些问题，所有使用逐行扫描的新式显示设备都需要有 反交错(Deinterlace) 的功能
+
+
+
+
+Hardware Acceleration(硬件加速)：
+Hardware Decoder to use，建议D3D11，旁边的Resolution和Codecs for HW Decoding全部勾选(启用所有支持的格式和分辨率)，Device to use选择你的高性能显卡
+
+
+Output Format(输出格式)，全部勾选
+其余选项默认即可
+Format分页维持默认即可(通常不需要手动启用&#x2F;禁用特定格式)
+
+LAV Audio Configuration
+建议配置如下：  
+Dynamic Range Compression(动态范围压缩)，可以动态调整音频输出幅值，避免音量过低&#x2F;破音，但会损失原声动态细节，一般保持关闭即可
+Bitstream (S&#x2F;PDIF, HDMI)(比特流)：
+注意：Bitstream(比特流)需音频设备直接支持解码（如功放显示”DTS-HD MA”），若不支持启用格式将导致无声
+如果你是笔记本扬声器&#x2F;耳机，此项保证禁用，因为笔记本扬声器不支持Bitstream(比特流)输出
+如果你有通过 HDMI 连接支持高级音频解码的 AV 功放 + 多声道音箱系统&#x2F;通过光纤&#x2F;同轴 (S&#x2F;PDIF) 连接支持基础解码的 Soundbar 或功放，可以根据具体设备的支持情况来选择。例如：直接连接电视时，通常需要确认电视支持的比特流格式（查看电视说明书或音频输出设置），或更简单地选择 PCM 输出让电视解码
+配置解读
+Formats：这里列出了 LAV Audio 可以尝试进行Bitstream(比特流)输出的具体格式。你需要勾选你希望 LAV 尝试传递的格式
+Force max DTS+ID rate (not recommended)：强制最大DTS码率，不建议使用
+Fallback to PCM if Bitsreaming is not supported：如果Bitstream(比特流)输出不被支持，则回退到PCM输出，建议勾选
+
+
+概念解读：
+Bitstream(比特流)：将原始、未经解码的音频数据直接从播放器传递给你的外部音频设备(如声卡等)，这需要接收端设备具备相应的解码能力
+PCM(脉冲编码调制)：播放器（LAV Audio）先将音频编码数据解码成原始的、未压缩的多声道 PCM 数据，再输出给音频设备。这是最通用的方式，所有设备都支持 PCM 输出
+
+
+
+
+Optins：
+Auto A&#x2F;V Sync correction(自动音视频同步校正)，自动音视频同步校正，勾选
+Convert Output to Standard Channel Layouts(将输出转换为标准声道布局)，用于HDMI输出PCM时，声道未达到标准(5.1&#x2F;6.1&#x2F;7.1)时自动添加静音声道补齐，一般有下游混音器(例如Win自带的WASAPI)则不需要勾选，如果下游设备严格要求标准布局（某些老旧设备），则需要勾选，对于大多数现代设备（通过 HDMI 连接功放&#x2F;声卡），都不需要勾选
+WASAPI：是Windows管理音频流的底层接口，所有应用的音频数据最终都会通过 WASAPI 驱动到声卡或数字输出设备
+
+
+Expand Mono to Stereo(将单声道扩展为立体声)，一般保持关闭即可
+Expand 6.1 to 7.1(将6.1声道扩展为7.1声道)，一般保持关闭即可
+Use Legacy Channel Layout(使用旧版声道布局)，一般保持关闭即可，除非设备不支持新版声道标准
+
+
+Audio Delay(音频延迟)，基本用不上，保持关闭即可
+Output Format(输出格式)，全部勾选
+Mixing页，我的建议是：如果你只有立体声(Stereo&#x2F;2.0)设备，勾选Enable Mixing，实现多声道到立体声的混音，多声道设备(如5.1&#x2F;7.1耳机、音箱系统、通过HDMI连接功放)不可开启，会导致音场混乱
+配置解读：
+Output Speaker Configuration(输出扬声器配置)：可选Stereo、4.0、6.1、5.1、7.1、mono，建议与音频设备完全匹配
+Center Mix Level(中心声道混音级别)：控制中心声道混入时的音量，一般是人声&#x2F;对白
+Surround Mix Level(环绕声道混音级别)：控制环绕声道混入时的音量，一般是音乐&#x2F;环境
+LFE Mix Level(LFE声道混音级别)：控制低音声道混入时的音量，一般是低音
+Don’t mix Stereo sources(不混音立体声源)：勾选后，立体声源将不会混音，而是直接输出，建议启用，以避免二次处理
+Normalize Matrix(矩阵标准化)：勾选后，矩阵混音时，会自动调整矩阵系数，以保证各声道音量平滑，建议启用
+Clipping Prevention(防止剪切)：勾选后，保证声道叠加导致的削波失真（爆音），建议启用
+Matrix Encoding(矩阵编码)：矩阵编码格式，自行选择
+
+
+
+
+
+MadVR接下来是重头戏——MadVR的配置，MadVR的配置项非常多有关HDR的内容或许会补充(挖坑.png)，因为HDR(含Test Bulid)的配置项非常多，且复杂，我也没有观看HDR的需求而且我也没有hdr显示器，所以只能靠口胡ο(&#x3D;•ω＜&#x3D;)ρ⌒☆（被打scrennshots(截图)我用不上，相信你也用不上，所以这里就不介绍了写的我快崩溃了X﹏X
+
+如何进入MadVR配置页面：
+在MPC-BE中，右键-选项-视频-视频渲染器，属性，点击Edit Settings，即可进入MadVR配置页面
+
+
+
+devices(设备)![Devices](https://pic1.imgdb.cn/item/687e07f758cb8da5c8c9ebd1.png)
+
+
+这里是选择你的设备类别以供MadVR识别
+Receiver, Processor, Switch：信号处理&#x2F;切换设备，本身不是显示器，而是驱动以下显示终端的前端
+Digital Monitor &#x2F; TV：LCD&#x2F;LED&#x2F;OLED&#x2F;QLED的显示器&#x2F;电视
+Digital Projector：数字投影仪
+CRT projector：CRT投影仪
+CRT monitor ITV：CRT显示器
+unknown：以上之外的设备
+现代显示器一般是Digital Monitor &#x2F; TV
+
+展开devices(设备)
+properties(属性)：  
+output level(输出级别)：一般电脑选择PC levels(0-255)，电视选择TV levels(16-235)，但还是推荐确认一下你的显示器的输出级别，如果非这两个选项可以选择custom levels(自定义级别)，自行填写
+bitdepth(位深)：选择auto，自动匹配即可，bitdepth是指显示器支持的颜色深度，常见的有8bit、10bit、12bit等，位深越高，颜色越丰富，但显示效果越好，功耗也越高
+3D format(3D格式)：一般选择auto，自动匹配即可
+
+
+calibration(校准)：  
+disable calibration for this display(禁用此显示器的校准)：勾选后，MadVR将不会对显示器进行校准
+this display is already calibrated(此显示器已经校准)：勾选后，MadVR将不会对显示器进行校准
+gamut与gamma按照校准显示器时的参数填写即可
+
+
+by using yCMS(使用yCMS)：勾选后，MadVR将使用yCMS进行校准
+by using external 3DLUT files(使用外部3DLUT文件)：勾选后，MadVR将使用外部3DLUT文件进行校准，需要自行准备3DLUT文件
+一般而言，如果显示器进行过校准，则勾选this display is already calibrated，没有经过校准则勾选或不确定色域则勾选disable calibration for this display，如果你对启用MadVR的校准有兴趣，请阅读madshi的文档
+
+
+display modes(显示模式)：  
+switch to matching display mode(切换到匹配的显示模式)：勾选后，MadVR将在符合条件时自动切换到匹配的显示模式
+when playback starts(播放开始时)：勾选后，MadVR将在播放开始时切换到匹配的显示模式
+when media player goes fullscreen(全屏时)：勾选后，MadVR将在全屏时切换到匹配的显示模式
+
+
+restore original display mode(恢复原始显示模式)：勾选后，MadVR将在符合条件时恢复原始显示模式
+when media player is closed(播放器关闭时)：勾选后，MadVR将在播放器关闭时恢复原始显示模式
+when media player leaves fullscreen(退出全屏时)：勾选后，MadVR将在退出全屏时恢复原始显示模式
+
+
+list all display modes MadVR switch to(列出MadVR切换到的所有显示模式)：如果要使用MadVR的显示模式切换功能，此项必须填屏幕支持的显示模式(如：1080p144、1920x1080p60)，否则自动切换不生效，可在Windows设置-系统—屏幕-高级显示设置-显示器x的显示适配器属性-列出所有显示模式中查看
+treat 25p movies as 24p(将25p电影视为24p)：勾选后，MadVR将把25p电影视为24p，需要Reclock或VideoClock
+hack Direct3D to make 24.000Hz and 60.000Hz work(将24.000Hz和60.000Hz的显示模式视为24.000Hz和60.000Hz)：勾选后，通过绕过 Direct3D 的默认限制，强制系统将显示器刷新率切换至精确的 24.000Hz 或 60.000Hz，而非系统可能锁定的近似值（如 23.976Hz 或 59.940Hz），会导致 presentation queues(显示队列) 填不满，增加掉帧风险，依个人喜好选择
+分页custom modes(自定义模式)，是用于自定义显示模式的，一般用户不需要修改，如果你对显示模式有特殊需求，可以自行修改
+
+
+color &amp; gamma(颜色与伽马)：  
+这一页主要修改伽马，默认值会根据你在 calibration(校准) 的设置变化：
+disable calibration ⟶ gamma：默认值2.2
+如果有设置，则与你设置的伽马一致
+一般来说，设置为2.2，然后根据环境光线动态调整，较暗环境下，伽马可以调高至2.4或更高，较亮环境下，伽马可以调低至2.0或更低
+
+
+上方的颜色配置，一般不需要去改，有需要再去调整
+
+
+
+processing(处理)
+deinterlacing(反交错)：  
+由于LAV已经提供反交错，madVR获得的信号是LAV处理过的，所以这里直接保持交给MadVR自行判断即可，配置翻译：
+Automatically activate deinterlacing when needed (在需要时自动激活反交错)
+if in doubt, activate deinterlacing (若有疑问，激活反交错)
+if in doubt, deactivate deinterlacing (若有疑问，停用反交错)
+
+
+disable automatic source type detection (禁用自动源类型检测)，不同模式反交错算法不同
+force film mode (强制电影模式 - 适用于电影&#x2F;24fps内容)
+force video mode (强制视频模式 - 适用于视频&#x2F;隔行内容)
+
+
+only look at pixels in the frame center (仅检测画面中心的像素 - 适用于广播电视，对动画效果不佳)，如果会看电视台播放的电影或动画的话，建议勾选此选项，如果是看DVD原盘的话，则建议取消勾选
+
+
+artifact removal(去除伪影)：  
+reduce banding artifacts (减少带状伪影&#x2F;去色带)
+default debanding strength (默认去带强度)
+strength during fade in&#x2F;out (淡入&#x2F;淡出时的强度)
+概念解读：
+banding artifacts(带状伪影)：即色带，是一种色彩显示不准确的问题，通常出现在低色深环境(4~8bit)。现在大多数片源(1080p)都是8bit，或多或少含有色带，视频解码时YUV ⟶ RGB，还会产生新的色带
+
+
+推荐default debanding strength设置为low，strength during fade in&#x2F;out设置为medium，强度高减少色带的效果越明显，但会产生噪点。淡入&#x2F;淡出时色带会很明显，所以设置为medium
+
+
+reduce ringing artifacts (减少环状伪影)
+reduce dark halos around bright edges, too(同时减少亮边缘周围的暗晕)
+避免用于线条锐利的内容（动漫&#x2F;字幕&#x2F;工程图），reduce dark halos本质是抑制亮边周围的暗区过冲，但动漫的硬边缘（如发丝）会被误判为振铃导致细节丢失
+
+
+概念解读：
+ringing artifacts(环状伪影)：即振铃效应，是一种出现在信号快速转换时，附加在转换边缘上导致失真的信号。而在图像或影像上，振铃效应会导致出现在边缘附近的环带或像是“鬼影”的环状伪影，不恰当的缩放算法、锐化等操作都会导致这种伪影
+
+
+推荐当观察到 ringing artifacts(环状伪影) 时，再启用此选项
+
+
+reduce comprssion artifacts (减少压缩伪影)，旁边的项目用来控制强度和质量
+该功能专门用于修复视频压缩产生的瑕疵（如色带、蚊式噪声、块效应等），推荐当需要时，再启用此选项
+process chroma channels, too(同时处理色度通道)，修复色度通道的伪影（如彩色色带&#x2F;色块），性能开销较大，一般不启用，在色度伪影肉眼可见且GPU性能冗余时启用
+activate only if it comes for free(as part of NGU sharp)(仅在NGU锐化的免费附带效果时激活)，若使用NGU时，强烈建议启用，可以减少NGU的伪影
+
+
+reduce random noise (减少随机噪声)，旁边的项目用于控制强度
+此项用于减少随机噪声，但会破坏细节，一般不启用，在噪声严重时启用
+process chroma channels, too(同时处理色度通道)，同上
+
+
+
+
+image enhancements(图像增强)：
+这一页主要针对影片锐利度不足进行增强，影响原始帧，其处理在放大算法之前，该页面的配置项为锐化算法，不论哪种效果都十分显著，但噪声与瑕疵也会被放大，一般不启用，在需要时启用。锐化算法这里不做解释，自行Google
+
+
+zoom contorl(缩放控制)：
+自行按需调整，一般不需要启用，配置翻译：
+disable scaling if image size changes by only … pixels(如果图像大小仅变化…像素则禁用缩放)，控制片源与目标分辨率差异低于几个像素时，不进行缩放，而添加黑边代替，避免频繁微调影响流畅性
+move subtitles(移动字幕)，强制设置字幕的位置是画面底部或是影片可视范围内
+automatically detect hard coded black bars(自动检测硬编码黑边)，自动检测硬编码黑边，并非比例不一致添加的黑边，而是影片本身编码时添加的黑边
+if black bars change pick one zoom factor，黑边尺寸变化时，选择不裁剪画面内容的缩放比例、砍除25%黑边、砍除50%黑边、砍除75%黑边、砍除全部黑边
+if black bars change quickly back and forth，如果黑边尺寸变化频繁
+当低于2&#x2F;5&#x2F;15&#x2F;45秒时，不切换缩放比例
+设定通用的缩放比例
+
+
+notify media player about cropped black bars，控制每隔多久通知一次播放器黑边尺寸变化
+always shift the image，总是切齐画面底部&#x2F;顶部
+keep bars visible if they contain subtitles，字幕出现在黑边时，保留黑边一定时间  “keep bars visible if they contain subtitles”：如果上面有字幕的话保留黑边（字幕出现后保留黑边5秒、15秒、45秒、3分、10分、30分、90分或永远）
+clearup image borders by cropping，裁切黑边以及其边缘指定像素
+if there are big black bars，如果黑边大范围，直接裁切黑边并放大
+zoom small black bars away，如果黑边小范围，直接裁切黑边并放大
+crop black bars，裁切黑边以及其边缘指定像素，会影响到profile的判定（如果有设置的话）
+
+
+
+scaling algorithms(缩放算法)
+chroma upscaling(色度升频)、image downscaling(图像降频)、image upscaling(图像升频)，这三个选项是色度放大与图像的放大、缩小算法的配置，配置页注明了sharpness(锐度)、hide source artifacts(隐藏源伪影)、ringing(振铃效应)、other artifacts(其他伪影)，其中绿色为效果，红色为失真，不同算法效果、与性能开销不同，请自行权衡
+推荐：
+色度升频算法优先推荐使用NGU + Sharp，性能不足的话，尝试NGU + Anti-Alias&#x2F;soft，其次是super-xbr + anti-alias以及Bilinear + anti-alias，最次Cubic(Bicubic 75) + anti-alias，anti-ringing filter能开就开，SuperRes filter自行权衡
+图像升频同样优先推荐NGU Sharp，使用NGU系列时只需要指定luma doubling(亮度解析度翻倍)和luma quadrupling(亮度解析度四倍)的强度，其余let madVR decide(让madVR决定)即可。性能不足的话尝试NGU Anti-Alias&#x2F;soft，其次是Cubic(Bicubic 100)、Lanczos等，使用这几种时，anti-ringing filter能开就开，而scale in sigmoidal light(对数光)的降低锯齿效果需要自己测试。Bilinear和DXVA2效果最次，仅作无法负荷其他算法时使用
+图像降频算法优先推荐使用SSIM，1D是基于Bicubic的，2D是基于Jinc的，2D效果更好，但性能开销更大，性能不足的话，尝试Cubic(Bicubic 150)，scale in linear light(线性光) 与 anti-ringing filter(抗振铃) 能开就开，抗振铃的strict（soft）跟relaxed，前者是AR滤镜预设强度，后者是降低AR滤镜强度，换得一些锐利度的提升，activate anti-bloating filter(抗膨胀滤镜)，它会抑制因过度锐化导致的高频信号’膨胀’或’白边’伪影，是否启用取决于个人喜好
+每个设置项的low、medium、high、very high均是越高性能开销越大，但效果越好，请自行权衡。
+关于图片升频，现在的madVR版本，使用NGU系列时只需要指定 luma doubling(亮度倍增) 和 luma quadrupling(亮度四倍) 的强度，其余 let madVR decide(让madVR决定) 即可
+关于always - supersampling(强制超取样)，选择此项的话即使在1：1播放时（例如1920*1080影片在1920*1080屏幕上播放），也会启用翻倍算法（看选的是super-xbr还是NGU），强制升频后再降频回来，这个使用在super-xbr或NGU-AA时一般是搭配upscaling refinement里面的锐化算法一起用来取得锐利度的强化，单独独使用并没什么效果。或是使用在NGU-Sharp时，可以受惠于它自带的deringing效果。不过这个选项并不是很建议，除非你的显卡效能够用，而且实际使用上也真的看的出1：1播放强制升频再降频的画面区别才去用它，千万不要盲目的认为用了画质一定会变好
+
+
+upscaling refinement(升频优化)，它的副作用相对前面的 image enhancements(图像增强) 要小，效果差不多，同样一般不启用，在需要时启用，缩放算法自行Google
+
+rendering(渲染)
+general settings(通用设置)：  
+delay playback start until render queue is full(延迟播放直到渲染队列满)，避免播放器卡顿
+delay playback start after seeking, too(在快进后也延迟播放)，避免播放器卡顿
+
+
+enable windowed overlay(启用窗口化覆盖模式)，启用窗口化覆盖模式(游戏的无边框窗口模式)，能绕过部分桌面合成步骤，降低延迟和资源占用，和下面的全屏独占模式二选一，或使用windowed mode里的present several frames in advance
+enable automatic fullscreen exclusive mode(启用自动全屏独占模式)，启用全屏独占模式，能使渲染器直接控制显示输出，绕过DWM，和上面的窗口化覆盖模式二选一，或使用windowed mode里的present several frames in advance
+disable desktop composition(禁用窗口管理器)(仅Win7)，禁用DWM，获得类似全屏独占模式的效果，但渲染能获得更直接的显示权限，Windows 8及以后版本不支持
+only when media player is in fullscreen mode(仅在播放器全屏时启用)
+
+
+use Direct3D 11 for presentation(使用Direct3D 11进行呈现)，使用Direct3D 11 API进行呈现，性能比Direct3D 9好
+present a frame for every VSync(每个垂直同步呈现一帧)，即常说的垂直同步，这要求视频帧率必须能被显示器刷新率整除(或配置上文的display modes)，否则画面可能卡顿
+
+
+use a separate device for presentation(使用单独的设备进行呈现)，让 madVR 为“呈现”(Presentation) 操作（将最终处理好的帧发送到显示器）使用一个独立的 Direct3D 设备（和上下文），这能减少对视频解码的干扰
+use a separate device for DXVA processing(使用单独的设备进行DXVA处理)，让 madVR 为 DXVA 处理（视频解码）使用一个独立的 Direct3D 设备（和上下文），也是隔离策略
+剩下的滑块CPU queue size(CPU队列大小)、GPU queue size(GPU队列大小)，控制渲染队列的大小，滑块越大，渲染队列越大，能减少卡顿，但会占用更多RAM，请自行权衡
+
+
+windowed mode(窗口模式)：  
+present several frames in advance(提前呈现几帧)，提前呈现几帧，以达到类似全屏独占模式的效果，但不会绕过DWM，和上面的 enable windowed overlay(启用窗口化覆盖模式) 以及 enable automatic fullscreen exclusive mode(启用自动全屏独占模式) 冲突
+how many video frames shall be presented in advance(提前呈现多少帧视频)，如果启用提前帧，会显示此项，按照GPU性能自行调整，越高效果越好，但性能开销越大，请自行权衡
+how many backbuffers shall be used(使用多少个后台缓冲区)，如果未启用提前帧，会显示此项，按照RAM自行调整，越高效果越好，但性能开销越大，请自行权衡
+when and how shall the GPU be flushed(何时以及如何刷新GPU)：
+GPU 刷新（Flush）的作用：GPU 任务以命令队列形式提交，刷新会强制 GPU 立即执行队列中的所有任务，确保后续操作基于最新结果。频繁刷新会导致性能下降，画面卡顿，对于大多数设备默认方案就是最好的选择，但某些设备可能需要调整刷新策略
+after intermediate render steps(在中间渲染步骤后)
+after last render step(在最后渲染步骤后)
+after copy to backbuffer(在复制到后台缓冲区后)
+after D3D presentation(在DXGI呈现后)
+
+
+
+
+exclusive mode(独占模式)：
+show seek bar(显示进度条)，启用后，在播放器全屏时，会显示一个MadVR提供的进度条
+delay switch to exclusive mode by 3 seconds(延迟3秒切换到独占模式)，不勾选则立即切换到独占模式
+其余配置项同windowed mode(窗口模式)
+
+
+stereo 3D(立体3D)：
+这一部分是有播放3D视频需求时才需要配置的，一般全部取消勾选
+enable stereo 3D playback(启用立体3D播放)，启用立体3D播放，需要配合立体3D视频播放
+when playing 2d content(播放2D内容时)，控制播放2D内容时是否禁用3D支持
+when playing 3d content(播放3D内容时)，控制播放3D内容时是否禁用3D支持
+restore os stereo 3D settings when meida player closed(在媒体播放器关闭时恢复操作系统立体3D设置)
+
+
+smooth motion(平滑运动)：
+这个功能(FRC)能够将任何源帧率转换为任何目标刷新率，在性能足够的情况下，可以达到不使用Reclock达到无卡顿&#x2F;无重复的效果
+FRC实现原理不是补帧，按madshi的说法：“FRC 模拟了一个具有无限刷新率的显示器，每个视频帧都会在时间戳要求的精确时刻显示。因此，运动的流畅度取决于正确的时间戳。如果时间戳（或音频时钟）存在抖动，播放也会出现抖动… 完全启用 Reclock 并进行音频重采样仍然是可行的，这不会对 madVR 的 FRC 算法造成损害。” 因此它不具有补帧算法的副作用（如伪影、肥皂剧效应），运动相对自然。代价是轻微的清晰度损失（动态模糊感略有增加）和 GPU 使用率升高（损失程度：低帧率-&gt;高刷新率 &lt; 高帧率-&gt;低刷新率）
+与补帧必须二选一，不能同时使用
+建议：如果追求绝对流畅无 judder 且能接受轻微的清晰度损失和 GPU 开销增加，勾选 enable smooth motion 并选择 always。如果对 judder 不敏感或 GPU 性能吃紧，可以关闭
+enable smooth motion frame rate conversion(启用平滑运动帧率转换)
+only if there would be motion judder without it…(只有在没有它的情况下才会出现运动抖动时才启用)，当源帧率和目标刷新率相差超过一定值时启用
+…or if the display refresh rate is an exact multiple of the video frame rate(或者如果显示刷新率是视频帧率的精确倍数)，当目标刷新率是源帧率的倍数时启用
+always(总是)，总是启用
+
+
+
+
+dithering(抖动)：
+None，不应用任何抖动处理（可能导致色带问题）十分不建议
+Random Dithering(随机抖动)，噪声明显，速度快，无抖动图案，极低能耗
+Ordered Dithering(有序抖动)，错误扩散的轻量替代方案，噪声较少，中等抖动图案，低能耗
+Error Diffusion - option 1(错误扩散 - 选项1)，中等噪声，无抖动图案(需要DX11 GPU)
+Error Diffusion - option 2(错误扩散 - 选项2)，低噪声，中等抖动图案(需要DX11 GPU)
+options：
+use colored noise(使用彩色噪声)，低亮度噪声，会增加色度噪声，优化人眼感知，减少可见噪点
+change dither for every frame(为每一帧更改抖动)，隐藏抖动图案，避免固定图案导致的静态闪烁，但主观上增加噪声感
+
+
+推荐：如果 GPU支持DX11，优先选择Error Diffusion - option 1并勾选use colored noise 和change dither for every frame。这是效果和性能的良好平衡。追求极致选 option 2。性能不足选 Ordered Dithering
+
+
+trade quality for performance(以质量为代价换取性能)：
+这一页所有项目都是牺牲质量换性能，如果性能足够，一个也不建议勾选！！
+optimize subtitle quality performance instead of quality(优化字幕性能优先于画质)，降低字幕渲染精度以节省资源
+use DXVA chroma upscaling when doing native DXVA decoding(原生DXVA解码时使用DXVA色度升频)，用硬件加速色度处理（可能产生锯齿）
+use DXVA chroma upscaling when doing DXVA deinterlacing(DXVA反交错时使用DXVA色度升频)，硬件加速反交错+色度升频（画质损失明显）
+don’t use linear light for dithering(抖动处理不使用线性光空间)，关闭线性光抖动（暗部细节减少）
+don’t analyze gradient angles for debanding(去色带时不分析渐变角度)，简化梯度计算（可能导致带状伪影残留）
+don’t rerender frames when fade in&#x2F;out is detected(检测到淡入&#x2F;淡出时不重新渲染帧)，跳过透明度变化的帧处理（过渡不自然）
+scale chroma separately, if it saves performance(若可提升性能则单独处理色度通道)，色度&#x2F;亮度分离处理（可能色彩错位）
+compromise on HDR tone &amp; gamut mapping accuracy(降低HDR色调 &amp; 色域映射精度)，简化 HDR 动态转换（色彩准确性下降）
+compromise on HDR luminance channel quality(降低HDR亮度通道质量)，压缩高光细节（亮部层次减少）
+don’t measure HDR frame peak luminance(不测量HDR帧峰值亮度)，禁用逐帧亮度分析（局部过曝风险）
+lose BTB and WTW if it improves performance(若可提升性能则牺牲超黑&#x2F;超白细节 (BTB&#x2F;WTW))，裁剪 &lt;0 或 &gt;255 灰阶（丢失极端暗&#x2F;亮部）
+don’t use linear light for smooth motion frame blending(平滑插帧不使用线性光混合)，简化帧混合计算（运动流畅度下降）
+use 10bit chroma buffer instead of 16bit(使用10bit色度缓冲代替16bit)，降低色度数据精度（色彩过渡轻微断层）
+use 10bit image buffer instead of 16bit(使用10bit图像缓冲代替16bit)，全局降低处理精度（所有画质影响）
+run custom pixel shaders in video levels instead of PC levels(在视频电平（16-235）而非PC电平（0-255）运行自定义像素着色器)，简化色域转换（暗部发灰&#x2F;亮部过曝）
+强烈不建议使用的选项，但决定权在你：
+use half frame rate for DXVA deinterlacing(DXVA反交错使用半帧率)，帧数减半（运动卡顿明显，仅兼容老式隔行视频）
+trust DXVA color &amp; levels conversion(任DXVA的色彩与电平转换)，绕过 madVR 色彩管理（色偏&#x2F;灰阶错误高发）
+
+
+
+
+
+configuration(配置)
+这里可以配置多个不同的配置方案(包含所有配置项)，并绑定快捷键切换，也可以为单独配置项设置快捷键。请自行配置
+
+尾声至此，播放器的配置就完成了，如果还有其他问题，请善用搜索引擎，或者翻翻madshi的帖子更新日志，Test Build(HDR)祝你有个愉快的观影体验！
+]]></content>
+      <categories>
+        <category>折腾日记</category>
+        <category>长文</category>
+      </categories>
+      <tags>
+        <tag>折腾日记</tag>
+        <tag>播放器</tag>
+        <tag>MPC-BE</tag>
+        <tag>MPC-HC</tag>
+        <tag>MadVR</tag>
+        <tag>LAVFilters</tag>
+        <tag>xy-VSFilter</tag>
+        <tag>视频</tag>
+        <tag>音频</tag>
+        <tag>解码</tag>
+        <tag>渲染</tag>
       </tags>
   </entry>
 </search>
