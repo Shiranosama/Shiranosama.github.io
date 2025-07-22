@@ -119,3 +119,9 @@ loading: 正在加載...
 load_more: 加載更多
 
 error404: 未找到頁面
+error404_line1: 哎呀，頁面好像走丟了！(＃°Д°)
+error404_line2: 可能是被魔理沙借走了，也可能是被輕音部的少女們拿去開演唱會了~ ¯\_(ツ)_/¯
+error404_line3_1: cd to 
+error404_line3_2: or
+error404_back: ../
+error404_home: ~/

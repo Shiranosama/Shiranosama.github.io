@@ -119,3 +119,9 @@ loading: 로딩 중...
 load_more: 더 보기
 
 error404: 페이지를 찾을 수 없습니다.
+error404_line1: 어이쿠, 페이지를 찾을 수 없어요! (＃°Д°)
+error404_line2: 아마도 마리사가 가져갔을 수도 있고, 케이온! 소녀들이 공연하러 가져갔을 수도 있어요~ ¯\_(ツ)_/¯
+error404_line3_1: cd to 
+error404_line3_2: or
+error404_back: ../
+error404_home: ~/

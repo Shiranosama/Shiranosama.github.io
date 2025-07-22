@@ -116,7 +116,19 @@ error_img:
 error_404:
   enable: false
   subtitle: 'Page Not Found'
-  background: /img/error-page.png
+  # 404 Terminal
+  # first_line
+  line1:
+  # second_line
+  line2:
+  # The first half of the third line
+  line3_1:
+  # The second half of the third line
+  line3_2:
+  # The back button
+  back:
+  # The button to the home page
+  home:
 
 post_meta:
   # Home Page

@@ -119,3 +119,9 @@ loading: ローディング中...
 load_more: もっと見る
 
 error404: ページが見つかりません
+error404_line1: あらら、ページが見つからない！(＃°Д°)
+error404_line2: もしかしたら魔理沙に借りていったか、けいおん部のガールズがライブで使ってるかもね～ ¯\_(ツ)_/¯
+error404_line3_1: cd to 
+error404_line3_2: or
+error404_back: ../
+error404_home: ~/

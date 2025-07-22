@@ -52,7 +52,12 @@ hexo.extend.filter.register('before_generate', () => {
     error_404: {
       enable: false,
       subtitle: 'Page Not Found',
-      background: '/img/error-page.png'
+      line1: null,
+      line2: null,
+      line3_1: null,
+      line3_2: null,
+      back: null,
+      home: null
     },
     post_meta: {
       page: {

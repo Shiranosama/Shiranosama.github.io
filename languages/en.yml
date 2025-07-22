@@ -119,3 +119,9 @@ loading: Loading...
 load_more: Load More
 
 error404: Page Not Found
+error404_line1: Oops, the page seems to be missing! (＃°Д°)
+error404_line2: Maybe Marisa "borrowed" it, or maybe the K-ON! girls took it for their concert~ ¯\_(ツ)_/¯
+error404_line3_1: cd to 
+error404_line3_2: or
+error404_back: ../
+error404_home: ~/

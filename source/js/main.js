@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 5000);
       }
     });
+    window.addEventListener('beforeunload', function () {
+      document.title = originalTitle;
+    })
   }
   let headerContentWidth, $nav
   let mobileSidebarOpen = false
