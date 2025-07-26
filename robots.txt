@@ -2,11 +2,10 @@ User-agent: *
 Disallow: /js/
 Disallow: /css/
 Disallow: /img/
-Allow: /
+Allow: /*.html$
 Allow: /archives
 Allow: /categories
 Allow: /tags
 Allow: /about
-Allow: /link
 Allow: /posts
 Sitemap: https://shiranosama.github.io/sitemap.xml
