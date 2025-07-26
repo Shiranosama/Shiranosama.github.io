@@ -1,49 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>「折腾日记」hexo-butterfly自改记录</title>
-    <url>/posts/653f0679/</url>
-    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
-
-此文不再更新，修改后的主题已同步至theme分支，不定时更新
-修改了默认的loading动画，增加了Hitokoto文本
-增加动态标题
-参考Heo同款loading动画增加了Hitokoto文本
-
-
-
-正文修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
-
-2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
-
-3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
-
-4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
-
-5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
-
-6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
-
-7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
-
-添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
-此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
-2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
-
-测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
-
-loading效果
-]]></content>
-      <categories>
-        <category>折腾日记</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「折腾日记」 优质开源软件集</title>
-    <url>/posts/12f010f8/</url>
+    <url>/posts/12f010f8/index.html</url>
     <content><![CDATA[「折腾日记」 优质开源软件集系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
 Bulk-Crap-Uninstaller  
 
@@ -209,8 +168,49 @@ Pixiv工具箱
       </tags>
   </entry>
   <entry>
+    <title>「折腾日记」hexo-butterfly自改记录</title>
+    <url>/posts/653f0679/index.html</url>
+    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
+
+此文不再更新，修改后的主题已同步至theme分支，不定时更新
+修改了默认的loading动画，增加了Hitokoto文本
+增加动态标题
+参考Heo同款loading动画增加了Hitokoto文本
+
+
+
+正文修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
+
+2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
+
+3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
+
+4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
+
+5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
+
+6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
+
+7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
+
+添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
+此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
+2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
+
+测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
+
+loading效果
+]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「折腾日记」基于MPC-BE+MadVR+LAVFilters的播放器配置指南</title>
-    <url>/posts/608b9288/</url>
+    <url>/posts/608b9288/index.html</url>
     <content><![CDATA[长文注意⚠️
 「折腾日记」基于MPC-BE+MadVR+LAVFilters的播放器配置指南前言本文参考
 万年冷冻库的播放器教程
@@ -627,7 +627,7 @@ A：倘若显卡驱动正常，则可能是因为显卡过热停机&#x2F;降频�
   </entry>
   <entry>
     <title>「折腾日记」 记录Windows下基于MSYS2的开发环境搭建</title>
-    <url>/posts/58031fe8/</url>
+    <url>/posts/58031fe8/index.html</url>
     <content><![CDATA[记录Windows下基于MSYS2的开发环境搭建0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人做此记录，以便日后查阅
 
 主要优势：

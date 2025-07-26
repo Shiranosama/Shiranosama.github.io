@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://shiranosama.github.io/posts/58031fe8/</loc>
+    <loc>https://shiranosama.github.io/posts/58031fe8/index.html</loc>
     
     <lastmod>2025-07-26</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/posts/12f010f8/</loc>
+    <loc>https://shiranosama.github.io/posts/12f010f8/index.html</loc>
     
     <lastmod>2025-07-26</lastmod>
     
@@ -20,7 +20,7 @@
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/posts/653f0679/</loc>
+    <loc>https://shiranosama.github.io/posts/653f0679/index.html</loc>
     
     <lastmod>2025-07-26</lastmod>
     
@@ -29,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/posts/608b9288/</loc>
+    <loc>https://shiranosama.github.io/posts/608b9288/index.html</loc>
     
     <lastmod>2025-07-26</lastmod>
     
@@ -92,13 +92,6 @@
 
   
   <url>
-    <loc>https://shiranosama.github.io/tags/hexo/</loc>
-    <lastmod>2025-07-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://shiranosama.github.io/tags/Windows/</loc>
     <lastmod>2025-07-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -114,6 +107,13 @@
   
   <url>
     <loc>https://shiranosama.github.io/tags/Linux/</loc>
+    <lastmod>2025-07-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://shiranosama.github.io/tags/hexo/</loc>
     <lastmod>2025-07-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
