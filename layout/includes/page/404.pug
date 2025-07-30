@@ -1,0 +1,24 @@
+.error-content
+  .terminal
+    .terminal-header
+      .terminal-buttons
+        span.close
+        span.minimize
+        span.maximize
+      .terminal-title= '404@Arashi'
+    .terminal-body
+      .terminal-line
+        span.prompt λ
+        span.404text= ' '+ (theme.error_404.line1 || _p('error404_line1'))
+      .terminal-line
+        span.prompt λ
+        span.404text= ' '+ (theme.error_404.line2 || _p('error404_line2'))
+      .terminal-line
+        span.prompt λ
+        span.404text= ' '+ (theme.error_404.line3_1 || _p('error404_line3_1'))
+        a.terminal-link(href='javascript:history.back()')= ' '+ (theme.error_404.back || '../')
+        span.404text= ' '+ (theme.error_404.line3_2 || _p('error404_line3_2'))
+        a.terminal-link(href='/')= ' '+ (theme.error_404.home || '~/')
+  .error-info
+    h1.error_title= '404'
+    .error_subtitle= theme.error_404.subtitle || _p('error404')
