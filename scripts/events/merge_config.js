@@ -47,7 +47,7 @@ hexo.extend.filter.register('before_generate', () => {
     },
     error_img: {
       flink: '/img/friend_404.gif',
-      post_page: '/img/404.jpg'
+      post_page: '/img/404Ghost.png'
     },
     error_404: {
       enable: false,
@@ -362,6 +362,7 @@ hexo.extend.filter.register('before_generate', () => {
     giscus: {
       repo: null,
       repo_id: null,
+      category: null,
       category_id: null,
       light_theme: 'light',
       dark_theme: 'dark',
