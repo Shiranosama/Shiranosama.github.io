@@ -4326,10 +4326,10 @@ figure.highlight pre .javascript .function {
   background: var(--text-bg-hover);
 }
 #nav .menus_items .menus_item .menus_item_child li:first-child {
-  border-radius: 80px;
+  border-radius: 20px 20px 0 0;
 }
 #nav .menus_items .menus_item .menus_item_child li:last-child {
-  border-radius: 80px;
+  border-radius: 0 0 20px 20px;
 }
 #nav .menus_items .menus_item .menus_item_child li a {
   display: inline-block;
