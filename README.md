@@ -7,9 +7,9 @@
 
 # hexo-theme-Arashi
 
-📢 预览: [Shirano的博客](https://shirano39.github.io/)
+📢 预览: [Shirano的博客](https://shiranosama.github.io/)
 
-📖 文档: [没写](https://github.com/Shirano39/Shirano39.github.io/tree/theme)
+📖 文档: [没写，请阅读Butterfly文档](https://butterfly.js.org/)
 
 </div>
 
@@ -50,3 +50,9 @@ npm install hexo-renderer-pug hexo-renderer-stylus --save
 - 修改导航栏样式
 - 文章页波浪
 - 细节修改
+
+### 📝 TODO
+
+- [ ] 修改主页样式
+- [ ] 卡片效果
+- [❌] and more...

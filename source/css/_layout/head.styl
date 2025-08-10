@@ -134,6 +134,7 @@
     #nav
       background: none !important
       box-shadow: none !important
+
       a,
       span.site-page,
       .site-name
@@ -149,6 +150,7 @@
       box-shadow: none !important
       transition: transform .2s ease-in-out, opacity .2s ease-in-out
       will-change: transform
+      backdrop-filter: blur(7px)
 
       #blog-info
         color: var(--font-color)
@@ -292,15 +294,15 @@
     position: absolute
     width: 100%
     height: 100%
-  
+
   .wave-inner
     background-image: $light-wave, $light-wave, $light-wave
     background-repeat: repeat-x
     background-size: 1600px 80%
     background-position: 0 130%, -50px 130%, 500px 130%
-    animation: 20s waves linear infinite forwards
+    animation: 20s wave-animation linear infinite forwards
 
-@keyframes waves {
+@keyframes wave-animation {
   to {
     background-position: 1600px 130%, 3150px 130%, 5300px 130%
   }
@@ -336,11 +338,11 @@
     box-shadow: 0 5px 12px -4px rgba($dark-black, .5)
     display: flex
     padding: 8px 12px 8px 12px
-    transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28)
+    transition: transform .4s cubic-bezier(0.18, 0.89, 0.32, 1.28)
 
     +maxWidth768()
       left: 15px
-    
+
     &:hover
       transform: scale(1.05)
 
@@ -421,7 +423,7 @@
         background-color: var(--sidebar-bg)
         box-shadow: 0 5px 20px -4px rgba($dark-black, .5)
         animation: sub_menus .3s .1s ease both
-        border-radius: 25px
+        addBorderRadius(25)
 
         &:before
           position: absolute
@@ -473,3 +475,45 @@
     text-shadow: 1px 1px 2px rgba($dark-black, .3)
     font-size: .78em
     cursor: pointer
+
+    &:not(.child)
+      &:after
+        position: absolute
+        bottom: 0
+        left: 0
+        z-index: -1
+        width: 0
+        height: 3px
+        background-color: lighten($theme-color, 30%)
+        content: ''
+        transition: all .3s ease-in-out
+        addBorderRadius()
+
+      &:hover
+        &:after
+          width: 100%
+
+  .nav-page-title
+    position: relative
+    overflow: hidden
+
+    & > :first-child,
+    & > :last-child
+      display: inline-block
+      transition: all .3s ease-in-out
+
+    & > :last-child
+      position: absolute
+      top: 50%
+      left: 0
+      opacity: 0
+      transform: translateY(-50%) translateY(-10px)
+
+    &:hover
+      & > :last-child
+        opacity: 1
+        transform: translateY(-50%) translateY(0)
+
+      & > :first-child
+        opacity: 0
+        transform: translateY(10px)
