@@ -6,7 +6,6 @@ Disallow: /link/
 Disallow: /about/
 Disallow: /categories/
 Disallow: /tags/
-Allow: /*.html$
 Allow: /archives/
 Allow: /posts/
 Sitemap: https://shiranosama.github.io/sitemap.xml
