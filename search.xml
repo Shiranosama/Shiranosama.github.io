@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>「C++笔记」处理类型：别名与auto与decltype</title>
+    <url>/posts/ab2e220d/index.html</url>
+    <content><![CDATA[类型别名
+类型别名是一个等价于某种类型的名字
+定义方式有传统的typedef和别名声明（using） 两种
+定义的别名等价于对应类型（包括复合类型）
+
+  typedef double dub;    //dub是double的别名using unint = unsigned int;    //unint是unsigned int的别名using pdub = double*;    //pdub是double*别名pdub ptr = nullptr;    //等价于double* ptr = nullptr;
+
+
+auto类型说明符
+auto会告诉编译器去分析表达式所属类型并赋予变量
+用于定义时必须有初始值
+声明多个变量时初始基本数据类型必须一致
+auto通常会忽略顶层const，保留底层const
+
+  auto var = 42, *pvar = &amp;var;const int i = 42;auto a = i;    //a是一个整数const auto b = i;    //b为int常量//对常量获取地址是一种底层constauto c = &amp;i;    //c是一个指向int常量的指针
+
+
+decltype类型指示符
+decltype用于选择并返回操作数的数据类型
+编译器会分析表达式并返回它的类型，但不计算实际的值
+如果表达式能做为左值，则返回引用类型
+变量的类型会如实返回（包括引用和顶层const）
+给变量名加上括号会让其被识别为表达式，这会返回引用类型
+
+
+
+
+
+  decltype (ft()) var = x;    //var的类型为函数ft()的返回值const int a = 42, &amp;r = a;decltype (a) b = a;    //b的类型为const intdecltype (r) c = b;    //c的类型为const int&amp;
+
+
+易错
+using pint = int*的含义是pint是int*类型的别名，在使用它进行声明时const pint ptr = nullptr的含义是一个指向int类型的常量指针，而非const int *ptr = nullptr的一个指向int常量的指针
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>「C++笔记」const限定符</title>
     <url>/posts/877242c6/index.html</url>
     <content><![CDATA[const限定符const
@@ -107,51 +152,6 @@ const层级
 constexpr声明中定义的指针为常量指针
 
 
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「C++笔记」处理类型：别名与auto与decltype</title>
-    <url>/posts/ab2e220d/index.html</url>
-    <content><![CDATA[类型别名
-类型别名是一个等价于某种类型的名字
-定义方式有传统的typedef和别名声明（using） 两种
-定义的别名等价于对应类型（包括复合类型）
-
-  typedef double dub;    //dub是double的别名using unint = unsigned int;    //unint是unsigned int的别名using pdub = double*;    //pdub是double*别名pdub ptr = nullptr;    //等价于double* ptr = nullptr;
-
-
-auto类型说明符
-auto会告诉编译器去分析表达式所属类型并赋予变量
-用于定义时必须有初始值
-声明多个变量时初始基本数据类型必须一致
-auto通常会忽略顶层const，保留底层const
-
-  auto var = 42, *pvar = &amp;var;const int i = 42;auto a = i;    //a是一个整数const auto b = i;    //b为int常量//对常量获取地址是一种底层constauto c = &amp;i;    //c是一个指向int常量的指针
-
-
-decltype类型指示符
-decltype用于选择并返回操作数的数据类型
-编译器会分析表达式并返回它的类型，但不计算实际的值
-如果表达式能做为左值，则返回引用类型
-变量的类型会如实返回（包括引用和顶层const）
-给变量名加上括号会让其被识别为表达式，这会返回引用类型
-
-
-
-
-
-  decltype (ft()) var = x;    //var的类型为函数ft()的返回值const int a = 42, &amp;r = a;decltype (a) b = a;    //b的类型为const intdecltype (r) c = b;    //c的类型为const int&amp;
-
-
-易错
-using pint = int*的含义是pint是int*类型的别名，在使用它进行声明时const pint ptr = nullptr的含义是一个指向int类型的常量指针，而非const int *ptr = nullptr的一个指向int常量的指针
 
 ]]></content>
       <categories>
@@ -519,6 +519,449 @@ Linux安装完成后LiveCD也不要丢弃，它可以作为系统修复的环境
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」hexo-butterfly自改记录</title>
+    <url>/posts/653f0679/index.html</url>
+    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
+
+此文不再更新，修改后的主题已同步至theme分支，不定时更新
+修改了默认的loading动画，增加了Hitokoto文本
+增加动态标题
+参考Heo同款loading动画增加了Hitokoto文本
+
+
+
+修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
+
+2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
+
+3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
+
+4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
+
+5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
+
+6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
+
+7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
+
+添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
+此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
+2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
+
+测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
+
+loading效果
+]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」优质开源软件集</title>
+    <url>/posts/12f010f8/index.html</url>
+    <content><![CDATA[系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
+Bulk-Crap-Uninstaller  
+
+强大的Windows软件管理工具  
+如果你不熟悉Windows，请谨慎使用
+
+
+PowerToys  
+
+微软官方出品的开源Windows工具集
+
+
+Nilesoft Shell  
+
+自定义右键菜单，替换Win11右键菜单
+
+
+bleachbit  
+
+开源清理工具  
+请谨慎使用
+
+
+Rufus
+
+启动盘制作工具
+
+
+
+PowerShell 7  
+主题框架：oh-my-posh  
+字体：Nerd Fonts
+必备配置：
+
+
+
+oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-ExpressionSet-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27;Set-PSReadLineOption -PredictionSource HistorySet-PSReadLineKeyHandler -Key Tab -Function MenuCompleteSet-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;     [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;    [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;
+
+
+Git  
+
+项目开发必备
+
+
+vscode  
+
+强大的代码编辑器  
+注意：Microsoft发布的Visual Studio Code含有遥测代码
+
+
+
+
+AutoHotKey  
+
+强大的脚本工具
+
+
+
+EcoPaste  
+
+跨平台剪贴板管理工具
+
+
+ShareX  
+
+功能强大的截图工具
+
+
+weasel  
+
+Rime输入法框架  
+雾凇
+
+
+
+MPC-BE  
+
+开源播放器（推荐替代PotPlayer）  
+配套组件：  
+LAVFilters  
+xy-VSFilter  
+madvr
+
+
+配置指南：万年冷冻库
+
+
+MusicPlayer2  
+
+开源音乐播放器
+
+
+
+Nanazip  
+
+7zip分支，支持Win11右键菜单，UI现代化
+
+
+eza  
+
+命令行文件管理工具（替代ls命令）
+
+
+
+Watt Toolkit  
+
+Steam工具箱  
+反代加速服务
+
+
+Clash Verge rev  
+
+Clash图形用户界面
+
+
+Gopeed  
+
+Go语言实现的高性能下载工具
+
+
+
+fastfetch  
+
+快捷打印系统信息
+
+
+thefuck  
+
+命令行神器，自动纠正错误命令
+
+
+
+scriptcat
+
+国产开源浏览器脚本管理工具
+
+
+uBlock Origin
+
+强大的广告拦截工具
+
+
+cat-catch
+
+网页媒体下载工具
+
+
+pixiv-toolkit
+
+Pixiv工具箱
+
+
+
+
+记录完]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Windows</tag>
+        <tag>开源</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建</title>
+    <url>/posts/58031fe8/index.html</url>
+    <content><![CDATA[0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人做此记录，以便日后查阅
+
+主要优势：
+
+轻量化（相比臃肿的MSVC）
+Unix工具链的Windows实现
+完善的包管理系统
+
+
+1. 安装MSYS2环境选择
+MSYS2 提供了不同的环境，这些环境之间的主要区别在于工具链和实现。如果不确定使用哪个，请选择 UCRT64：
+
+
+
+
+Name
+Prefix
+Toolchain
+Architecture
+C Library
+C++ Library
+
+
+
+MSYS
+&#x2F;usr
+gcc
+x86_64
+cygwin
+libstdc++
+
+
+UCRT64
+&#x2F;ucrt64
+gcc
+x86_64
+ucrt
+libstdc++
+
+
+CLANG64
+&#x2F;clang64
+llvm
+x86_64
+ucrt
+libc++
+
+
+CLANGARM64
+&#x2F;clangarm64
+llvm
+aarch64
+ucrt
+libc++
+
+
+MINGW64
+&#x2F;mingw64
+gcc
+x86_64
+msvcrt
+libstdc++
+
+
+
+Note:路径说明：安装路径示例：C:\msys2\ucrt64软件安装路径：对应环境的bin目录，例如：C:\msys2\ucrt64\bin
+
+安装基本编译器：#可选：使用tuna镜像sed -i &quot;s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g&quot; /etc/pacman.d/mirrorlist*pacman -Syu # 更新软件包数据库并升级系统，需要重启MSYS2pacman -S pactoys # 安装pactoyspacboy -S toolchain zsh # 安装工具链、zshpacman -S git # 安装git
+
+Note:
+
+pactoys 是MSYS2提供的软件包管理工具，它功能与pacman基本相同，但是它可以直接安装对应环境的软件包，例如：UCRT64环境下pacboy -S gcc等价于pacman -S mingw-w64-ucrt-x86_64-gcc。
+
+
+2. 配置环境变量环境变量注意：
+⚠️危险操作（避免冲突）：不要将 &#x2F;usr&#x2F;bin 加入系统PATH
+
+推荐配置：只添加对应环境的bin目录：C:\msys2\ucrt64\bin
+
+
+Windows Terminal配置替代方案详见Step.7
+
+在 Windows Terminal 的配置文件中，添加如下内容：
+
+&quot;list&quot;: [   &#123;       &quot;commandline&quot;: &quot;C:\\msys2\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell zsh&quot;,      &quot;guid&quot;: &quot;&#123;fd57d26d-d3d0-448a-8bd5-e44632685d72&#125;&quot;,      &quot;hidden&quot;: false,      &quot;icon&quot;: &quot;C:\\msys2\\ucrt64.ico&quot;,      &quot;name&quot;: &quot;MSYS2 UCRT64&quot;,      &quot;startingDirectory&quot;: &quot;C:\\msys2\\home\\%USERNAME%&quot;   &#125;]
+
+Note:
+
+如果你不使用zsh，可以将-shell zsh修改为-shell bash等。
+你也可以在GUI中添加，以上参数分别对应：
+
+
+参数
+说明
+
+
+
+commandline
+命令行
+
+
+icon
+图标
+
+
+name
+名称
+
+
+startingDirectory
+启动目录
+
+
+
+有关zsh的相关配置，这里不再赘述
+
+
+3. 配置开发环境VSCode + gccVSCode + clangNeovim + clang
+vscode 必备插件：
+
+C&#x2F;C++
+C&#x2F;C++ Extensions
+CMake Tools
+Code Runner
+
+
+C++插件配置(.vscode/c_cpp_properties.json)示例：
+
+
+&#123;    &quot;configurations&quot;: [        &#123;            &quot;name&quot;: &quot;Win32&quot;,                    &quot;includePath&quot;: [                &quot;$&#123;workspaceFolder&#125;/**&quot;,                &quot;C:/msys2/ucrt64/include/**&quot;            ],            &quot;defines&quot;: [],            &quot;compilerPath&quot;: &quot;C:/msys2/ucrt64/bin/gcc.exe&quot;,  //编译器路径            &quot;cStandard&quot;: &quot;c11&quot;,            &quot;cppStandard&quot;: &quot;c++17&quot;,            &quot;intelliSenseMode&quot;: &quot;gcc-x64&quot;        &#125;    ],    &quot;version&quot;: 4&#125;
+vscode 必备插件：
+
+Clangd
+Cmake Tools
+Code Runner
+
+
+配置clangd与coderunner，在settings.json中添加如下内容：
+
+
+&#123;  &quot;clangd.path&quot;: &quot;C:\\msys2\\clang64\\bin\\clangd.exe&quot;,  &quot;code-runner.executorMap&quot;: &#123;    &quot;c&quot;: &quot;cd $dir &amp;&amp; clang $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;,    &quot;cpp&quot;: &quot;cd $dir &amp;&amp; clang++ $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;  &#125;&#125;这部分内容算是提供一种思路 实际上我不太习惯neovim，所以没有深入研究(*&#x2F;ω＼*)
+
+在msys2中安装neovim：
+
+pacboy -S neovim
+
+
+配置LazyVim：
+官方文档：LazyVim
+
+
+
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvimRemove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Forcenvim
+等待安装即可
+
+配置基本语言服务器：
+在Neovim中，按下&lt;Space&gt;cm，打开Mason
+选择clangd，按下i安装
+
+
+
+推荐阅读Dusty Phillips的模态编辑书籍：LazyVim for Ambitious Developers
+
+4. Qt环境
+在 MSYS2，输入以下命令安装Qt：
+
+pacboy -S qt-creator # 安装qt-creatorpacboy -S qt6 # 安装qt6#按需安装pacboy -S qt6-static # 安装qt6静态库
+
+
+在 PowerShell或MSYS2 中，运行以下命令，启动Qt Creator：
+
+qtcreator
+
+5. Node.js环境使用nvm管理Node.js版本
+安装 nvm for Windows
+
+nvm node_mirror https://npmmirror.com/mirrors/node/ # 设置nodejs镜像nvm npm_mirror https://npmmirror.com/mirrors/npm/ # 设置npm镜像nvm install lts # 安装最新的LTS版本nvm use lts # 使用最新的LTS版本
+
+关于配置文件详见：nvm wiki
+6. Python环境使用MiniConda管理Python版本
+MiniConda
+常用命令：
+
+conda create -n myenv python=3.8 # 创建一个名为myenv的虚拟环境，并安装Python 3.8conda activate myenv # 激活myenv虚拟环境conda deactivate # 退出虚拟环境conda install numpy # 在当前虚拟环境中安装numpyconda remove numpy # 在当前虚拟环境中卸载numpyconda env list # 列出所有虚拟环境conda env remove -n myenv # 删除myenv虚拟环境
+
+7. Powershell增强使用 PowerShell 7
+提示符美化
+主题框架：oh-my-posh  
+字体：Nerd Fonts
+
+
+PSReadLine
+历史命令预测
+Tab菜单补全
+上下箭头历史搜索
+
+
+实用工具别名
+常用别名：’which’、’pnpmAL’、’pnpmALG’
+Conda环境管理：’MiniConda’、’condaA’、’condaD’
+MSYS2快捷启动：’msys2’
+Eza用作ls，并沿用Linux使用习惯
+若不想使用Eza，请将 Eza Function(行73到末尾) 部分删除
+
+
+
+
+详细配置文件（记得替换Conda和Msys2路径）：
+
+oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-Expression #载入oh-my-posh主题Set-Alias -Name &#x27;which&#x27; -Value &#x27;Get-Command&#x27; # 设置别名，将which命令映射到Get-Command命令Set-PSReadLineOption -PredictionSource History # 设置PSReadLine的预测源为历史记录Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete # 设置Tab键的键处理函数为MenuComplete，用于自动补全Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;  # 设置向上箭头键的键处理函数，用于向上搜索历史记录[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123; # 设置向下箭头键的键处理函数，用于向下搜索历史记录[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;#Pnpm AliasesFunction pnpmAL &#123;    pnpm approve-builds&#125;Function pnpmALG &#123;    pnpm approve-builds --global&#125;#End Of Pnpm Aliases#Explorer AliasesFunction Exf &#123;    param(        [Parameter(Mandatory = $false)]        [string]$Path    )    if ($Path) &#123;        explorer $Path    &#125; else &#123;        explorer .    &#125;&#125;#End Of Explorer Aliases#Conda AliasesFunction MiniConda &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    &amp; &#x27;D:\MiniConda\shell\condabin\conda-hook.ps1&#x27; ##修改&#x27;D:\MiniConda&#x27;为你的MiniConda路径    conda activate &#x27;D:\MiniConda&#x27; ##修改&#x27;D:\MiniConda&#x27;为你的MiniConda路径    if ($EnvName) &#123;        conda activate $EnvName    &#125;&#125;Function condaA &#123;    param(        [Parameter(Mandatory = $true)]        [string]$EnvName    )    conda activate $EnvName&#125;Function condaD &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    if ($EnvName) &#123;        conda deactivate $EnvName    &#125; else &#123;        conda deactivate    &#125;&#125;#End Of Conda Aliases#MSYS2 FunctionsFunction Msys2 &#123;    &amp; &#x27;D:\MSYS2\msys2_shell.cmd&#x27; -defterm -no-start -clang64 -shell zsh ##修改&#x27;D:\MSYS2&#x27;为你的msys2路径;修改-clang64为你的环境&#125;#End Of MSYS2 Functions#Eza Functions$eza_params = @(    &#x27;--git&#x27;, &#x27;--icons&#x27;, &#x27;--group&#x27;, &#x27;--group-directories-first&#x27;,    &#x27;--time-style=long-iso&#x27;, &#x27;--color-scale=all&#x27;)Function ezals &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza ($eza_params + $EParams)&#125;Set-Alias -Name &#x27;ls&#x27; -Value &#x27;ezals&#x27;Function l &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --git-ignore ($eza_params + $EParams)&#125;Function ll &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --all --header --long ($eza_params + $EParams)&#125;Function llm &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --all --header --long --sort=modified ($eza_params + $EParams)&#125;Function la &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza -lbhHigUmuSa ($eza_params + $EParams)&#125;Function lx &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza -lbhHigUmuSa@ ($eza_params + $EParams)&#125;Function lt &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --tree ($eza_params + $EParams)&#125;Function tree &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --tree ($eza_params + $EParams)&#125;#End Of Eza Functions
+
+8. 结语完成后，你将获得：
+
+✅ MSYS2
+✅ C&#x2F;C++
+✅ Qt
+✅ Node.js
+✅ Python
+
+记录完]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+        <tag>开发</tag>
+        <tag>MSYS2</tag>
+        <tag>Node.js</tag>
+        <tag>Qt</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -946,449 +1389,6 @@ A：确认是否在设备不支持的情况下启用了Bitstream，若确认，�
       <tags>
         <tag>MadVR</tag>
         <tag>LAVFilters</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「折腾日记」hexo-butterfly自改记录</title>
-    <url>/posts/653f0679/index.html</url>
-    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
-
-此文不再更新，修改后的主题已同步至theme分支，不定时更新
-修改了默认的loading动画，增加了Hitokoto文本
-增加动态标题
-参考Heo同款loading动画增加了Hitokoto文本
-
-
-
-修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
-
-2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
-
-3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
-
-4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
-
-5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
-
-6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
-
-7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
-
-添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
-此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
-2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
-
-测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
-
-loading效果
-]]></content>
-      <categories>
-        <category>折腾日记</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建</title>
-    <url>/posts/58031fe8/index.html</url>
-    <content><![CDATA[0. 前言最近在折腾Windows下的开发环境，发现MSYS2是一个非常强大的工具，十分适合我这种喜欢极致轻量化的人做此记录，以便日后查阅
-
-主要优势：
-
-轻量化（相比臃肿的MSVC）
-Unix工具链的Windows实现
-完善的包管理系统
-
-
-1. 安装MSYS2环境选择
-MSYS2 提供了不同的环境，这些环境之间的主要区别在于工具链和实现。如果不确定使用哪个，请选择 UCRT64：
-
-
-
-
-Name
-Prefix
-Toolchain
-Architecture
-C Library
-C++ Library
-
-
-
-MSYS
-&#x2F;usr
-gcc
-x86_64
-cygwin
-libstdc++
-
-
-UCRT64
-&#x2F;ucrt64
-gcc
-x86_64
-ucrt
-libstdc++
-
-
-CLANG64
-&#x2F;clang64
-llvm
-x86_64
-ucrt
-libc++
-
-
-CLANGARM64
-&#x2F;clangarm64
-llvm
-aarch64
-ucrt
-libc++
-
-
-MINGW64
-&#x2F;mingw64
-gcc
-x86_64
-msvcrt
-libstdc++
-
-
-
-Note:路径说明：安装路径示例：C:\msys2\ucrt64软件安装路径：对应环境的bin目录，例如：C:\msys2\ucrt64\bin
-
-安装基本编译器：#可选：使用tuna镜像sed -i &quot;s#https\?://mirror.msys2.org/#https://mirrors.tuna.tsinghua.edu.cn/msys2/#g&quot; /etc/pacman.d/mirrorlist*pacman -Syu # 更新软件包数据库并升级系统，需要重启MSYS2pacman -S pactoys # 安装pactoyspacboy -S toolchain zsh # 安装工具链、zshpacman -S git # 安装git
-
-Note:
-
-pactoys 是MSYS2提供的软件包管理工具，它功能与pacman基本相同，但是它可以直接安装对应环境的软件包，例如：UCRT64环境下pacboy -S gcc等价于pacman -S mingw-w64-ucrt-x86_64-gcc。
-
-
-2. 配置环境变量环境变量注意：
-⚠️危险操作（避免冲突）：不要将 &#x2F;usr&#x2F;bin 加入系统PATH
-
-推荐配置：只添加对应环境的bin目录：C:\msys2\ucrt64\bin
-
-
-Windows Terminal配置替代方案详见Step.7
-
-在 Windows Terminal 的配置文件中，添加如下内容：
-
-&quot;list&quot;: [   &#123;       &quot;commandline&quot;: &quot;C:\\msys2\\msys2_shell.cmd -defterm -here -no-start -ucrt64 -shell zsh&quot;,      &quot;guid&quot;: &quot;&#123;fd57d26d-d3d0-448a-8bd5-e44632685d72&#125;&quot;,      &quot;hidden&quot;: false,      &quot;icon&quot;: &quot;C:\\msys2\\ucrt64.ico&quot;,      &quot;name&quot;: &quot;MSYS2 UCRT64&quot;,      &quot;startingDirectory&quot;: &quot;C:\\msys2\\home\\%USERNAME%&quot;   &#125;]
-
-Note:
-
-如果你不使用zsh，可以将-shell zsh修改为-shell bash等。
-你也可以在GUI中添加，以上参数分别对应：
-
-
-参数
-说明
-
-
-
-commandline
-命令行
-
-
-icon
-图标
-
-
-name
-名称
-
-
-startingDirectory
-启动目录
-
-
-
-有关zsh的相关配置，这里不再赘述
-
-
-3. 配置开发环境VSCode + gccVSCode + clangNeovim + clang
-vscode 必备插件：
-
-C&#x2F;C++
-C&#x2F;C++ Extensions
-CMake Tools
-Code Runner
-
-
-C++插件配置(.vscode/c_cpp_properties.json)示例：
-
-
-&#123;    &quot;configurations&quot;: [        &#123;            &quot;name&quot;: &quot;Win32&quot;,                    &quot;includePath&quot;: [                &quot;$&#123;workspaceFolder&#125;/**&quot;,                &quot;C:/msys2/ucrt64/include/**&quot;            ],            &quot;defines&quot;: [],            &quot;compilerPath&quot;: &quot;C:/msys2/ucrt64/bin/gcc.exe&quot;,  //编译器路径            &quot;cStandard&quot;: &quot;c11&quot;,            &quot;cppStandard&quot;: &quot;c++17&quot;,            &quot;intelliSenseMode&quot;: &quot;gcc-x64&quot;        &#125;    ],    &quot;version&quot;: 4&#125;
-vscode 必备插件：
-
-Clangd
-Cmake Tools
-Code Runner
-
-
-配置clangd与coderunner，在settings.json中添加如下内容：
-
-
-&#123;  &quot;clangd.path&quot;: &quot;C:\\msys2\\clang64\\bin\\clangd.exe&quot;,  &quot;code-runner.executorMap&quot;: &#123;    &quot;c&quot;: &quot;cd $dir &amp;&amp; clang $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;,    &quot;cpp&quot;: &quot;cd $dir &amp;&amp; clang++ $fileName -o $fileNameWithoutExt &amp;&amp; ./$fileNameWithoutExt&quot;  &#125;&#125;这部分内容算是提供一种思路 实际上我不太习惯neovim，所以没有深入研究(*&#x2F;ω＼*)
-
-在msys2中安装neovim：
-
-pacboy -S neovim
-
-
-配置LazyVim：
-官方文档：LazyVim
-
-
-
-git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvimRemove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Forcenvim
-等待安装即可
-
-配置基本语言服务器：
-在Neovim中，按下&lt;Space&gt;cm，打开Mason
-选择clangd，按下i安装
-
-
-
-推荐阅读Dusty Phillips的模态编辑书籍：LazyVim for Ambitious Developers
-
-4. Qt环境
-在 MSYS2，输入以下命令安装Qt：
-
-pacboy -S qt-creator # 安装qt-creatorpacboy -S qt6 # 安装qt6#按需安装pacboy -S qt6-static # 安装qt6静态库
-
-
-在 PowerShell或MSYS2 中，运行以下命令，启动Qt Creator：
-
-qtcreator
-
-5. Node.js环境使用nvm管理Node.js版本
-安装 nvm for Windows
-
-nvm node_mirror https://npmmirror.com/mirrors/node/ # 设置nodejs镜像nvm npm_mirror https://npmmirror.com/mirrors/npm/ # 设置npm镜像nvm install lts # 安装最新的LTS版本nvm use lts # 使用最新的LTS版本
-
-关于配置文件详见：nvm wiki
-6. Python环境使用MiniConda管理Python版本
-MiniConda
-常用命令：
-
-conda create -n myenv python=3.8 # 创建一个名为myenv的虚拟环境，并安装Python 3.8conda activate myenv # 激活myenv虚拟环境conda deactivate # 退出虚拟环境conda install numpy # 在当前虚拟环境中安装numpyconda remove numpy # 在当前虚拟环境中卸载numpyconda env list # 列出所有虚拟环境conda env remove -n myenv # 删除myenv虚拟环境
-
-7. Powershell增强使用 PowerShell 7
-提示符美化
-主题框架：oh-my-posh  
-字体：Nerd Fonts
-
-
-PSReadLine
-历史命令预测
-Tab菜单补全
-上下箭头历史搜索
-
-
-实用工具别名
-常用别名：’which’、’pnpmAL’、’pnpmALG’
-Conda环境管理：’MiniConda’、’condaA’、’condaD’
-MSYS2快捷启动：’msys2’
-Eza用作ls，并沿用Linux使用习惯
-若不想使用Eza，请将 Eza Function(行73到末尾) 部分删除
-
-
-
-
-详细配置文件（记得替换Conda和Msys2路径）：
-
-oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-Expression #载入oh-my-posh主题Set-Alias -Name &#x27;which&#x27; -Value &#x27;Get-Command&#x27; # 设置别名，将which命令映射到Get-Command命令Set-PSReadLineOption -PredictionSource History # 设置PSReadLine的预测源为历史记录Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete # 设置Tab键的键处理函数为MenuComplete，用于自动补全Set-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;  # 设置向上箭头键的键处理函数，用于向上搜索历史记录[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123; # 设置向下箭头键的键处理函数，用于向下搜索历史记录[Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()[Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;#Pnpm AliasesFunction pnpmAL &#123;    pnpm approve-builds&#125;Function pnpmALG &#123;    pnpm approve-builds --global&#125;#End Of Pnpm Aliases#Explorer AliasesFunction Exf &#123;    param(        [Parameter(Mandatory = $false)]        [string]$Path    )    if ($Path) &#123;        explorer $Path    &#125; else &#123;        explorer .    &#125;&#125;#End Of Explorer Aliases#Conda AliasesFunction MiniConda &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    &amp; &#x27;D:\MiniConda\shell\condabin\conda-hook.ps1&#x27; ##修改&#x27;D:\MiniConda&#x27;为你的MiniConda路径    conda activate &#x27;D:\MiniConda&#x27; ##修改&#x27;D:\MiniConda&#x27;为你的MiniConda路径    if ($EnvName) &#123;        conda activate $EnvName    &#125;&#125;Function condaA &#123;    param(        [Parameter(Mandatory = $true)]        [string]$EnvName    )    conda activate $EnvName&#125;Function condaD &#123;    param(        [Parameter(Mandatory = $false)]        [string]$EnvName    )    if ($EnvName) &#123;        conda deactivate $EnvName    &#125; else &#123;        conda deactivate    &#125;&#125;#End Of Conda Aliases#MSYS2 FunctionsFunction Msys2 &#123;    &amp; &#x27;D:\MSYS2\msys2_shell.cmd&#x27; -defterm -no-start -clang64 -shell zsh ##修改&#x27;D:\MSYS2&#x27;为你的msys2路径;修改-clang64为你的环境&#125;#End Of MSYS2 Functions#Eza Functions$eza_params = @(    &#x27;--git&#x27;, &#x27;--icons&#x27;, &#x27;--group&#x27;, &#x27;--group-directories-first&#x27;,    &#x27;--time-style=long-iso&#x27;, &#x27;--color-scale=all&#x27;)Function ezals &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza ($eza_params + $EParams)&#125;Set-Alias -Name &#x27;ls&#x27; -Value &#x27;ezals&#x27;Function l &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --git-ignore ($eza_params + $EParams)&#125;Function ll &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --all --header --long ($eza_params + $EParams)&#125;Function llm &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --all --header --long --sort=modified ($eza_params + $EParams)&#125;Function la &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza -lbhHigUmuSa ($eza_params + $EParams)&#125;Function lx &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza -lbhHigUmuSa@ ($eza_params + $EParams)&#125;Function lt &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --tree ($eza_params + $EParams)&#125;Function tree &#123;    param(        [Parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]        [string[]]$EParams = @()    )    eza --tree ($eza_params + $EParams)&#125;#End Of Eza Functions
-
-8. 结语完成后，你将获得：
-
-✅ MSYS2
-✅ C&#x2F;C++
-✅ Qt
-✅ Node.js
-✅ Python
-
-记录完]]></content>
-      <categories>
-        <category>折腾日记</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-        <tag>开发</tag>
-        <tag>MSYS2</tag>
-        <tag>Node.js</tag>
-        <tag>Qt</tag>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「折腾日记」优质开源软件集</title>
-    <url>/posts/12f010f8/index.html</url>
-    <content><![CDATA[系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
-Bulk-Crap-Uninstaller  
-
-强大的Windows软件管理工具  
-如果你不熟悉Windows，请谨慎使用
-
-
-PowerToys  
-
-微软官方出品的开源Windows工具集
-
-
-Nilesoft Shell  
-
-自定义右键菜单，替换Win11右键菜单
-
-
-bleachbit  
-
-开源清理工具  
-请谨慎使用
-
-
-Rufus
-
-启动盘制作工具
-
-
-
-PowerShell 7  
-主题框架：oh-my-posh  
-字体：Nerd Fonts
-必备配置：
-
-
-
-oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-ExpressionSet-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27;Set-PSReadLineOption -PredictionSource HistorySet-PSReadLineKeyHandler -Key Tab -Function MenuCompleteSet-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;     [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;    [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;
-
-
-Git  
-
-项目开发必备
-
-
-vscode  
-
-强大的代码编辑器  
-注意：Microsoft发布的Visual Studio Code含有遥测代码
-
-
-
-
-AutoHotKey  
-
-强大的脚本工具
-
-
-
-EcoPaste  
-
-跨平台剪贴板管理工具
-
-
-ShareX  
-
-功能强大的截图工具
-
-
-weasel  
-
-Rime输入法框架  
-雾凇
-
-
-
-MPC-BE  
-
-开源播放器（推荐替代PotPlayer）  
-配套组件：  
-LAVFilters  
-xy-VSFilter  
-madvr
-
-
-配置指南：万年冷冻库
-
-
-MusicPlayer2  
-
-开源音乐播放器
-
-
-
-Nanazip  
-
-7zip分支，支持Win11右键菜单，UI现代化
-
-
-eza  
-
-命令行文件管理工具（替代ls命令）
-
-
-
-Watt Toolkit  
-
-Steam工具箱  
-反代加速服务
-
-
-Clash Verge rev  
-
-Clash图形用户界面
-
-
-Gopeed  
-
-Go语言实现的高性能下载工具
-
-
-
-fastfetch  
-
-快捷打印系统信息
-
-
-thefuck  
-
-命令行神器，自动纠正错误命令
-
-
-
-scriptcat
-
-国产开源浏览器脚本管理工具
-
-
-uBlock Origin
-
-强大的广告拦截工具
-
-
-cat-catch
-
-网页媒体下载工具
-
-
-pixiv-toolkit
-
-Pixiv工具箱
-
-
-
-
-记录完]]></content>
-      <categories>
-        <category>折腾日记</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Windows</tag>
-        <tag>开源</tag>
       </tags>
   </entry>
 </search>
