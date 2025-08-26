@@ -142,27 +142,6 @@
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/tags/hexo/</loc>
-    <lastmod>2025-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://shiranosama.github.io/tags/Windows/</loc>
-    <lastmod>2025-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://shiranosama.github.io/tags/%E5%BC%80%E6%BA%90/</loc>
-    <lastmod>2025-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://shiranosama.github.io/tags/MadVR/</loc>
     <lastmod>2025-08-26</lastmod>
     <changefreq>weekly</changefreq>
@@ -171,6 +150,13 @@
   
   <url>
     <loc>https://shiranosama.github.io/tags/LAVFilters/</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://shiranosama.github.io/tags/hexo/</loc>
     <lastmod>2025-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -211,6 +197,20 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://shiranosama.github.io/tags/Windows/</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://shiranosama.github.io/tags/%E5%BC%80%E6%BA%90/</loc>
+    <lastmod>2025-08-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -228,14 +228,14 @@
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/%E9%95%BF%E6%96%87/</loc>
+    <loc>https://shiranosama.github.io/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/Linux%E4%BC%A0%E6%95%99/</loc>
     <lastmod>2025-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://shiranosama.github.io/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/Linux%E4%BC%A0%E6%95%99/</loc>
+    <loc>https://shiranosama.github.io/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/%E9%95%BF%E6%96%87/</loc>
     <lastmod>2025-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

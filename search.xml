@@ -1,51 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>「C++笔记」处理类型：别名与auto与decltype</title>
-    <url>/posts/ab2e220d/index.html</url>
-    <content><![CDATA[类型别名
-类型别名是一个等价于某种类型的名字
-定义方式有传统的typedef和别名声明（using） 两种
-定义的别名等价于对应类型（包括复合类型）
-
-  typedef double dub;    //dub是double的别名using unint = unsigned int;    //unint是unsigned int的别名using pdub = double*;    //pdub是double*别名pdub ptr = nullptr;    //等价于double* ptr = nullptr;
-
-
-auto类型说明符
-auto会告诉编译器去分析表达式所属类型并赋予变量
-用于定义时必须有初始值
-声明多个变量时初始基本数据类型必须一致
-auto通常会忽略顶层const，保留底层const
-
-  auto var = 42, *pvar = &amp;var;const int i = 42;auto a = i;    //a是一个整数const auto b = i;    //b为int常量//对常量获取地址是一种底层constauto c = &amp;i;    //c是一个指向int常量的指针
-
-
-decltype类型指示符
-decltype用于选择并返回操作数的数据类型
-编译器会分析表达式并返回它的类型，但不计算实际的值
-如果表达式能做为左值，则返回引用类型
-变量的类型会如实返回（包括引用和顶层const）
-给变量名加上括号会让其被识别为表达式，这会返回引用类型
-
-
-
-
-
-  decltype (ft()) var = x;    //var的类型为函数ft()的返回值const int a = 42, &amp;r = a;decltype (a) b = a;    //b的类型为const intdecltype (r) c = b;    //c的类型为const int&amp;
-
-
-易错
-using pint = int*的含义是pint是int*类型的别名，在使用它进行声明时const pint ptr = nullptr的含义是一个指向int类型的常量指针，而非const int *ptr = nullptr的一个指向int常量的指针
-
-]]></content>
-      <categories>
-        <category>C++</category>
-      </categories>
-      <tags>
-        <tag>C++</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>「C++笔记」const限定符</title>
     <url>/posts/877242c6/index.html</url>
     <content><![CDATA[const限定符const
@@ -152,6 +107,51 @@ const层级
 constexpr声明中定义的指针为常量指针
 
 
+
+]]></content>
+      <categories>
+        <category>C++</category>
+      </categories>
+      <tags>
+        <tag>C++</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「C++笔记」处理类型：别名与auto与decltype</title>
+    <url>/posts/ab2e220d/index.html</url>
+    <content><![CDATA[类型别名
+类型别名是一个等价于某种类型的名字
+定义方式有传统的typedef和别名声明（using） 两种
+定义的别名等价于对应类型（包括复合类型）
+
+  typedef double dub;    //dub是double的别名using unint = unsigned int;    //unint是unsigned int的别名using pdub = double*;    //pdub是double*别名pdub ptr = nullptr;    //等价于double* ptr = nullptr;
+
+
+auto类型说明符
+auto会告诉编译器去分析表达式所属类型并赋予变量
+用于定义时必须有初始值
+声明多个变量时初始基本数据类型必须一致
+auto通常会忽略顶层const，保留底层const
+
+  auto var = 42, *pvar = &amp;var;const int i = 42;auto a = i;    //a是一个整数const auto b = i;    //b为int常量//对常量获取地址是一种底层constauto c = &amp;i;    //c是一个指向int常量的指针
+
+
+decltype类型指示符
+decltype用于选择并返回操作数的数据类型
+编译器会分析表达式并返回它的类型，但不计算实际的值
+如果表达式能做为左值，则返回引用类型
+变量的类型会如实返回（包括引用和顶层const）
+给变量名加上括号会让其被识别为表达式，这会返回引用类型
+
+
+
+
+
+  decltype (ft()) var = x;    //var的类型为函数ft()的返回值const int a = 42, &amp;r = a;decltype (a) b = a;    //b的类型为const intdecltype (r) c = b;    //c的类型为const int&amp;
+
+
+易错
+using pint = int*的含义是pint是int*类型的别名，在使用它进行声明时const pint ptr = nullptr的含义是一个指向int类型的常量指针，而非const int *ptr = nullptr的一个指向int常量的指针
 
 ]]></content>
       <categories>
@@ -284,211 +284,241 @@ Slackware: 现存最古老的发行版之一，坚持 UNIX哲学和KISS原则，
       </tags>
   </entry>
   <entry>
-    <title>「折腾日记」hexo-butterfly自改记录</title>
-    <url>/posts/653f0679/index.html</url>
-    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
+    <title>「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2</title>
+    <url>/posts/312fd4e3/index.html</url>
+    <content><![CDATA[前言岚的声明本文为岚的折腾日记，它只是因为我想而写下的，不具备权威性，我也无法保证正确，仅供参考
+在上一篇文章中，我们介绍了Linux的起源、发展以及如何选择适合自己的发行版。本文将介绍Linux的基本安装与配置，帮助读者更好地了解和使用Linux系统本文并不会去介绍某一发行版的安装，官方文档已经足够详细，我将会介绍安装通用步骤都做了什么，并引出一些基本概念
+与前文相同，本文将Linux用于指代基于Linux内核的操作系统
+参考资料
+英文WikiPedia
+ArchWiki
+GentooWiki
+个人经验
 
-此文不再更新，修改后的主题已同步至theme分支，不定时更新
-修改了默认的loading动画，增加了Hitokoto文本
-增加动态标题
-参考Heo同款loading动画增加了Hitokoto文本
+安装准备
+工具：U盘（虚拟机无需）、Linux发行版映像、Rufus&#x2F;Etcher、充足的磁盘空间、以及一双手
+
+
+刻录LiveCD：使用Rufus或Etcher将Linux发行版映像刻录到U盘上
+重启计算机，进入BIOS&#x2F;UEFI设置，启动LiveCD
+使用手机或其他设备打开对应发行版的官方文档，通常会提供详细的安装指南和常见问题解答
+
+LiveCD是一个完整的可引导安装程序（类似WinPE），它包含一个完整的操作系统，允许用户从储存设备将操作系统载入到内存运行，而非从硬盘驱动器载入。LiveCD通常用于演示操作系统、系统安装、修复系统故障等场景
+
+
+分区
+分区前请备份重要数据，分区操作不可逆
+
+分区工具：
+
+一般而言，Linux发行版提供的安装映像会自带分区工具，eg.cfdisk(交互式)、fdisk(命令行)、parted(交互式)、gparted(图形化) 等；有关工具如何使用，这里不做介绍
+替代方案：使用WinPE进行分区再后进入LiveCD进行安装
+
+
+分区方案：
+
+通常，UEFI设备建议使用GPT分区表，建议分区方案为：
+根分区：推荐格式：ext4；根分区，建议大小为16GB以上，用于存放/目录下的文件
+EFI分区：推荐格式：fat32；EFI启动分区，建议大小为300MB，用于存放EFI启动文件，其会挂载到根分区的/boot/efi目录
+/home：推荐格式：ext4；用户主目录，用于存放/home目录下的文件，需要将其挂载到根分区的/home目录
+交换分区：推荐格式：swap；交换分区，用于在物理内存不足时提供额外的内存空间，建议大小为物理内存的1.5倍
+
+
+Legacy BIOS设备建议使用MBR分区表，建议分区方案为：
+根分区：推荐格式：ext4；根分区，建议大小为16GB以上，用于存放/目录下的文件
+BIOS分区：推荐格式：xfs；BIOS启动分区，建议大小为300MB，用于存放BIOS启动文件，其会挂载到根分区的/boot目录
+/home：推荐格式：ext4；用户主目录，用于存放/home目录下的文件，需要将其挂载到根分区的/home目录
+交换分区：推荐格式：swap；交换分区，用于在物理内存不足时提供额外的内存空间，建议大小为物理内存的1.5倍
 
 
 
-修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
 
-2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
+Legacy BIOS设备分区方案与UEFI引导设备分区方案类似，区别在于分区表格式和Boot分区不同
 
-3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
 
-4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
+Linux分区方案较为灵活，例如/home可以合并到根分区中，或者增加/tmp、/var等分区用于存放临时文件和变量文件，独立分区可以增强安全性，便于备份和维护；也可以不使用交换分区，在稍后配置swap文件或ZRAM；EFI分区使用fat32格式可以与Windows系统共用
 
-5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
+挂载分区：
 
-6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
+使用对应命令将分区挂载到对应目录，例如：# 挂载根分区到/mntmount /dev/sda1 /mnt# 挂载启动分区到/mnt/boot/efimount /dev/sda2 /mnt/boot/efi# 挂载用户主目录到/mnt/homemount /dev/sda3 /mnt/home# 挂载交换分区到/mnt/swapmount /dev/sda4 /mnt/swap
+使用lsblk命令查看分区情况，确保分区挂载正确
 
-7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
 
-添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
-此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
-2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
+磁盘与分区：
 
-测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
+磁盘通常指存储设备，分区操作是使用分区表将磁盘划分为多个逻辑分区，用户可以为每个分区指定文件系统和挂载点，以便在操作系统中进行访问和管理
 
-loading效果
+
+
+其他文件系统eg.btrfs、xfs、zfs等也可以根据个人需求进行选择，不同文件系统具有不同的特性，例如btrfs具有快照、压缩、RAID、子卷等功能；特性不同的文件系统最优分区方案也不同，如btrfs通常是根分区配合子卷
+
+
+网络
+确保网络连接正常，可以使用ping bing.com命令测试网络连接
+连接网络：
+多数安装映像会自动连接有线网络，无线网络需要手动连接；若未提供交互式网络连接工具，可以使用iw或nmcli等工具进行连接
+
+
+更新时间以确保Live环境时间准确：
+使用timedatectl命令更新时间
+
+有关网卡驱动问题：如果遇到在LiveCD中无法连接网络，可以尝试使用官方提供的离线安装映像，或者使用有线网络进行安装
+
+
+安装
+配置镜像源：
+国内用户通常难以连接官方镜像，可以使用国内镜像源进行安装，eg. 校园网联合镜像站，按照对应文档进行配置
+配置完成后，便可以开始安装；交互式安装工具会自动从配置的镜像源下载并安装软件包
+
+
+更新缓存：
+使用对应包管理命令更新软件包缓存
+
+
+安装软件包，除必须软件包外，其他可稍后安装：
+base：基础软件包，包括系统核心、基本工具、库等 必须
+base-devel：开发软件包，包括编译器、构建工具、库等 必须
+linux：内核软件包，包括内核、模块等 必须
+linux-firmware：内核固件软件包，包括内核固件等 必须
+grub：引导程序软件包，包括引导程序等 必须
+efibootmgr：EFI引导管理器软件包，用于管理EFI引导项
+sudo：权限管理软件包，用于管理用户权限
+networkmanager：网络管理器软件包，用于管理网络连接
+ALSA：音频系统软件包，用于管理音频设备
+pulseaudio：音频服务器软件包，用于管理音频流
+vim：文本编辑器软件包，用于编辑文本文件
+其他软件包，根据需要的软件包进行安装，eg.gnome、plasma、firefox等
+
+
+包管理：
+包管理(Package Management)是用于统一管理软件包的工具，它旨在自动处理软件包的安装、更新、卸载等操作，并解决软件包之间的依赖关系；通常包管理会从 储存库(Repository) 中下载软件包及其元数据（版本号、校验信息、依赖关系等），然后自动处理软件包的安装、更新、卸载等操作
+
+Linux软件包小科普：Linux软件包通常具有庞大的依赖关系，例如安装A软件包需要B软件包，安装B软件包需要C软件包，幸运的是，现在大多数包管理会自动解决依赖关系，无需手动安装依赖包
+
+
+交互式安装结束
+从此开始，多数交互式安装程序会自动完成安装并进入系统，无需手动干预
+
+Chrooting
+安装了基本软件包后，此时Linux系统已经可以运行，但是由于还没有配置引导程序，所以无法从硬盘启动；此时通过LiveCD进入Chroot环境，进一步配置系统
+
+记得先复制DNS信息：
+cp --dereference /etc/resolv.conf /mnt/etc/
+进入Chroot环境的方法请参照官方文档，一些发行版提供快捷设置Chroot环境的脚本，如arch-chroot；这里着重介绍手动设置Chroot环境的方法：
+
+挂载必须的文件系统：
+
+
+&#x2F;proc&#x2F;，伪文件系统，由内核提供，用于提供进程信息、内核参数等
+&#x2F;sys&#x2F;，伪文件系统，类似 &#x2F;proc&#x2F;，但更结构化
+&#x2F;dev&#x2F;，设备文件系统，用于提供设备文件
+&#x2F;run&#x2F;，临时文件系统，用于运行时数据，如PID文件、锁文件等
+
+  mount -t proc none /mnt/procmount --rbind /sys /mnt/sysmount --make-rslave /mnt/sysmount --rbind /dev /mnt/devmount --make-rslave /mnt/devmount --bind /run /mnt/runmount --make-slave /mnt/run
+
+–make-rslave：将挂载点设置为从属挂载点，用于安装systemd时避免挂载点被破坏
+
+
+修改根目录：
+
+  chroot /mnt /bin/bash
+
+设置环境变量：
+
+  source /etc/profileexport PS1=&quot;(chroot) $&#123;PS1&#125;&quot;
+
+Fstab
+fstab文件通常列出所有可用的磁盘分区和其他类型的文件系统以及可能不是基于磁盘的数据源，并告诉它们如何初始化或以其他方式集成到更大的文件系统结构中；一般而言，/etc/fstab文件中每行包含6个字段，分别是：
+&lt;device&gt;：用于指明要挂载的设备或远程文件系统，可以是设备路径、UUID、分区标签
+&lt;dir&gt;：用于指明挂载点，即 &lt;device&gt; 挂载到何处
+&lt;type&gt;：用于指明文件系统类型，eg. ext4、vfat、swap等
+&lt;options&gt;：用于指明mount命令的参数，用半角逗号分隔，如 defaults，noatime，nodiratime，不同文件系统支持的参数不同，请参考对应文件系统文档
+&lt;dump&gt;：用于指明是否使用dump备份文件系统，0表示不备份，1表示备份
+&lt;fsck&gt;：用于指明文件系统检查的顺序，0表示不检查，1表示优先检查，2表示次优先检查
+示例：# &lt;device&gt;                                &lt;dir&gt; &lt;type&gt;          &lt;options&gt;                                        &lt;dump&gt; &lt;fsck&gt;UUID=0a3407de-014b-458b-b5c1-848e92a327a3 /     ext4 defaults,noatime,nodiratime                       0      1UUID=CBB6-24F2                            /boot vfat defaults,nodev,nosuid,noexec,fmask=0177,dmask=0077 0      2UUID=f9fe0b69-a280-415d-a03a-a32752370dee none  swap defaults                                           0      0UUID=b411dc99-f0a0-4c87-9e05-184977be8539 /home ext4 defaults,noatime,nodiratime                       0      2
+
+
+交互式安装的发行版会自动配置fstab文件；其余发行版请参考官方文档或手动编辑fstab文件
+
+配置
+这一步会配置系统的一些基本设置，如时区、主机名、用户名、密码等，许多系统会提供交互式工具进行配置
+时间：# 设置时区ln -sf /usr/share/zoneinfo/Region/City /etc/localtime# 同步时间hwclock --systohc
+
+这会根据/etc/localtime文件中的时区设置系统时间，并同步到硬件时钟
+
+
+本地化：# 设置本地化vim /etc/locale.gen #把你需要的语言取消注释，eg. en_US.UTF-8 UTF-8、zh_CN.UTF-8 UTF-8locale-genecho &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf
+
+这会根据/etc/locale.gen文件中的设置生成本地化文件，并设置系统默认本地化为en_US.UTF-8
+
+不建议设置/etc/lacale.conf为任何非英文值，这会导致 TTY(终端) 显示乱码
+
+键盘布局：echo &quot;KEYMAP=us&quot; &gt; /etc/vconsole.conf
+
+这会设置系统默认键盘布局为us，即美式键盘布局；可以根据个人需求进行修改
+
+
+主机名：echo &quot;hostname&quot; &gt; /etc/hostname
+
+这会设置系统主机名为hostname；1~63个字符，只能包含a-z、0-9以及-，不能以-开头
+
+
+Initramfs：
+这一步会生成initramfs，不同系统生成initramfs的方法不同，请参考官方文档
+
+initramfs是为了避免将大量驱动程序硬编码到内核导致内核过大、用于启动时推断根文件系统位置、以及实现休眠挂起等问题而诞生的；它是一个临时根文件系统，在系统启动时加载，用于加载内核模块、挂载根文件系统和查找设备等
+
+User：
+这一步会配置用户，包括创建用户、设置密码等；一定不要忘记设置Root密码和用户密码，否则无法进入系统
+
+# 配置Root密码passwd root# 创建用户并加入wheel组useradd -m -G wheel 用户名# 设置用户密码passwd 用户名
+
+配置sudo，确保你安装了sudo！！：
+
+# 编辑sudoers文件vim /etc/sudoers# 取消注释以下行，不要使用%wheel ALL=(ALL) NOOPASSWD: ALL！！%wheel ALL=(ALL) ALL
+
+这会配置sudo，允许wheel组中的用户使用sudo命令；一定不要使用「%wheel ALL&#x3D;(ALL) NOOPASSWD: ALL」，这会导致wheel组中的用户可以无密码使用sudo命令，存在安全风险
+
+sudo(substitute user, do)不同于su，sudo允许用户以其他用户的身份执行命令，而不是完全切换到其他用户；这可以限制用户的权限，防止用户执行危险命令
+
+
+引导程序
+引导程序(bootloader) 是负责启动操作系统的软件；在计算机启动阶段，操作系统和加载程序并未在RAM中运行，此时计算机会执行引导ROM中的程序(eg.BIOS、UEFI)，该程序会初始化硬件，定位并加载引导程序，称为第一阶段引导；引导程序(eg.GRUB、rEFInd)加载操作系统并使操作系统初始化，称为第二阶段引导
+引导程序通常安装在MBR&#x2F;ESP中，MBR是计算机启动时首先读取的512字节的扇区，ESP是EFI系统分区，用于存放EFI引导程序
+这里主要讲讲广泛使用的**GRUB 2(以下简称GRUB)**的安装配置：
+使用包管理器安装GRUB；UEFI系统需要额外安装efibootmgr；多系统需要安装os-prober
+写入GRUB到MBR&#x2F;ESP，确保你的分区正确挂载！！：
+
+  # 安装GRUB到MBRgrub-install --target=&quot;CPU架构与系统平台 eg. i386-pc&quot; &quot;Boot分区 eg. /dev/sda1&quot;# 安装GRUB到ESPgrub-install --target=&quot;CPU架构与系统平台 eg. x86_64-efi&quot; --efi-directory=&quot;ESP分区挂载点 eg. /boot/efi&quot; --bootloader-id=&quot;引导程序名称 eg. Arch&quot;
+
+配置GRUB：
+
+  # 编辑GRUB配置文件vim /etc/default/grub
+  # GRUB配置文件示例GRUB_DEFAULT=0 # 默认启动项，0表示第一个启动项GRUB_TIMEOUT=5  # 启动等待时间，单位为秒，-1表示无限等待GRUB_CMDLINE_LINUX=&quot;quiet splash&quot; # 内核参数，quiet表示不输出内核信息，splash表示显示启动画面GRUB_DEVICE=&quot;设备 eg. /dev/sda&quot; # 系统设备，用于查找根文件系统GRUB_DISABLE_OS_PROBER=false # 是否禁用os-prober，false表示不禁用，true表示禁用
+  # 生成GRUB配置文件grub-mkconfig -o &quot;grub安装点 eg. /boot/efi/grub/grub.cfg&quot;
+
+此命令会根据 &#x2F;etc&#x2F;default&#x2F;grub文件中的配置生成GRUB配置文件，并保存到 grub安装点中
+
+
+检查一下GRUB是否正确安装：
+
+  # 查看GRUB安装点ls &quot;grub安装点 eg. /boot/efi/grub&quot;
+
+第二阶段引导硬件已经初步初始化，因此可以实现图形化，这意味着你可以通过配置文件自定义引导程序的界面，如GRUB的主题、字体、背景等
+
+
+重启
+使用Ctrl+D组合键退出Chroot环境，使用reboot命令重启系统，进入BIOS&#x2F;UEFI界面，将引导程序设置为第一个启动位置，保存设置并重启系统，进入Linux系统
+Linux安装完成后LiveCD也不要丢弃，它可以作为系统修复的环境，类似WinPE
+
+
 ]]></content>
       <categories>
         <category>折腾日记</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>「折腾日记」优质开源软件集</title>
-    <url>/posts/12f010f8/index.html</url>
-    <content><![CDATA[系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
-Bulk-Crap-Uninstaller  
-
-强大的Windows软件管理工具  
-如果你不熟悉Windows，请谨慎使用
-
-
-PowerToys  
-
-微软官方出品的开源Windows工具集
-
-
-Nilesoft Shell  
-
-自定义右键菜单，替换Win11右键菜单
-
-
-bleachbit  
-
-开源清理工具  
-请谨慎使用
-
-
-Rufus
-
-启动盘制作工具
-
-
-
-PowerShell 7  
-主题框架：oh-my-posh  
-字体：Nerd Fonts
-必备配置：
-
-
-
-oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-ExpressionSet-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27;Set-PSReadLineOption -PredictionSource HistorySet-PSReadLineKeyHandler -Key Tab -Function MenuCompleteSet-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;     [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;    [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;
-
-
-Git  
-
-项目开发必备
-
-
-vscode  
-
-强大的代码编辑器  
-注意：Microsoft发布的Visual Studio Code含有遥测代码
-
-
-
-
-AutoHotKey  
-
-强大的脚本工具
-
-
-
-EcoPaste  
-
-跨平台剪贴板管理工具
-
-
-ShareX  
-
-功能强大的截图工具
-
-
-weasel  
-
-Rime输入法框架  
-雾凇
-
-
-
-MPC-BE  
-
-开源播放器（推荐替代PotPlayer）  
-配套组件：  
-LAVFilters  
-xy-VSFilter  
-madvr
-
-
-配置指南：万年冷冻库
-
-
-MusicPlayer2  
-
-开源音乐播放器
-
-
-
-Nanazip  
-
-7zip分支，支持Win11右键菜单，UI现代化
-
-
-eza  
-
-命令行文件管理工具（替代ls命令）
-
-
-
-Watt Toolkit  
-
-Steam工具箱  
-反代加速服务
-
-
-Clash Verge rev  
-
-Clash图形用户界面
-
-
-Gopeed  
-
-Go语言实现的高性能下载工具
-
-
-
-fastfetch  
-
-快捷打印系统信息
-
-
-thefuck  
-
-命令行神器，自动纠正错误命令
-
-
-
-scriptcat
-
-国产开源浏览器脚本管理工具
-
-
-uBlock Origin
-
-强大的广告拦截工具
-
-
-cat-catch
-
-网页媒体下载工具
-
-
-pixiv-toolkit
-
-Pixiv工具箱
-
-
-
-
-记录完]]></content>
-      <categories>
-        <category>折腾日记</category>
+        <category>Linux传教</category>
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>Windows</tag>
-        <tag>开源</tag>
       </tags>
   </entry>
   <entry>
@@ -919,241 +949,44 @@ A：确认是否在设备不支持的情况下启用了Bitstream，若确认，�
       </tags>
   </entry>
   <entry>
-    <title>「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2</title>
-    <url>/posts/312fd4e3/index.html</url>
-    <content><![CDATA[前言岚的声明本文为岚的折腾日记，它只是因为我想而写下的，不具备权威性，我也无法保证正确，仅供参考
-在上一篇文章中，我们介绍了Linux的起源、发展以及如何选择适合自己的发行版。本文将介绍Linux的基本安装与配置，帮助读者更好地了解和使用Linux系统本文并不会去介绍某一发行版的安装，官方文档已经足够详细，我将会介绍安装通用步骤都做了什么，并引出一些基本概念
-与前文相同，本文将Linux用于指代基于Linux内核的操作系统
-参考资料
-英文WikiPedia
-ArchWiki
-GentooWiki
-个人经验
+    <title>「折腾日记」hexo-butterfly自改记录</title>
+    <url>/posts/653f0679/index.html</url>
+    <content><![CDATA[前言记录一下自己折腾hexo-butterfly主题的记录，方便以后查阅2025.06.26更新:
 
-安装准备
-工具：U盘（虚拟机无需）、Linux发行版映像、Rufus&#x2F;Etcher、充足的磁盘空间、以及一双手
+此文不再更新，修改后的主题已同步至theme分支，不定时更新
+修改了默认的loading动画，增加了Hitokoto文本
+增加动态标题
+参考Heo同款loading动画增加了Hitokoto文本
 
 
-刻录LiveCD：使用Rufus或Etcher将Linux发行版映像刻录到U盘上
-重启计算机，进入BIOS&#x2F;UEFI设置，启动LiveCD
-使用手机或其他设备打开对应发行版的官方文档，通常会提供详细的安装指南和常见问题解答
 
-LiveCD是一个完整的可引导安装程序（类似WinPE），它包含一个完整的操作系统，允许用户从储存设备将操作系统载入到内存运行，而非从硬盘驱动器载入。LiveCD通常用于演示操作系统、系统安装、修复系统故障等场景
+修改loading动画1.修改&#x2F;themes&#x2F;butterfly&#x2F;source&#x2F;css&#x2F;_layout&#x2F;loading.stylif hexo-config(&#x27;preloader&#x27;)  .loading-bg    display: flex;    width: 100%;    height: 100%;    position: fixed;    background: linear-gradient(-135deg, #E2B0FF 10%, #f295c7 30%, #4e9ce4 90%, #23d5ab 100%);    z-index: 1001;    opacity: 1;    transition: .3s;    background-size: 400% 400%;    animation: backgroundglow 8s ease-in-out infinite;  #loading-box    .loading-img      width: 100px;      height: 100px;      border-radius: 50%;      margin: auto;      border: 4px solid #f0f0f2;      animation-duration: .3s;      animation-name: loadingAction;      animation-iteration-count: infinite;      animation-direction: alternate;    .loading-image-dot      width: 30px;      height: 30px;      background: linear-gradient(135deg, #E2B0FF 10%, #f295c7 50%, #4e9ce4 90%, #23d5ab 100%);      position: absolute;      border-radius: 50%;      border: 6px solid #fff;      top: 50%;      left: 50%;      transform: translate(18px, 24px);    &amp;.loaded      .loading-bg        opacity: 0;        z-index: -1000;    #hitokoto-text    position: absolute    top: 68%    left: 50%    transform: translate(-50%, -50%)    width: 80%    max-width: 600px    padding: 10px    font-size: 24px    color: #fff    text-align: center    background: rgba(0, 0, 0, 0)    border-radius: 8px    z-index: 1002    animation: fadeIn 1s ease-in-out  @keyframes loadingAction    0% &#123;        opacity: 1;    &#125;    100% &#123;        opacity: .4;    &#125;  @keyframes backgroundglow    0% &#123;        background-position: 0% 50%;    &#125;    50% &#123;        background-position: 100% 50%;    &#125;    100% &#123;        background-position: 0% 50%;    &#125;  @keyframes fadeIn    0% &#123;        opacity: 0;    &#125;    100% &#123;        opacity: 1;    &#125;
 
+2.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;fullpage-loading.pug#loading-box(onclick=&#x27;this.classList.add(&quot;loaded&quot;)&#x27;)  .loading-bg    .loading-img    .loading-image-dot    #hitokoto-textscript.  (()=&gt;&#123;    function getHitokoto() &#123;      const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);      if (!hitokotoEl) return;      fetch(&#x27;https://v1.hitokoto.cn&#x27;)        .then(response =&gt; response.json())        .then(data =&gt; &#123;          hitokotoEl.innerText = data.hitokoto;        &#125;)        .catch(() =&gt; &#123;          hitokotoEl.innerText = &#x27;🐱喵喵喵🐱&#x27;;        &#125;)    &#125;    const $loadingBox = document.getElementById(&#x27;loading-box&#x27;)    const $body = document.body    const preloader = &#123;      endLoading: () =&gt; &#123;        $body.style.overflow = &#x27;&#x27;        $loadingBox.classList.add(&#x27;loaded&#x27;)      &#125;,      initLoading: () =&gt; &#123;        $body.style.overflow = &#x27;hidden&#x27;        $loadingBox.classList.remove(&#x27;loaded&#x27;)        getHitokoto()      &#125;    &#125;    preloader.initLoading()    window.addEventListener(&#x27;load&#x27;, preloader.endLoading)    if (!&#123;theme.pjax &amp;&amp; theme.pjax.enable&#125;) &#123;      btf.addGlobalFn(&#x27;pjaxSend&#x27;, preloader.initLoading, &#x27;preloader_init&#x27;)      btf.addGlobalFn(&#x27;pjaxComplete&#x27;, preloader.endLoading, &#x27;preloader_end&#x27;)    &#125;  &#125;)()
 
-分区
-分区前请备份重要数据，分区操作不可逆
+3.修改&#x2F;themes&#x2F;butterfly&#x2F;layout&#x2F;includes&#x2F;loading&#x2F;index.pugif theme.preloader.enable  if theme.preloader.source === 1    include ./fullpage-loading.pug  else if theme.preloader.source === 2    include ./pace.pug  else    include ./fullpage-loading.pug    include ./pace.pug
 
-分区工具：
+4.新建&#x2F;source&#x2F;css&#x2F;loading_bar.css.pace &#123;  -webkit-pointer-events: none;  pointer-events: none;  -webkit-user-select: none;  -moz-user-select: none;  user-select: none;  z-index: 2000;  position: fixed;  margin: auto;  top: 18px;  left: 0;  right: 0;  height: 8px;  border-radius: 8px;  width: 10rem;  background: rgba(255, 255, 255, 0.2);  border: 1px #e3e8f7;  overflow: hidden;&#125;.pace-inactive .pace-progress &#123;  opacity: 0;  transition: 0.3s ease-in;&#125;.pace .pace-progress &#123;  -webkit-box-sizing: border-box;  -moz-box-sizing: border-box;  -ms-box-sizing: border-box;  -o-box-sizing: border-box;  box-sizing: border-box;  -webkit-transform: translate3d(0, 0, 0);  -moz-transform: translate3d(0, 0, 0);  -ms-transform: translate3d(0, 0, 0);  -o-transform: translate3d(0, 0, 0);  transform: translate3d(0, 0, 0);  max-width: 200px;  position: absolute;  z-index: 2000;  display: block;  top: 0;  right: 100%;  height: 100%;  width: 100%;  background: linear-gradient(90deg, #E2B0FF 0%, #f295c7 40%, #4e9ce4 70%, #23d5ab 100%);  animation: gradient 1.5s ease infinite;  background-size: 200%;  box-shadow: 0 0 10px rgba(126, 87, 194, 0.5), 0 0 20px rgba(126, 87, 194, 0.5);&#125;.pace.pace-inactive &#123;  opacity: 0;  transition: 0.3s;  top: -30px;&#125;@keyframes gradient &#123;  0% &#123;    background-position: 0% 50%;  &#125;  50% &#123;    background-position: 100% 50%;  &#125;  100% &#123;    background-position: 0% 50%;  &#125;&#125;
 
-一般而言，Linux发行版提供的安装映像会自带分区工具，eg.cfdisk(交互式)、fdisk(命令行)、parted(交互式)、gparted(图形化) 等；有关工具如何使用，这里不做介绍
-替代方案：使用WinPE进行分区再后进入LiveCD进行安装
+5.新建&#x2F;source&#x2F;css&#x2F;loading_img.css.loading-img &#123;  background: url(你的头像地址) no-repeat center center;  background-size: cover;&#125;
 
+6.新建&#x2F;source&#x2F;js&#x2F;hotokoto.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const hitokotoEl = document.getElementById(&#x27;hitokoto-text&#x27;);  if (!hitokotoEl) return;  fetch(&#x27;https://v1.hitokoto.cn/&#x27;)     .then(response =&gt; response.json())    .then(data =&gt; &#123;      hitokotoEl.textContent = data.hitokoto;    &#125;)    .catch(() =&gt; &#123;      hitokotoEl.textContent = &#x27;喵喵喵~&#x27;;    &#125;);&#125;);
 
-分区方案：
+7.修改_config.butterfly.yml# Loading Animationpreloader:  enable: true  # source  # 1. fullpage-loading  # 2. pace (progress bar)  source: 3 # 改为3,同时加载fullpage-loading和pace  # pace theme (see https://codebyzach.github.io/pace/)  pace_css_url: /css/loading_bar.css...# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;
 
-通常，UEFI设备建议使用GPT分区表，建议分区方案为：
-根分区：推荐格式：ext4；根分区，建议大小为16GB以上，用于存放/目录下的文件
-EFI分区：推荐格式：fat32；EFI启动分区，建议大小为300MB，用于存放EFI启动文件，其会挂载到根分区的/boot/efi目录
-/home：推荐格式：ext4；用户主目录，用于存放/home目录下的文件，需要将其挂载到根分区的/home目录
-交换分区：推荐格式：swap；交换分区，用于在物理内存不足时提供额外的内存空间，建议大小为物理内存的1.5倍
+添加动态标题1.新建&#x2F;source&#x2F;js&#x2F;dynamic_title.jsdocument.addEventListener(&quot;DOMContentLoaded&quot;, () =&gt; &#123;  const leave = &#x27;离开页面时的标题&#x27;;  const back = &#x27;返回页面时的标题&#x27;;  const defaultTitle = document.title;    document.addEventListener(&#x27;visibilitychange&#x27;, function() &#123;    if (document.visibilityState === &#x27;hidden&#x27;) &#123;      document.title = leave;      clearTimeout(titleTime);    &#125; else &#123;      document.title = back;      titleTime = setTimeout(() =&gt; &#123;        document.title = originTitle;      &#125;, 5000);    &#125;  &#125;);&#125;)
+此js文件的作用是，当用户离开页面时，标题会变成“离开页面时的标题”，当用户返回页面时，标题会变成“返回页面时的标题”，并在5秒后恢复为原来的标题
+2.修改_config.butterfly.yml# Inject# Insert the code to head (before &#x27;&lt;/head&gt;&#x27; tag) and the bottom (before &#x27;&lt;/body&gt;&#x27; tag)inject:  head:    # - &lt;link rel=&quot;stylesheet&quot; href=&quot;/xxx.css&quot;&gt;    - &lt;link rel=&quot;stylesheet&quot; href=&quot;/css/loading_img.css&quot;&gt;  bottom:    # - &lt;script src=&quot;xxxx&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/hitokoto.js&quot;&gt;&lt;/script&gt;    - &lt;script src=&quot;/js/dynamic_title.js&quot;&gt;&lt;/script&gt;
 
+测试hexo cl &amp;&amp; hexo g &amp;&amp; hexo s
 
-Legacy BIOS设备建议使用MBR分区表，建议分区方案为：
-根分区：推荐格式：ext4；根分区，建议大小为16GB以上，用于存放/目录下的文件
-BIOS分区：推荐格式：xfs；BIOS启动分区，建议大小为300MB，用于存放BIOS启动文件，其会挂载到根分区的/boot目录
-/home：推荐格式：ext4；用户主目录，用于存放/home目录下的文件，需要将其挂载到根分区的/home目录
-交换分区：推荐格式：swap；交换分区，用于在物理内存不足时提供额外的内存空间，建议大小为物理内存的1.5倍
-
-
-
-
-Legacy BIOS设备分区方案与UEFI引导设备分区方案类似，区别在于分区表格式和Boot分区不同
-
-
-Linux分区方案较为灵活，例如/home可以合并到根分区中，或者增加/tmp、/var等分区用于存放临时文件和变量文件，独立分区可以增强安全性，便于备份和维护；也可以不使用交换分区，在稍后配置swap文件或ZRAM；EFI分区使用fat32格式可以与Windows系统共用
-
-挂载分区：
-
-使用对应命令将分区挂载到对应目录，例如：# 挂载根分区到/mntmount /dev/sda1 /mnt# 挂载启动分区到/mnt/boot/efimount /dev/sda2 /mnt/boot/efi# 挂载用户主目录到/mnt/homemount /dev/sda3 /mnt/home# 挂载交换分区到/mnt/swapmount /dev/sda4 /mnt/swap
-使用lsblk命令查看分区情况，确保分区挂载正确
-
-
-磁盘与分区：
-
-磁盘通常指存储设备，分区操作是使用分区表将磁盘划分为多个逻辑分区，用户可以为每个分区指定文件系统和挂载点，以便在操作系统中进行访问和管理
-
-
-
-其他文件系统eg.btrfs、xfs、zfs等也可以根据个人需求进行选择，不同文件系统具有不同的特性，例如btrfs具有快照、压缩、RAID、子卷等功能；特性不同的文件系统最优分区方案也不同，如btrfs通常是根分区配合子卷
-
-
-网络
-确保网络连接正常，可以使用ping bing.com命令测试网络连接
-连接网络：
-多数安装映像会自动连接有线网络，无线网络需要手动连接；若未提供交互式网络连接工具，可以使用iw或nmcli等工具进行连接
-
-
-更新时间以确保Live环境时间准确：
-使用timedatectl命令更新时间
-
-有关网卡驱动问题：如果遇到在LiveCD中无法连接网络，可以尝试使用官方提供的离线安装映像，或者使用有线网络进行安装
-
-
-安装
-配置镜像源：
-国内用户通常难以连接官方镜像，可以使用国内镜像源进行安装，eg. 校园网联合镜像站，按照对应文档进行配置
-配置完成后，便可以开始安装；交互式安装工具会自动从配置的镜像源下载并安装软件包
-
-
-更新缓存：
-使用对应包管理命令更新软件包缓存
-
-
-安装软件包，除必须软件包外，其他可稍后安装：
-base：基础软件包，包括系统核心、基本工具、库等 必须
-base-devel：开发软件包，包括编译器、构建工具、库等 必须
-linux：内核软件包，包括内核、模块等 必须
-linux-firmware：内核固件软件包，包括内核固件等 必须
-grub：引导程序软件包，包括引导程序等 必须
-efibootmgr：EFI引导管理器软件包，用于管理EFI引导项
-sudo：权限管理软件包，用于管理用户权限
-networkmanager：网络管理器软件包，用于管理网络连接
-ALSA：音频系统软件包，用于管理音频设备
-pulseaudio：音频服务器软件包，用于管理音频流
-vim：文本编辑器软件包，用于编辑文本文件
-其他软件包，根据需要的软件包进行安装，eg.gnome、plasma、firefox等
-
-
-包管理：
-包管理(Package Management)是用于统一管理软件包的工具，它旨在自动处理软件包的安装、更新、卸载等操作，并解决软件包之间的依赖关系；通常包管理会从 储存库(Repository) 中下载软件包及其元数据（版本号、校验信息、依赖关系等），然后自动处理软件包的安装、更新、卸载等操作
-
-Linux软件包小科普：Linux软件包通常具有庞大的依赖关系，例如安装A软件包需要B软件包，安装B软件包需要C软件包，幸运的是，现在大多数包管理会自动解决依赖关系，无需手动安装依赖包
-
-
-交互式安装结束
-从此开始，多数交互式安装程序会自动完成安装并进入系统，无需手动干预
-
-Chrooting
-安装了基本软件包后，此时Linux系统已经可以运行，但是由于还没有配置引导程序，所以无法从硬盘启动；此时通过LiveCD进入Chroot环境，进一步配置系统
-
-记得先复制DNS信息：
-cp --dereference /etc/resolv.conf /mnt/etc/
-进入Chroot环境的方法请参照官方文档，一些发行版提供快捷设置Chroot环境的脚本，如arch-chroot；这里着重介绍手动设置Chroot环境的方法：
-
-挂载必须的文件系统：
-
-
-&#x2F;proc&#x2F;，伪文件系统，由内核提供，用于提供进程信息、内核参数等
-&#x2F;sys&#x2F;，伪文件系统，类似 &#x2F;proc&#x2F;，但更结构化
-&#x2F;dev&#x2F;，设备文件系统，用于提供设备文件
-&#x2F;run&#x2F;，临时文件系统，用于运行时数据，如PID文件、锁文件等
-
-  mount -t proc none /mnt/procmount --rbind /sys /mnt/sysmount --make-rslave /mnt/sysmount --rbind /dev /mnt/devmount --make-rslave /mnt/devmount --bind /run /mnt/runmount --make-slave /mnt/run
-
-–make-rslave：将挂载点设置为从属挂载点，用于安装systemd时避免挂载点被破坏
-
-
-修改根目录：
-
-  chroot /mnt /bin/bash
-
-设置环境变量：
-
-  source /etc/profileexport PS1=&quot;(chroot) $&#123;PS1&#125;&quot;
-
-Fstab
-fstab文件通常列出所有可用的磁盘分区和其他类型的文件系统以及可能不是基于磁盘的数据源，并告诉它们如何初始化或以其他方式集成到更大的文件系统结构中；一般而言，/etc/fstab文件中每行包含6个字段，分别是：
-&lt;device&gt;：用于指明要挂载的设备或远程文件系统，可以是设备路径、UUID、分区标签
-&lt;dir&gt;：用于指明挂载点，即 &lt;device&gt; 挂载到何处
-&lt;type&gt;：用于指明文件系统类型，eg. ext4、vfat、swap等
-&lt;options&gt;：用于指明mount命令的参数，用半角逗号分隔，如 defaults，noatime，nodiratime，不同文件系统支持的参数不同，请参考对应文件系统文档
-&lt;dump&gt;：用于指明是否使用dump备份文件系统，0表示不备份，1表示备份
-&lt;fsck&gt;：用于指明文件系统检查的顺序，0表示不检查，1表示优先检查，2表示次优先检查
-示例：# &lt;device&gt;                                &lt;dir&gt; &lt;type&gt;          &lt;options&gt;                                        &lt;dump&gt; &lt;fsck&gt;UUID=0a3407de-014b-458b-b5c1-848e92a327a3 /     ext4 defaults,noatime,nodiratime                       0      1UUID=CBB6-24F2                            /boot vfat defaults,nodev,nosuid,noexec,fmask=0177,dmask=0077 0      2UUID=f9fe0b69-a280-415d-a03a-a32752370dee none  swap defaults                                           0      0UUID=b411dc99-f0a0-4c87-9e05-184977be8539 /home ext4 defaults,noatime,nodiratime                       0      2
-
-
-交互式安装的发行版会自动配置fstab文件；其余发行版请参考官方文档或手动编辑fstab文件
-
-配置
-这一步会配置系统的一些基本设置，如时区、主机名、用户名、密码等，许多系统会提供交互式工具进行配置
-时间：# 设置时区ln -sf /usr/share/zoneinfo/Region/City /etc/localtime# 同步时间hwclock --systohc
-
-这会根据/etc/localtime文件中的时区设置系统时间，并同步到硬件时钟
-
-
-本地化：# 设置本地化vim /etc/locale.gen #把你需要的语言取消注释，eg. en_US.UTF-8 UTF-8、zh_CN.UTF-8 UTF-8locale-genecho &quot;LANG=en_US.UTF-8&quot; &gt; /etc/locale.conf
-
-这会根据/etc/locale.gen文件中的设置生成本地化文件，并设置系统默认本地化为en_US.UTF-8
-
-不建议设置/etc/lacale.conf为任何非英文值，这会导致 TTY(终端) 显示乱码
-
-键盘布局：echo &quot;KEYMAP=us&quot; &gt; /etc/vconsole.conf
-
-这会设置系统默认键盘布局为us，即美式键盘布局；可以根据个人需求进行修改
-
-
-主机名：echo &quot;hostname&quot; &gt; /etc/hostname
-
-这会设置系统主机名为hostname；1~63个字符，只能包含a-z、0-9以及-，不能以-开头
-
-
-Initramfs：
-这一步会生成initramfs，不同系统生成initramfs的方法不同，请参考官方文档
-
-initramfs是为了避免将大量驱动程序硬编码到内核导致内核过大、用于启动时推断根文件系统位置、以及实现休眠挂起等问题而诞生的；它是一个临时根文件系统，在系统启动时加载，用于加载内核模块、挂载根文件系统和查找设备等
-
-User：
-这一步会配置用户，包括创建用户、设置密码等；一定不要忘记设置Root密码和用户密码，否则无法进入系统
-
-# 配置Root密码passwd root# 创建用户并加入wheel组useradd -m -G wheel 用户名# 设置用户密码passwd 用户名
-
-配置sudo，确保你安装了sudo！！：
-
-# 编辑sudoers文件vim /etc/sudoers# 取消注释以下行，不要使用%wheel ALL=(ALL) NOOPASSWD: ALL！！%wheel ALL=(ALL) ALL
-
-这会配置sudo，允许wheel组中的用户使用sudo命令；一定不要使用「%wheel ALL&#x3D;(ALL) NOOPASSWD: ALL」，这会导致wheel组中的用户可以无密码使用sudo命令，存在安全风险
-
-sudo(substitute user, do)不同于su，sudo允许用户以其他用户的身份执行命令，而不是完全切换到其他用户；这可以限制用户的权限，防止用户执行危险命令
-
-
-引导程序
-引导程序(bootloader) 是负责启动操作系统的软件；在计算机启动阶段，操作系统和加载程序并未在RAM中运行，此时计算机会执行引导ROM中的程序(eg.BIOS、UEFI)，该程序会初始化硬件，定位并加载引导程序，称为第一阶段引导；引导程序(eg.GRUB、rEFInd)加载操作系统并使操作系统初始化，称为第二阶段引导
-引导程序通常安装在MBR&#x2F;ESP中，MBR是计算机启动时首先读取的512字节的扇区，ESP是EFI系统分区，用于存放EFI引导程序
-这里主要讲讲广泛使用的**GRUB 2(以下简称GRUB)**的安装配置：
-使用包管理器安装GRUB；UEFI系统需要额外安装efibootmgr；多系统需要安装os-prober
-写入GRUB到MBR&#x2F;ESP，确保你的分区正确挂载！！：
-
-  # 安装GRUB到MBRgrub-install --target=&quot;CPU架构与系统平台 eg. i386-pc&quot; &quot;Boot分区 eg. /dev/sda1&quot;# 安装GRUB到ESPgrub-install --target=&quot;CPU架构与系统平台 eg. x86_64-efi&quot; --efi-directory=&quot;ESP分区挂载点 eg. /boot/efi&quot; --bootloader-id=&quot;引导程序名称 eg. Arch&quot;
-
-配置GRUB：
-
-  # 编辑GRUB配置文件vim /etc/default/grub
-  # GRUB配置文件示例GRUB_DEFAULT=0 # 默认启动项，0表示第一个启动项GRUB_TIMEOUT=5  # 启动等待时间，单位为秒，-1表示无限等待GRUB_CMDLINE_LINUX=&quot;quiet splash&quot; # 内核参数，quiet表示不输出内核信息，splash表示显示启动画面GRUB_DEVICE=&quot;设备 eg. /dev/sda&quot; # 系统设备，用于查找根文件系统GRUB_DISABLE_OS_PROBER=false # 是否禁用os-prober，false表示不禁用，true表示禁用
-  # 生成GRUB配置文件grub-mkconfig -o &quot;grub安装点 eg. /boot/efi/grub/grub.cfg&quot;
-
-此命令会根据 &#x2F;etc&#x2F;default&#x2F;grub文件中的配置生成GRUB配置文件，并保存到 grub安装点中
-
-
-检查一下GRUB是否正确安装：
-
-  # 查看GRUB安装点ls &quot;grub安装点 eg. /boot/efi/grub&quot;
-
-第二阶段引导硬件已经初步初始化，因此可以实现图形化，这意味着你可以通过配置文件自定义引导程序的界面，如GRUB的主题、字体、背景等
-
-
-重启
-使用Ctrl+D组合键退出Chroot环境，使用reboot命令重启系统，进入BIOS&#x2F;UEFI界面，将引导程序设置为第一个启动位置，保存设置并重启系统，进入Linux系统
-Linux安装完成后LiveCD也不要丢弃，它可以作为系统修复的环境，类似WinPE
-
-
+loading效果
 ]]></content>
       <categories>
         <category>折腾日记</category>
-        <category>Linux传教</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1389,6 +1222,173 @@ oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; 
         <tag>Node.js</tag>
         <tag>Qt</tag>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>「折腾日记」优质开源软件集</title>
+    <url>/posts/12f010f8/index.html</url>
+    <content><![CDATA[系统工具开发工具效率工具媒体工具文件管理网络工具命令行增强浏览器插件
+Bulk-Crap-Uninstaller  
+
+强大的Windows软件管理工具  
+如果你不熟悉Windows，请谨慎使用
+
+
+PowerToys  
+
+微软官方出品的开源Windows工具集
+
+
+Nilesoft Shell  
+
+自定义右键菜单，替换Win11右键菜单
+
+
+bleachbit  
+
+开源清理工具  
+请谨慎使用
+
+
+Rufus
+
+启动盘制作工具
+
+
+
+PowerShell 7  
+主题框架：oh-my-posh  
+字体：Nerd Fonts
+必备配置：
+
+
+
+oh-my-posh init pwsh --config &quot;$env:POSH_THEMES_PATH\montys.omp.json&quot; | Invoke-ExpressionSet-Alias -Name &#x27;ls&#x27; -Value &#x27;eza&#x27;Set-PSReadLineOption -PredictionSource HistorySet-PSReadLineKeyHandler -Key Tab -Function MenuCompleteSet-PSReadLineKeyHandler -Key UpArrow -ScriptBlock &#123;     [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchBackward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;Set-PSReadLineKeyHandler -Key DownArrow -ScriptBlock &#123;    [Microsoft.PowerShell.PSConsoleReadLine]::HistorySearchForward()    [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine()&#125;
+
+
+Git  
+
+项目开发必备
+
+
+vscode  
+
+强大的代码编辑器  
+注意：Microsoft发布的Visual Studio Code含有遥测代码
+
+
+
+
+AutoHotKey  
+
+强大的脚本工具
+
+
+
+EcoPaste  
+
+跨平台剪贴板管理工具
+
+
+ShareX  
+
+功能强大的截图工具
+
+
+weasel  
+
+Rime输入法框架  
+雾凇
+
+
+
+MPC-BE  
+
+开源播放器（推荐替代PotPlayer）  
+配套组件：  
+LAVFilters  
+xy-VSFilter  
+madvr
+
+
+配置指南：万年冷冻库
+
+
+MusicPlayer2  
+
+开源音乐播放器
+
+
+
+Nanazip  
+
+7zip分支，支持Win11右键菜单，UI现代化
+
+
+eza  
+
+命令行文件管理工具（替代ls命令）
+
+
+
+Watt Toolkit  
+
+Steam工具箱  
+反代加速服务
+
+
+Clash Verge rev  
+
+Clash图形用户界面
+
+
+Gopeed  
+
+Go语言实现的高性能下载工具
+
+
+
+fastfetch  
+
+快捷打印系统信息
+
+
+thefuck  
+
+命令行神器，自动纠正错误命令
+
+
+
+scriptcat
+
+国产开源浏览器脚本管理工具
+
+
+uBlock Origin
+
+强大的广告拦截工具
+
+
+cat-catch
+
+网页媒体下载工具
+
+
+pixiv-toolkit
+
+Pixiv工具箱
+
+
+
+
+记录完]]></content>
+      <categories>
+        <category>折腾日记</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Windows</tag>
+        <tag>开源</tag>
       </tags>
   </entry>
 </search>
