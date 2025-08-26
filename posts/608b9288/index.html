@@ -1,0 +1,767 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南 | ✨岚的小窝✨</title><meta name="author" content="Shirano"><meta name="copyright" content="Shirano"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Windows平台下基于MPC-BE+MadVR+LAVFilters的播放器详细配置指南，小白也能轻松看懂。或许是目前最优观影方案？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南">
+<meta property="og:url" content="https://shiranosama.github.io/posts/608b9288/index.html">
+<meta property="og:site_name" content="✨岚的小窝✨">
+<meta property="og:description" content="Windows平台下基于MPC-BE+MadVR+LAVFilters的播放器详细配置指南，小白也能轻松看懂。或许是目前最优观影方案？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shiranosama.github.io/img/mystia.jpg">
+<meta property="article:published_time" content="2025-07-20T03:30:39.000Z">
+<meta property="article:modified_time" content="2025-08-19T10:38:54.534Z">
+<meta property="article:author" content="Shirano">
+<meta property="article:tag" content="MadVR">
+<meta property="article:tag" content="LAVFilters">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shiranosama.github.io/img/mystia.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南",
+  "url": "https://shiranosama.github.io/posts/608b9288/index.html",
+  "image": "https://shiranosama.github.io/img/mystia.jpg",
+  "datePublished": "2025-07-20T03:30:39.000Z",
+  "dateModified": "2025-08-19T10:38:54.534Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Shirano",
+      "url": "https://github.com/Shiranosama"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://shiranosama.github.io/posts/608b9288/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":-1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true,
+  dynamic_title: {"enable":true,"leave":["☯ (。-ω-)zzz 少女祈祷中...","⚡️ _(:3 ⌒ﾞ)_ 休伯利安维护中...","🍵 (｡-ω-)ﾉ 轻音部茶会休憩中...","🎸 (｡･ω･｡)ﾉ 演奏休止，静候安可！"],"enter":["⑨ ✧(≖ ◡ ≖✿) 冰雾魔法解冻完成！","⚙️ `(ﾟдﾟ)つ🔥 超限模组激活","🍰 `(●´ω｀●)φ 补给箱抽出草莓派！","🎹 (」・ω・)」 轻音部弦音再响！"]},
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="msvalidate.01" content="111281BED6208D1D45CB65E3D63BFB96" /><meta name="google-site-verification" content="uQSVH71zYWV_Mnp8rQTIBmxni3bS5a4FfqSubjDdGDY" /><meta name="generator" content="Hexo 7.3.0"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="/css/loading_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="loading-box" onclick="this.classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div><div id="hitokoto-text"></div></div></div><script>(()=>{
+  function getHitokoto() {
+    const hitokotoEl = document.getElementById('hitokoto-text');
+    if (!hitokotoEl) return;
+    fetch('https://v1.hitokoto.cn')
+      .then(response => response.json())
+      .then(data => {
+        hitokotoEl.innerText = data.hitokoto;
+      })
+      .catch(() => {
+        hitokotoEl.innerText = '☯ 少女祈祷中...';
+      })
+  }
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+      getHitokoto()
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comment/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/mystia.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">✨岚的小窝✨</span></a><a class="nav-page-title" href="/"><span class="site-name">「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comment/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-20T03:30:39.000Z" title="发表于 2025-07-20 11:30:39">2025-07-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-19T10:38:54.534Z" title="更新于 2025-08-19 18:38:54">2025-08-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/">折腾日记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/%E9%95%BF%E6%96%87/">长文</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">8.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>29分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><div id="wave-container"><div class="wave-inner"></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p><font size=5><em><strong>长文注意⚠️</strong></em></font></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="岚的声明"><a href="#岚的声明" class="headerlink" title="岚的声明"></a>岚的声明</h3><p><font size=4>本文为<strong>岚</strong>的<strong>折腾日记</strong>，它只是因为我<strong>想</strong>而写下的，<strong>不具备</strong>权威性，我也<strong>无法</strong>保证正确，<strong>仅供参考</strong></font></p>
+<h3 id="本文参考"><a href="#本文参考" class="headerlink" title="本文参考"></a>本文参考</h3><ul>
+<li><strong><a target="_blank" href="https://lysandria1985.blogspot.com/" rel="external nofollow noreferrer noopener">万年冷冻库的播放器教程</a></strong></li>
+<li><strong><a target="_blank" href="https://en.wikipedia.org/" rel="external nofollow noreferrer noopener">维基百科</a></strong></li>
+<li>以及一些论坛</li>
+</ul>
+<h3 id="一些碎碎念"><a href="#一些碎碎念" class="headerlink" title="一些碎碎念"></a>一些碎碎念</h3><p>Potplayer 被广泛推荐，但它因使用开源项目代码（如 FFmpeg）却闭源发布，被认为可能违反 GPL 协议，且部分版本包含推广内容，引起了一些争议，故本文不推荐<br>开源的MPC-BE且功能同样强大，且积极维护<br>当然MPC-BE并非唯一选择，也可以选择mpv，它更加强大，且跨平台，具体参见<a target="_blank" href="https://github.com/hooke007/MPV_lazy" rel="external nofollow noreferrer noopener">mpv_lazy</a><br>本文主要介绍基于MPC-BE的配置，我并非音视频相关专业人士，主要提供一个参考，不会去深入讲解 <del>(因为我也不会)</del>，有需要请自行查阅相关资料</p>
+<p><a target="_blank" href="https://www.videohelp.com/" rel="external nofollow noreferrer noopener">Video Helper</a>是一个很实用的网站，多数音视频相关的软件都可以在这里找到甚至溯源</p>
+<p><font size=5><em><strong>内容太多啦，脑袋晕晕的(っ °Д °;)っ，可能会有错误，欢迎指正</strong></em></font></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li><a target="_blank" href="https://github.com/Aleksoid1978/MPC-BE" rel="external nofollow noreferrer noopener">MPC-BE</a> —— 播放器本体</li>
+<li>也可以选择<a target="_blank" href="https://www.codecguide.com/" rel="external nofollow noreferrer noopener">K-Lite Codec Pack</a>，这是一个 <strong>MPC-HC(非MPC-BE)</strong> 懒人整合包，包含MPC-HC、LAVFilters、madVR等</li>
+<li><a target="_blank" href="http://madshi.net/madVR.zip" rel="external nofollow noreferrer noopener">MadVR</a> —— 视频渲染</li>
+<li>下载后解压，运行<strong>install.bat</strong>即可</li>
+<li>madshi目前对MadVR提供了<a target="_blank" href="http://madshi.net/madVRhdrMeasure208.zip" rel="external nofollow noreferrer noopener">Test Build</a>，包含更专业的配置项目，尤其是HDR部分，普通用户可选性安装<ul>
+<li>madVRhdrMeasure(Test Build)版本过期时会在播放器提示更新，获取更新的方式为当前版本号+1，例如：<code>http://madshi.net/madVRhdrMeasure208.zip</code> ，过期后更新为 <code>http://madshi.net/madVRhdrMeasure209.zip</code></li>
+</ul>
+</li>
+<li><a target="_blank" href="https://github.com/Nevcairiel/LAVFilters" rel="external nofollow noreferrer noopener">LAVFilters</a> —— 分离器&#x2F;解码器</li>
+<li><a target="_blank" href="https://github.com/pinterf/xy-VSFilter" rel="external nofollow noreferrer noopener">xy-VSFilter</a> —— 字幕渲染器</li>
+<li>下载后解压，运行<strong>Install_XySubFilter.bat</strong>即可</li>
+</ul>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><p>除了给出推荐配置外，还会尽可能告诉你每个配置项的含义，可能会有些啰唆(。・ω・。)</p>
+<h3 id="MPC-BE"><a href="#MPC-BE" class="headerlink" title="MPC-BE"></a>MPC-BE</h3><ul>
+<li><p><code>右键</code>-<code>选项</code>-<code>视频</code></p>
+<ul>
+<li><strong>视频渲染器</strong>，选择<strong>MadVR</strong></li>
+</ul>
+</li>
+<li><p><code>字幕</code></p>
+<ul>
+<li><strong>字幕</strong>，选择<strong>XySubFilter</strong></li>
+</ul>
+</li>
+<li><p><code>滤镜</code></p>
+<ul>
+<li><code>内置滤镜</code>：把<strong>源滤镜</strong>、<strong>视频解码器</strong>、<strong>音频解码器</strong>下的所有滤镜取消勾选，以保证不使用播放器自带的解码器</li>
+<li><code>拓展滤镜</code>：添加滤镜，在弹出的窗口中选择<strong>LAV Splitter</strong>、<strong>LAV Splitter Source</strong>、<strong>LAV Video Decoder</strong>以及<strong>LAV Audio Decoder</strong>，并确保勾选</li>
+<li><code>拓展滤镜</code>：将<strong>LAV Video Decoder</strong>和<strong>LAV Audio Decoder</strong>的优先级改为“首选”</li>
+</ul>
+</li>
+</ul>
+<h3 id="LAVFilters"><a href="#LAVFilters" class="headerlink" title="LAVFilters"></a>LAVFilters</h3><h4 id="LAV-Video-Configuration"><a href="#LAV-Video-Configuration" class="headerlink" title="LAV Video Configuration"></a>LAV Video Configuration</h4><ul>
+<li>建议配置如下：<br>  <img src="https://pica.zhimg.com/v2-72e349f4722e88f5f08eb58a06ccc9ce.webp" alt="LAV Video"></li>
+<li><strong>Settings</strong>：<ul>
+<li><strong>Threads for Multi-Threading(多线程)</strong>，选择<strong>Auto</strong>即可</li>
+<li><strong>Use Stream Aspect Ratio(使用流宽高比)</strong>，选择 <strong>Indeterminate(Auto)</strong> 即可</li>
+<li><strong>Settings for Interlaced Video Streams(交错视频流设置)</strong>：<ul>
+<li><strong>Field Ordering(场序)</strong>，选择<strong>Auto</strong>：注意Auto可能误判老式DVD，错误的场序会导致画面出现跳帧、画面撕裂等，如果遇到判断错误的情况可以尝试手动启用<strong>top-field-first(顶部优先)<strong>或</strong>bottom-field-first(底部优先)</strong></li>
+<li><strong>Deinterlace Mode(反交错模式)<strong>选择</strong>Auto</strong>即可，如果遇到判断错误的情况可以尝试手动启用<ul>
+<li>选项解读：<ul>
+<li><strong>Auto</strong>：使用帧标志(Field Flags)判断隔行&#x2F;逐行</li>
+<li><strong>Aggressive</strong>：强制处理所有<strong>疑似</strong>隔行扫描的帧(可能误判)</li>
+<li><strong>Force</strong>：<strong>无视帧标记</strong>，全部按隔行处理（老片源救星）</li>
+<li><strong>Disabled</strong>：将所有帧都按逐行扫描处理</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>右下角的<strong>Software Deinterlace</strong>，是软件反交错，显卡正常的情况下不建议启用</li>
+<li>概念解读：<ul>
+<li><strong>逐行扫描</strong>：将每一帧从左至右、由上至下，逐一的将所有的像素显示出来</li>
+<li><strong>隔行扫描</strong>：将一帧图像的奇数行像素及偶数行像素分开，分成为两个场域(field)。轮流扫描奇数行所构成的场及偶数行所构成的场域</li>
+<li>现在新式的显示设备大多都是使用<strong>逐行扫描</strong>，在这些新型的显示设备上直接播放<strong>隔行信号</strong>会产生严重的闪烁现象，而且因<strong>隔行信号</strong>两行只有一行有影像另一行则是全黑的，所以亮度看起来会减少一半。由于有上述这些问题，所有使用<strong>逐行扫描</strong>的新式显示设备都需要有 <strong>反交错(Deinterlace)</strong> 的功能</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Hardware Acceleration(硬件加速)</strong>：<ul>
+<li><strong>Hardware Decoder to use</strong>，建议<strong>D3D11</strong>，旁边的<strong>Resolution</strong>和<strong>Codecs for HW Decoding</strong>全部勾选(启用所有支持的格式和分辨率)，<strong>Device to use</strong>选择你的高性能显卡</li>
+</ul>
+</li>
+<li><strong>Output Format(输出格式)</strong>，<strong>全部勾选</strong></li>
+<li>其余选项<strong>默认</strong>即可</li>
+<li>Format分页维持<strong>默认</strong>即可(通常不需要手动启用&#x2F;禁用特定格式)</li>
+</ul>
+<h4 id="LAV-Audio-Configuration"><a href="#LAV-Audio-Configuration" class="headerlink" title="LAV Audio Configuration"></a>LAV Audio Configuration</h4><ul>
+<li>建议配置如下：<br>  <img src="https://picx.zhimg.com/v2-f914889caef69fbe165588aa6b8a0b51.webp" alt="LAV Audio"><br>  <img src="https://pic1.zhimg.com/v2-32682241e0e6accf9f07138d84a3eb12.webp" alt="LAV Audio"></li>
+<li><strong>Dynamic Range Compression(动态范围压缩)</strong>，可以动态调整音频输出幅值，避免音量忽大忽小&#x2F;破音，但会损失原声动态细节，一般保持<strong>关闭</strong>即可</li>
+<li><strong>Bitstream (S&#x2F;PDIF, HDMI)(比特流)</strong>：<ul>
+<li><strong>注意</strong>：Bitstream(比特流)需音频设备<strong>原生支持解码</strong>（如功放显示”DTS-HD MA”），若不支持启用格式将导致<strong>无声</strong></li>
+<li>如果你是笔记本扬声器&#x2F;耳机，此项<strong>保证禁用</strong>，因为笔记本扬声器不支持Bitstream(比特流)输出</li>
+<li>如果你有通过 HDMI 连接支持高级音频解码的 AV 功放 或 多声道音箱系统&#x2F;通过光纤&#x2F;同轴 (S&#x2F;PDIF) 连接支持基础解码的 Soundbar 或功放，可以根据<strong>具体设备的支持情况</strong>来选择。例如：直接连接电视时，通常需要确认电视支持的比特流格式（查看电视说明书或音频输出设置），或更简单地选择 PCM 输出让电视解码</li>
+<li>配置解读：<ul>
+<li><strong>Formats</strong>：这里列出了 LAV Audio 可以尝试进行Bitstream(比特流)输出的具体格式。你需要勾选你希望 LAV 尝试传递的格式</li>
+<li><strong>Force max DTS+ID rate (not recommended)</strong>：强制最大DTS码率，<strong>不建议使用</strong></li>
+<li><strong>Fallback to PCM if Bitsreaming is not supported</strong>：如果Bitstream(比特流)输出不被支持，则回退到PCM输出，建议<strong>勾选</strong></li>
+</ul>
+</li>
+<li>概念解读：<ul>
+<li><strong>Bitstream(比特流)</strong>：将原始、未经解码的音频数据直接从播放器传递给你的外部音频设备(如声卡等)，这需要接收端设备具备相应的解码能力</li>
+<li><strong>PCM(脉冲编码调制)</strong>：播放器（LAV Audio）先将音频编码数据解码成原始的、未压缩的多声道 PCM 数据，再输出给音频设备。这是最通用的方式，所有设备都支持 PCM 输出</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>Optins</strong>：<ul>
+<li><strong>Auto A&#x2F;V Sync correction(自动音视频同步校正)</strong>，自动音视频同步校正，<strong>勾选</strong></li>
+<li><strong>Convert Output to Standard Channel Layouts(将输出转换为标准声道布局)</strong>，用于HDMI输出PCM时，声道未达到标准(5.1&#x2F;6.1&#x2F;7.1)时自动添加静音声道补齐，一般有下游混音器(例如Win自带的WASAPI)则<strong>不需要勾选</strong>，如果下游设备严格要求标准布局（某些老旧设备），则<strong>需要勾选</strong>，对于大多数现代设备（通过 HDMI 连接功放&#x2F;声卡），都<strong>不需要勾选</strong><ul>
+<li><strong>WASAPI</strong>：是Windows管理音频流的底层接口，所有应用的音频数据最终都会通过 WASAPI 驱动到声卡或数字输出设备</li>
+</ul>
+</li>
+<li><strong>Expand Mono to Stereo(将单声道扩展为立体声)</strong>，一般保持<strong>关闭</strong>即可，以避免对单声道源做不必要处理</li>
+<li><strong>Expand 6.1 to 7.1(将6.1声道扩展为7.1声道)</strong>，一般保持<strong>关闭</strong>即可，同上</li>
+<li><strong>Use Legacy Channel Layout(使用旧版声道布局)</strong>，一般保持<strong>关闭</strong>即可，除非设备不支持新版声道标准</li>
+</ul>
+</li>
+<li><strong>Audio Delay(音频延迟)</strong>，基本用不上，保持<strong>关闭</strong>即可</li>
+<li><strong>Output Format(输出格式)</strong>，<strong>全部勾选</strong></li>
+<li><strong>Mixing</strong>页，用于多声道到目标声道的混音<ul>
+<li>配置解读：<ul>
+<li><strong>Output Speaker Configuration(输出扬声器配置)</strong>：可选<code>Stereo</code>、<code>4.0</code>、<code>6.1</code>、<code>5.1</code>、<code>7.1</code>、<code>mono</code>，建议<strong>与音频设备完全匹配</strong></li>
+<li><strong>Center Mix Level(中心声道混音级别)</strong>：控制中心声道混入时的音量，一般是<strong>人声&#x2F;对白</strong>，按需微调</li>
+<li><strong>Surround Mix Level(环绕声道混音级别)</strong>：控制环绕声道混入时的音量，一般是<strong>音乐&#x2F;环境</strong>，按需微调</li>
+<li><strong>LFE Mix Level(LFE声道混音级别)</strong>：控制低音声道混入时的音量，一般是<strong>低音</strong>，按需微调</li>
+<li><strong>Don’t mix Stereo sources(不混音立体声源)</strong>：勾选后，立体声源将不会混音，而是直接输出，建议<strong>启用</strong>，以避免二次处理</li>
+<li><strong>Normalize Matrix(矩阵标准化)</strong>：勾选后，将对音频进行全局衰减，使其更安静(音量降低)，以确保音量单音频文件音量一致。虽然不会发生削波，但会导致不同源格式之间的音量不一致，如：立体声会比5.1声道更响亮，但播放单个文件时的音量不会改变，<strong>通常关闭</strong>，由下游均衡器或功放处理<ul>
+<li>若需全局响度一致，可在播放软件或系统级均衡器中另行处理；LAV 的 Normalize Matrix 更多用于特殊兼容性或录制场景</li>
+</ul>
+</li>
+<li><strong>Clipping Prevention(防止剪切)</strong>：勾选后，保证声道叠加导致的削波失真（爆音），建议<strong>启用</strong></li>
+<li><strong>Matrix Encoding(矩阵编码)</strong>：矩阵编码格式，自行选择</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="MadVR"><a href="#MadVR" class="headerlink" title="MadVR"></a>MadVR</h3><p>接下来是重头戏——MadVR的配置，MadVR的配置项非常多<br>有关HDR的内容或许会补充(挖坑.png)，因为HDR(含Test Bulid)的配置项非常多，且复杂，我也没有观看HDR的需求<br><del>而且我也没有hdr显示器，所以只能靠口胡ο(&#x3D;•ω＜&#x3D;)ρ⌒☆（被打</del><br>screenshot(截图)我用不上，<del>相信你也用不上</del>，就不占篇幅了<br><del>写的我快崩溃了X﹏X</del></p>
+<ul>
+<li><strong>如何进入MadVR配置页面：</strong><ul>
+<li>在MPC-BE中，右键-选项-视频-视频渲染器，<strong>属性</strong>，点击<strong>Edit Settings</strong>，即可进入MadVR配置页面</li>
+</ul>
+</li>
+</ul>
+<h4 id="devices-设备"><a href="#devices-设备" class="headerlink" title="devices(设备)"></a>devices(设备)</h4><p><img src="https://pica.zhimg.com/v2-d3a8fc02f2a23ef30fc8993701ebde4d.webp" alt="Devices"></p>
+<ul>
+<li>这里是选择你的<strong>设备类别</strong>以供MadVR识别</li>
+<li><strong>Receiver, Processor, Switch</strong>：信号处理&#x2F;切换设备，本身不是显示器，而是驱动以下显示终端的前端</li>
+<li><strong>Digital Monitor &#x2F; TV</strong>：LCD&#x2F;LED&#x2F;OLED&#x2F;QLED的显示器&#x2F;电视</li>
+<li><strong>Digital Projector</strong>：数字投影仪</li>
+<li><strong>CRT projector</strong>：CRT投影仪</li>
+<li><strong>CRT monitor ITV</strong>：CRT显示器</li>
+<li><strong>unknown</strong>：以上之外的设备</li>
+<li>现代显示器一般是<strong>Digital Monitor &#x2F; TV</strong></li>
+</ul>
+<h4 id="展开显示器配置"><a href="#展开显示器配置" class="headerlink" title="展开显示器配置"></a>展开显示器配置</h4><ul>
+<li><strong>properties(属性)</strong>：<br>  <img src="https://pica.zhimg.com/v2-f13cd83ae5e3ebd945cdbb8b26565639.webp" alt="Properties"><ul>
+<li><strong>output level(输出级别)</strong>：一般电脑选择<strong>PC levels(0-255)</strong>，电视选择<strong>TV levels(16-235)</strong>，但还是推荐确认一下你的显示器的输出级别，如果非这两个选项可以选择<strong>custom levels(自定义级别)</strong>，自行填写</li>
+<li><strong>bitdepth(位深)</strong>：选择<strong>auto</strong>，自动匹配即可，bitdepth是指显示器<strong>支持</strong>的颜色深度，常见的有8bit、10bit、12bit等，位深越高，颜色越丰富</li>
+<li><strong>3D format(3D格式)</strong>：一般选择<strong>auto</strong>，自动匹配即可</li>
+</ul>
+</li>
+<li><strong>calibration(校准)</strong>：<br>  <img src="https://pic4.zhimg.com/v2-7305e323c3beeab966c6e948696fa1a1.webp" alt="Calibration"><ul>
+<li><strong>disable calibration for this display(禁用此显示器的校准)</strong>：勾选后，MadVR将不会对显示器进行校准</li>
+<li><strong>this display is already calibrated(此显示器已经校准)</strong>：勾选后，MadVR将不会对显示器进行校准，而是直接使用外部校准结果<ul>
+<li><strong>gamut</strong>与<strong>gamma</strong>按照校准显示器时的参数填写即可</li>
+</ul>
+</li>
+<li><strong>by using yCMS(使用yCMS)</strong>：勾选后，MadVR将使用yCMS进行校准</li>
+<li><strong>by using external 3DLUT files(使用外部3DLUT文件)</strong>：勾选后，MadVR将使用外部3DLUT文件进行校准，需要自行准备3DLUT文件</li>
+<li>一般而言，如果显示器<strong>进行过专业校准</strong>，则勾选<strong>this display is already calibrated</strong>，<strong>没有经过校准</strong>则勾选或<strong>不确定色域</strong>则勾选<strong>disable calibration for this display</strong></li>
+</ul>
+</li>
+<li><strong>display modes(显示模式)</strong>：<br>  <img src="https://pic4.zhimg.com/v2-9c749242ddfede1be7a1bd332d0971a0.webp" alt="Display Modes"><ul>
+<li><strong>switch to matching display mode(切换到匹配的显示模式)</strong>：勾选后，MadVR将在符合条件时自动切换到匹配的显示模式<ul>
+<li><strong>when playback starts(播放开始时)</strong>：勾选后，MadVR将在播放开始时切换到匹配的显示模式</li>
+<li><strong>when media player goes fullscreen(全屏时)</strong>：勾选后，MadVR将在全屏时切换到匹配的显示模式</li>
+</ul>
+</li>
+<li><strong>restore original display mode(恢复原始显示模式)</strong>：勾选后，MadVR将在符合条件时恢复原始显示模式<ul>
+<li><strong>when media player is closed(播放器关闭时)</strong>：勾选后，MadVR将在播放器关闭时恢复原始显示模式</li>
+<li><strong>when media player leaves fullscreen(退出全屏时)</strong>：勾选后，MadVR将在退出全屏时恢复原始显示模式</li>
+</ul>
+</li>
+<li><strong>list all display modes MadVR switch to(列出MadVR切换到的所有显示模式)</strong>：如果要使用MadVR的显示模式切换功能，此项必须填屏幕支持的显示模式(如：1080p144、1920x1080p60)，否则自动切换不生效，可在<strong>Windows设置-系统—屏幕-高级显示设置-显示器x的显示适配器属性-列出所有显示模式</strong>中查看</li>
+<li><strong>treat 25p movies as 24p(将25p电影视为24p)</strong>：勾选后，MadVR将把25p电影视为24p，需要Reclock或VideoClock支持</li>
+<li><strong>hack Direct3D to make 24.000Hz and 60.000Hz work(将24.000Hz和60.000Hz的显示模式视为24.000Hz和60.000Hz)</strong>：勾选后，通过绕过 Direct3D 的默认限制，强制系统将显示器刷新率切换至精确的 24.000Hz 或 60.000Hz，而非系统可能锁定的近似值（如 23.976Hz 或 59.940Hz），会导致 <strong>presentation queues(显示队列)</strong> 填不满，增加掉帧风险，依个人喜好选择</li>
+<li>分页<strong>custom modes(自定义模式)</strong>，是用于自定义显示模式的，也是madshi提供的<strong>Reclock</strong>替代方案，如果你对显示模式有特殊需求，可以自行修改，请阅读<a target="_blank" href="http://madvr.com/crt/CustomResTutorial.html" rel="external nofollow noreferrer noopener">madshi的文档</a></li>
+</ul>
+</li>
+<li><strong>color &amp; gamma(颜色与伽马)</strong>：<br>  <img src="https://pic1.zhimg.com/v2-04c79992a172b330b2abcb4c5775f9d7.webp" alt="Color &amp; Gamma"><ul>
+<li>这一页主要修改伽马，默认值会根据你在 <strong>calibration(校准)</strong> 的设置变化：<ul>
+<li><strong>disable calibration</strong> ⟶ <strong>gamma</strong>：默认值<strong>2.2</strong></li>
+<li>如果有设置，则与你设置的伽马一致</li>
+<li>一般来说，设置为<code>2.2</code>，然后根据环境光线动态调整，较暗环境下，伽马可以调高至<code>2.4</code>或更高，较亮环境下，伽马可以调低至<code>2.0</code>或更低</li>
+</ul>
+</li>
+<li>上方的颜色配置，一般不需要去改，有需要再去调整</li>
+</ul>
+</li>
+</ul>
+<h4 id="processing-处理"><a href="#processing-处理" class="headerlink" title="processing(处理)"></a>processing(处理)</h4><ul>
+<li><strong>deinterlacing(反交错)</strong>：<br>  <img src="https://pic4.zhimg.com/v2-1b4376dd75588779c41a15a3930dfa7c.webp" alt="Deinterlacing"></li>
+<li>由于LAV已经提供反交错，madVR获得的信号是LAV处理过的，所以这里直接保持<strong>默认</strong>即可，配置翻译：<ul>
+<li><strong>Automatically activate deinterlacing when needed (在需要时自动激活反交错)</strong><ul>
+<li><strong>if in doubt, activate deinterlacing (若有疑问，激活反交错)</strong></li>
+<li><strong>if in doubt, deactivate deinterlacing (若有疑问，停用反交错)</strong></li>
+</ul>
+</li>
+<li><strong>disable automatic source type detection (禁用自动源类型检测)</strong>，不同模式反交错算法不同<ul>
+<li><strong>force film mode (强制电影模式 - 适用于电影&#x2F;24fps内容)</strong></li>
+<li><strong>force video mode (强制视频模式 - 适用于视频&#x2F;隔行内容)</strong></li>
+</ul>
+</li>
+<li><strong>only look at pixels in the frame center (仅检测画面中心的像素 - 适用于广播电视，对动画效果不佳)</strong>，如果会看<strong>电视台</strong>播放的节目的话，建议勾选此选项，如果是看DVD原盘的话，则建议取消勾选</li>
+</ul>
+</li>
+<li><strong>artifact removal(去除伪影)</strong>：<br>  <img src="https://pica.zhimg.com/v2-4aa6596a7c9f5e6372eb630502c0268e.webp" alt="Artifact Removal"><ul>
+<li><strong>reduce banding artifacts (减少带状伪影&#x2F;去色带)</strong><ul>
+<li><strong>default debanding strength (默认去带强度)</strong></li>
+<li><strong>strength during fade in&#x2F;out (淡入&#x2F;淡出时的强度)</strong></li>
+<li>概念解读：<ul>
+<li><strong>banding artifacts(带状伪影)</strong>：即<strong>色带</strong>，是一种色彩显示不准确的问题，通常出现在低色深环境(4~8bit)。现在大多数片源(1080p)都是8bit，或多或少含有色带，视频解码时YUV ⟶ RGB，还会产生新的色带</li>
+</ul>
+</li>
+<li>推荐<strong>default debanding strength</strong>设置为<code>low</code>，<strong>strength during fade in&#x2F;out</strong>设置为<code>medium/high</code>，强度越高减少色带的效果越明显，但会产生噪点。淡入&#x2F;淡出时色带会很明显，所以设置为<code>medium/high</code></li>
+</ul>
+</li>
+<li><strong>reduce ringing artifacts (减少环状伪影)</strong><ul>
+<li><strong>reduce dark halos around bright edges, too(同时减少亮边缘周围的暗晕)</strong><ul>
+<li>避免用于线条锐利的内容（动漫&#x2F;字幕&#x2F;工程图），<strong>reduce dark halos</strong>本质是抑制亮边周围的暗区过冲，但动漫的硬边缘（如发丝）会被误判为振铃导致细节丢失</li>
+</ul>
+</li>
+<li>概念解读：<ul>
+<li><strong>ringing artifacts(环状伪影)</strong>：即<strong>振铃效应</strong>，是一种出现在信号快速转换时，附加在转换边缘上导致失真的信号。而在图像或影像上，振铃效应会导致出现在边缘附近的环带或像是“鬼影”的环状伪影，不恰当的缩放算法、锐化等操作都会导致这种伪影</li>
+</ul>
+</li>
+<li>推荐当观察到 <strong>ringing artifacts(环状伪影)</strong> 时，再启用此选项</li>
+</ul>
+</li>
+<li><strong>reduce comprssion artifacts (减少压缩伪影)</strong>，旁边的项目用来控制强度和质量<ul>
+<li>该功能专门用于修复视频压缩产生的瑕疵（如色带、蚊式噪声、块效应等），开启后能显著去除网格式噪块，但也会略微模糊细节，推荐当需要时，再启用此选项</li>
+<li><strong>process chroma channels, too(同时处理色度通道)</strong>，修复色度通道的伪影（如彩色色带&#x2F;色块），性能开销较大，一般不启用，在色度伪影肉眼可见且GPU性能冗余时启用</li>
+<li><strong>activate only if it comes for free(as part of NGU sharp)(仅在NGU锐化的启用时激活)</strong>，若使用NGU时，强烈建议启用，可以减少NGU的伪影</li>
+</ul>
+</li>
+<li><strong>reduce random noise (减少随机噪声)</strong>，旁边的项目用于控制强度<ul>
+<li>此项用于减少随机噪声，但会破坏细节，一般不启用，在噪声严重时启用</li>
+<li><strong>process chroma channels, too(同时处理色度通道)</strong>，同上</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>image enhancements(图像增强)</strong>：<ul>
+<li>这一页主要针对影片锐利度不足进行增强，影响原始帧，其处理在放大算法之前，该页面的配置项为锐化算法，不论哪种效果都十分显著，但噪声与瑕疵也会被放大，一般不启用，在需要时启用。锐化算法这里不做解释，自行Google</li>
+</ul>
+</li>
+<li><strong>zoom contorl(缩放控制)</strong>：<ul>
+<li>根据黑边检测、分辨率变化与字幕位置，自动调整缩放或裁切策略，保证内容充满屏幕并保持字幕可见，自行按需调整，一般不需要启用，配置翻译：</li>
+<li><strong>disable scaling if image size changes by only … pixels(如果图像大小仅变化…像素则禁用缩放)</strong>，控制片源与目标分辨率差异低于几个像素时，不进行缩放，而添加黑边代替，避免频繁微调影响流畅性</li>
+<li><strong>move subtitles(移动字幕)</strong>，强制设置字幕的位置是画面底部或是影片可视范围内</li>
+<li><strong>automatically detect hard coded black bars(自动检测硬编码黑边)</strong>，自动检测硬编码黑边，并非比例不一致添加的黑边，而是影片本身编码时添加的黑边</li>
+<li><strong>if black bars change pick one zoom factor</strong>，黑边尺寸变化时，选择不裁剪画面内容的缩放比例、砍除25%黑边、砍除50%黑边、砍除75%黑边、砍除全部黑边</li>
+<li><strong>if black bars change quickly back and forth</strong>，如果黑边尺寸变化频繁<ul>
+<li>当低于2&#x2F;5&#x2F;15&#x2F;45秒时，不切换缩放比例</li>
+<li>设定通用的缩放比例</li>
+</ul>
+</li>
+<li><strong>notify media player about cropped black bars</strong>，控制每隔多久通知一次播放器黑边尺寸变化</li>
+<li><strong>always shift the image</strong>，总是切齐画面底部&#x2F;顶部</li>
+<li><strong>keep bars visible if they contain subtitles</strong>，如果上面有字幕的话保留黑边（字幕出现后保留黑边5秒、15秒、45秒、3分、10分、30分、90分或永远）</li>
+<li><strong>clearup image borders by cropping</strong>，裁切黑边以及其边缘指定像素</li>
+<li><strong>if there are big black bars</strong>，如果黑边大小超过范围，直接裁切黑边一定尺寸并放大</li>
+<li><strong>zoom small black bars away</strong>，如果黑边小范围，直接裁切黑边并放大</li>
+<li><strong>crop black bars</strong>，裁切黑边以及其边缘指定像素，会影响到profile的判定（如果有设置的话）</li>
+</ul>
+</li>
+</ul>
+<h4 id="scaling-algorithms-缩放算法"><a href="#scaling-algorithms-缩放算法" class="headerlink" title="scaling algorithms(缩放算法)"></a>scaling algorithms(缩放算法)</h4><ul>
+<li><strong>chroma upscaling(色度升频)</strong>、<strong>image downscaling(图像降频)</strong>、<strong>image upscaling(图像升频)</strong>，这三个选项是色度放大与图像的放大、缩小算法的配置，配置页注明了<strong>sharpness(锐度)</strong>、<strong>hide source artifacts(隐藏源伪影)</strong>、<strong>ringing(振铃效应)</strong>、<strong>other artifacts(其他伪影)</strong>，其中绿色为效果，红色为失真，不同算法效果、与性能开销不同，请自行权衡</li>
+<li>推荐：<ul>
+<li><strong>色度升频</strong>算法优先推荐使用<strong>NGU + Sharp</strong>；性能不足的话，尝试<strong>NGU + Anti-Alias&#x2F;soft</strong>；其次是<strong>super-xbr + anti-alias</strong>以及<strong>Bilinear + anti-alias</strong>；最次<strong>Cubic(Bicubic 75) + anti-alias</strong>。<strong>anti-ringing filter</strong>能开就开，<strong>SuperRes filter</strong>自行权衡</li>
+<li><strong>图像升频</strong>同样优先推荐<strong>NGU Sharp</strong>；性能不足的话尝试<strong>NGU Anti-Alias&#x2F;soft</strong>；其次是<strong>Cubic(Bicubic 100)</strong>、<strong>Lanczos</strong>等，使用这几种时，<strong>anti-ringing filter</strong>能开就开，而 <strong>scale in sigmoidal light(对数光)</strong> 的降低锯齿效果需要自己测试。<strong>Bilinear</strong>和<strong>DXVA2</strong>效果最次，仅作无法负荷其他算法时使用。使用NGU系列时只需要指定 <strong>luma doubling(亮度解析度翻倍)</strong> 和 <strong>luma quadrupling(亮度解析度四倍)</strong> 的强度，其余 <strong>let madVR decide(让madVR决定)</strong> 即可。</li>
+<li><strong>图像降频</strong>算法优先推荐使用<strong>SSIM</strong>，1D是基于Bicubic的，2D是基于Jinc的，2D效果更好，但性能开销更大；性能不足的话，尝试<strong>Cubic(Bicubic 150)</strong>。<strong>scale in linear light(线性光)</strong> 与 <strong>anti-ringing filter(抗振铃)</strong> 能开就开，抗振铃的<code>strict（soft）</code>跟<code>relaxed</code>，前者是AR滤镜预设强度，后者是降低AR滤镜强度，换得一些锐利度的提升；<strong>activate anti-bloating filter(抗膨胀滤镜)</strong>，它会抑制因过度锐化导致的高频信号’膨胀’或’白边’伪影，是否启用取决于个人喜好</li>
+<li>每个设置项的<code>low</code>、<code>medium</code>、<code>high</code>、<code>very high</code>均是越高性能开销越大，但效果越好，请自行权衡。</li>
+<li>关于<strong>图片升频</strong>，现在的madVR版本，使用NGU系列时只需要指定 <strong>luma doubling(亮度倍增)</strong> 和 <strong>luma quadrupling(亮度四倍)</strong> 的强度，其余 <strong>let madVR decide(让madVR决定)</strong> 即可</li>
+<li>关于<strong>always - supersampling(强制超取样)</strong>，选择此项的话即使在源分辨率与目标分辨率一致时，也会强制使用升频算法，而且效果肉眼基本看不出，但性能开销很大，请自行权衡</li>
+</ul>
+</li>
+<li><strong>upscaling refinement(升频优化)</strong>，它的副作用相对前面的 <strong>image enhancements(图像增强)</strong> 要小，效果差不多，同样一般不启用，在需要时启用，缩放算法自行Google</li>
+</ul>
+<h4 id="rendering-渲染"><a href="#rendering-渲染" class="headerlink" title="rendering(渲染)"></a>rendering(渲染)</h4><ul>
+<li><strong>general settings(通用设置)</strong>：<br>  <img src="https://pic2.zhimg.com/v2-0a83e7428c78b137fc4f52ffcbec8b84.webp" alt="general settings"><ul>
+<li><strong>delay playback start until render queue is full(延迟播放直到渲染队列满)</strong>，避免播放器卡顿<ul>
+<li><strong>delay playback start after seeking, too(在快进后也延迟播放)</strong>，避免播放器卡顿</li>
+</ul>
+</li>
+<li><strong>enable windowed overlay(启用窗口化覆盖模式)</strong>，启用窗口化覆盖模式(游戏的无边框窗口模式)，能绕过部分桌面合成步骤，降低延迟和资源占用，和下面的全屏独占模式二选一</li>
+<li><strong>enable automatic fullscreen exclusive mode(启用自动全屏独占模式)</strong>，启用全屏独占模式，能使渲染器直接控制显示输出，绕过DWM，和上面的窗口化覆盖模式二选一，推荐此项</li>
+<li><strong>disable desktop composition(禁用窗口管理器)(仅Win7)</strong>，禁用DWM，获得类似全屏独占模式的效果，但渲染能获得更直接的显示权限，Windows 8及以后版本<strong>不支持</strong><ul>
+<li><strong>only when media player is in fullscreen mode(仅在播放器全屏时启用)</strong></li>
+</ul>
+</li>
+<li><strong>use Direct3D 11 for presentation(使用Direct3D 11进行呈现)</strong>，使用Direct3D 11 API进行呈现，性能比Direct3D 9好<ul>
+<li><strong>present a frame for every VSync(每个垂直同步呈现一帧)</strong>，即常说的垂直同步，这要求视频帧率必须能被显示器刷新率整除(或配置上文的<strong>display modes</strong>)，否则画面可能卡顿</li>
+</ul>
+</li>
+<li><strong>use a separate device for presentation(使用单独的设备进行呈现)</strong>，让 madVR 为“呈现”(Presentation) 操作（将最终处理好的帧发送到显示器）使用一个独立的 Direct3D 设备（和上下文），这能减少对视频解码的干扰</li>
+<li><strong>use a separate device for DXVA processing(使用单独的设备进行DXVA处理)</strong>，让 madVR 为 DXVA 处理（视频解码）使用一个独立的 Direct3D 设备（和上下文），也是隔离策略</li>
+<li>剩下的滑块<strong>CPU queue size(CPU队列大小)</strong>、<strong>GPU queue size(GPU队列大小)</strong>，控制渲染队列的大小，滑块越大，渲染队列越大，能减少卡顿，但会占用更多RAM，请自行权衡</li>
+</ul>
+</li>
+<li><strong>windowed mode(窗口模式)</strong>：<br>  <img src="https://picx.zhimg.com/v2-1d7df8d8a10b143cf1c8afcd53101b3c.webp" alt="windowed mode"><ul>
+<li><strong>present several frames in advance(提前呈现几帧)</strong>，提前呈现几帧以减少卡顿，建议资源允许时启用</li>
+<li><strong>how many video frames shall be presented in advance(提前呈现多少帧视频)</strong>，如果启用提前帧，会显示此项，按照GPU性能自行调整，越高减少卡顿的效果越好，但RAM占用越大，请自行权衡。如果使用<strong>smooth motion(平滑运动)</strong>，建议能拉多高就拉多高，也要<strong>相应地增加CPU&#x2F;GPU队列以填充缓冲区</strong></li>
+<li><strong>how many backbuffers shall be used(使用多少个后台缓冲区)</strong>，如果未启用提前帧，会显示此项，按照RAM自行调整，越高效果越好，但性能开销越大，请自行权衡</li>
+<li><strong>when and how shall the GPU be flushed(何时以及如何刷新GPU)</strong>：<ul>
+<li>GPU 刷新（Flush）的作用：GPU 任务以命令队列形式提交，刷新会强制 GPU 立即执行队列中的所有任务，确保后续操作基于最新结果。频繁刷新会导致性能下降，画面卡顿，对于大多数设备<strong>默认方案就是最好的选择</strong>，但某些设备可能需要调整刷新策略</li>
+<li><strong>after intermediate render steps(在中间渲染步骤后)</strong></li>
+<li><strong>after last render step(在最后渲染步骤后)</strong></li>
+<li><strong>after copy to backbuffer(在复制到后台缓冲区后)</strong></li>
+<li><strong>after D3D presentation(在DXGI呈现后)</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>exclusive mode(独占模式)</strong>：<br>  <img src="https://pic3.zhimg.com/v2-fd7406337cd32d6a5047928871c1569a.webp" alt="exclusive mode"><ul>
+<li><strong>show seek bar(显示进度条)</strong>，启用后，在播放器全屏时，会显示一个MadVR提供的进度条</li>
+<li><strong>delay switch to exclusive mode by 3 seconds(延迟3秒切换到独占模式)</strong>，不勾选则立即切换到独占模式</li>
+<li><strong>其余配置项同<em>windowed mode(窗口模式)</em></strong></li>
+</ul>
+</li>
+<li><strong>stereo 3D(立体3D)</strong>：<ul>
+<li>这一部分是有播放3D视频需求时才需要配置的，一般全部取消勾选</li>
+<li><strong>enable stereo 3D playback(启用立体3D播放)</strong>，启用立体3D播放，需要配合立体3D视频播放</li>
+<li><strong>when playing 2d content(播放2D内容时)</strong>，控制播放2D内容时是否禁用3D支持</li>
+<li><strong>when playing 3d content(播放3D内容时)</strong>，控制播放3D内容时是否禁用3D支持</li>
+<li><strong>restore os stereo 3D settings when meida player closed(在媒体播放器关闭时恢复操作系统立体3D设置)</strong></li>
+</ul>
+</li>
+<li><strong>smooth motion(平滑运动)</strong>：<ul>
+<li>这个功能(FRC)能够将任何源帧率转换为任何目标刷新率，在<strong>性能足够</strong>的情况下，可以达到不使用<strong>Reclock</strong>达到无卡顿&#x2F;无重复的效果</li>
+<li><strong>FRC</strong>实现原理不是补帧，按madshi的说法：“FRC 模拟了一个具有无限刷新率的显示器，每个视频帧都会在时间戳要求的精确时刻显示。因此，运动的流畅度取决于<strong>正确的时间戳</strong>。如果时间戳（或音频时钟）存在抖动，播放也会出现抖动… 完全启用 Reclock 并进行音频重采样仍然是可行的，这不会对 madVR 的 FRC 算法造成损害。” 因此它不具有补帧算法的副作用（如伪影、肥皂剧效应），运动相对自然。代价是轻微的清晰度损失（动态模糊感略有增加）和 GPU 使用率升高（损失程度：低帧率-&gt;高刷新率 &lt; 高帧率-&gt;低刷新率）</li>
+<li>与<strong>补帧插件</strong>建议<strong>二选一</strong></li>
+<li><strong>建议</strong>：如果追求绝对流畅无 judder 且能接受轻微的清晰度损失和 GPU 开销增加，勾选<strong>enable smooth motion</strong>并选择 <strong>…or if the display refresh rate is an exact multiple of the video frame rate</strong> ，希望控制GPU开销，选择<strong>only if there would be motion judder without it…</strong>，always不推荐</li>
+<li><strong>enable smooth motion frame rate conversion(启用平滑运动帧率转换)</strong><ul>
+<li><strong>only if there would be motion judder without it…(只有在没有它的情况下才会出现运动抖动时才启用)</strong>，仅在视频帧率不能整除显示器刷新率，产生可见抖动时启用</li>
+<li><strong>…or if the display refresh rate is an exact multiple of the video frame rate(或者如果显示刷新率是视频帧率的精确倍数)</strong>，它在上一条件的基础上拓展，在显示刷新率是视频帧率的精确倍数时也会启用</li>
+<li><strong>always(总是)</strong>，无论当前视频帧率和显示器刷新率的关系如何（无论是否整数倍，无论是否有抖动风险），都强制启用</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>dithering(抖动)</strong>：<ul>
+<li><strong>None</strong>，不应用任何抖动处理（可能导致色带问题）<strong>十分不建议</strong></li>
+<li><strong>Random Dithering(随机抖动)</strong>，噪声明显，速度快，无抖动图案，极低能耗</li>
+<li><strong>Ordered Dithering(有序抖动)</strong>，错误扩散的轻量替代方案，噪声较少，中等抖动图案，低能耗</li>
+<li><strong>Error Diffusion - option 1(错误扩散 - 选项1)</strong>，中等噪声，无抖动图案(需要DX11 GPU)</li>
+<li><strong>Error Diffusion - option 2(错误扩散 - 选项2)</strong>，低噪声，中等抖动图案(需要DX11 GPU)</li>
+<li><strong>options</strong>：<ul>
+<li><strong>use colored noise(使用彩色噪声)</strong>，低亮度噪声，会增加色度噪声，优化人眼感知，减少可见噪点</li>
+<li><strong>change dither for every frame(为每一帧更改抖动)</strong>，隐藏抖动图案，避免固定图案导致的静态闪烁，但主观上增加噪声感</li>
+</ul>
+</li>
+<li><strong>推荐</strong>：如果 <code>GPU支持DX11</code>，优先选择<strong>Error Diffusion - option 1</strong>并勾选<strong>use colored noise</strong> 和<strong>change dither for every frame</strong>。这是效果和性能的良好平衡。追求极致选 <strong>option 2</strong>。性能不足选 <strong>Ordered Dithering</strong></li>
+</ul>
+</li>
+<li><strong>trade quality for performance(以质量为代价换取性能)</strong>：<ul>
+<li>这一页所有项目都是<strong>牺牲质量换性能</strong>，如果性能足够，<strong>一个也不建议勾选！！</strong></li>
+<li><strong>optimize subtitle quality performance instead of quality(优先以性能优化字幕渲染)</strong>，降低字幕渲染精度以节省资源</li>
+<li><strong>use DXVA chroma upscaling when doing native DXVA decoding(原生DXVA解码时使用DXVA色度升频)</strong>，用硬件加速色度处理（可能产生锯齿）</li>
+<li><strong>use DXVA chroma upscaling when doing DXVA deinterlacing(DXVA反交错时使用DXVA色度升频)</strong>，硬件加速反交错+色度升频（画质损失明显）</li>
+<li><strong>don’t use linear light for dithering(抖动处理不使用线性光空间)</strong>，关闭线性光抖动（暗部细节减少）</li>
+<li><strong>don’t analyze gradient angles for debanding(去色带时不分析渐变角度)</strong>，简化梯度计算（可能导致带状伪影残留）</li>
+<li><strong>don’t rerender frames when fade in&#x2F;out is detected(检测到淡入&#x2F;淡出时不重新渲染帧)</strong>，跳过透明度变化的帧处理（过渡不自然）</li>
+<li><strong>scale chroma separately, if it saves performance(若可提升性能则单独处理色度通道)</strong>，色度&#x2F;亮度分离处理（可能色彩错位）</li>
+<li><strong>compromise on HDR tone &amp; gamut mapping accuracy(降低HDR色调 &amp; 色域映射精度)</strong>，简化 HDR 动态转换（色彩准确性下降）</li>
+<li><strong>compromise on HDR luminance channel quality(降低HDR亮度通道质量)</strong>，压缩高光细节（亮部层次减少）</li>
+<li><strong>don’t measure HDR frame peak luminance(不测量HDR帧峰值亮度)</strong>，禁用逐帧亮度分析（局部过曝风险）</li>
+<li><strong>lose BTB and WTW if it improves performance(若可提升性能则牺牲超黑&#x2F;超白细节 (BTB&#x2F;WTW))</strong>，裁剪 &lt;0 或 &gt;255 灰阶（丢失极端暗&#x2F;亮部）</li>
+<li><strong>don’t use linear light for smooth motion frame blending(平滑插帧不使用线性光混合)</strong>，简化帧混合计算（运动流畅度下降）</li>
+<li><strong>use 10bit chroma buffer instead of 16bit(使用10bit色度缓冲代替16bit)</strong>，降低色度数据精度（色彩过渡轻微断层）</li>
+<li><strong>use 10bit image buffer instead of 16bit(使用10bit图像缓冲代替16bit)</strong>，全局降低处理精度（所有画质影响）</li>
+<li><strong>run custom pixel shaders in video levels instead of PC levels(在视频电平（16-235）而非PC电平（0-255）运行自定义像素着色器)</strong>，简化色域转换（暗部发灰&#x2F;亮部过曝）</li>
+<li><strong>强烈不建议使用的选项，但决定权在你</strong>：<ul>
+<li><strong>use half frame rate for DXVA deinterlacing(DXVA反交错使用半帧率)</strong>，帧数减半（运动卡顿明显，仅兼容老式隔行视频）</li>
+<li><strong>trust DXVA color &amp; levels conversion(任DXVA的色彩与电平转换)</strong>，绕过 madVR 色彩管理（色偏&#x2F;灰阶错误高发）</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>至此，播放器的配置就完成了，如果还有其他问题，请善用搜索引擎，或者翻翻madshi的帖子<a target="_blank" href="https://forum.doom9.org/showthread.php?t=146228" rel="external nofollow noreferrer noopener">更新日志</a>，<a target="_blank" href="https://www.avsforum.com/threads/improving-madvr-hdr-to-sdr-mapping-for-projector-no-support-questions.2954506/#replies" rel="external nofollow noreferrer noopener">Test Build(HDR)</a><br>祝你有个愉快的观影体验！</p>
+<h2 id="常见问题-Q-A"><a href="#常见问题-Q-A" class="headerlink" title="常见问题 Q&amp;A"></a>常见问题 Q&amp;A</h2><ol>
+<li><p>Q：笔记本&#x2F;非独显直连&#x2F;只有核显，播放时画面卡顿怎么办？</p>
+<ul>
+<li>A：这是因为渲染的压力全部分给了核显与CPU。解决方法(按顺序尝试):<ol>
+<li>是否有独显，若有尝试b&#x2F;c；若没有，尝试降低&#x2F;关闭绝大部分madVR配置</li>
+<li>在独显驱动中使播放器优先使用独显</li>
+<li>若尝试b仍卡顿，尝试降低madVR配置：<ol>
+<li>优先<strong>降低&nbsp;<em>色度升频</em>&nbsp;配置</strong>，此项性能开销较大，而且降低强度也不会有明显画质损失</li>
+<li>其次是 <strong>降低&nbsp;<em>图像升频</em>&nbsp;或&nbsp;<em>图像降频</em>&nbsp;配置</strong> ，此项性能开销较大，而且降低强度会有明显画质损失，因此建议在降低色度升频强度后尝试</li>
+<li>最后尝关闭<strong>smooth motion</strong>，此项性能开销较大，而且关闭后可能产生抖动</li>
+<li>尝试以上后若仍无改善，考虑逐次尝试开启<strong>trade quality for performance</strong>中的选项</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>Q：播放时画面卡顿甚至黑屏，但CPU占用率不高，GPU占用率很低甚至为0%，但温度很高，风扇狂转，怎么办？</p>
+<ul>
+<li>A：倘若显卡驱动正常，则可能是因为显卡过热停机&#x2F;降频，尝试Q.1中的方法，然后重启设备；播放时观察显卡占用率，推荐保证占用低于80%，否则显卡过热风险较高，也会影响显卡寿命</li>
+</ul>
+</li>
+<li><p>Q：没有声音，怎么办？</p>
+<ul>
+<li>A：确认是否在设备不支持的情况下启用了<strong>Bitstream</strong>，若确认，尝试关闭<strong>Bitstream</strong>或勾选<strong>Fallback to PCM if Bitsreaming is not supported</strong>；若仍有问题，尝试更换音频输出设备</li>
+</ul>
+</li>
+</ol>
+<div id="post-outdate-notice" data="{&quot;limitDay&quot;:200,&quot;messagePrev&quot;:&quot;此文章最后更新于&quot;,&quot;messageNext&quot;:&quot;天前，文中内容可能已过时，请注意辨别⚠️&quot;,&quot;postUpdate&quot;:&quot;2025-08-19 18:38:54&quot;}" hidden></div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a target="_blank" rel="noopener" href="https://github.com/Shiranosama">Shirano</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://shiranosama.github.io/posts/608b9288/index.html">https://shiranosama.github.io/posts/608b9288/index.html</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://Shiranosama.github.io" target="_blank">✨岚的小窝✨</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MadVR/">MadVR</a><a class="post-meta__tags" href="/tags/LAVFilters/">LAVFilters</a></div><div class="post-share"><div class="social-share" data-image="/img/mystia.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Shirano</div><div class="author-info-description">你好，我是岚，喜欢探索新事物，学艺不精，还请包涵</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Shiranosama"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Shiranosama" target="_blank" title="Github"><i class="fab fa-github-alt" style="color: #586069;"></i></a><a class="social-icon" href="mailto:mufeng319@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/566755934" target="_blank" title="BiLiBiLi"><i class="fab fa-bilibili" style="color: #f295c7;"></i></a><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=L7ECHESsCur6cEL1PMDEGijvdK6cYvge&amp;jump_from=webapi&amp;authKey=+eQNLGjiAwS9YHJTMONP3LW139sU3WbPJkU6KdwyFTL+wc+GvPpAsxja9iNqik7M" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #0072c6;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">摸鱼日常🐟</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B2%9A%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="toc-number">1.1.</span> <span class="toc-text">岚的声明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AC%E6%96%87%E5%8F%82%E8%80%83"><span class="toc-number">1.2.</span> <span class="toc-text">本文参考</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E7%A2%8E%E7%A2%8E%E5%BF%B5"><span class="toc-number">1.3.</span> <span class="toc-text">一些碎碎念</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A"><span class="toc-number">3.1.</span> <span class="toc-text">前言：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MPC-BE"><span class="toc-number">3.2.</span> <span class="toc-text">MPC-BE</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LAVFilters"><span class="toc-number">3.3.</span> <span class="toc-text">LAVFilters</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#LAV-Video-Configuration"><span class="toc-number">3.3.1.</span> <span class="toc-text">LAV Video Configuration</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#LAV-Audio-Configuration"><span class="toc-number">3.3.2.</span> <span class="toc-text">LAV Audio Configuration</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#MadVR"><span class="toc-number">3.4.</span> <span class="toc-text">MadVR</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#devices-%E8%AE%BE%E5%A4%87"><span class="toc-number">3.4.1.</span> <span class="toc-text">devices(设备)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%95%E5%BC%80%E6%98%BE%E7%A4%BA%E5%99%A8%E9%85%8D%E7%BD%AE"><span class="toc-number">3.4.2.</span> <span class="toc-text">展开显示器配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#processing-%E5%A4%84%E7%90%86"><span class="toc-number">3.4.3.</span> <span class="toc-text">processing(处理)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#scaling-algorithms-%E7%BC%A9%E6%94%BE%E7%AE%97%E6%B3%95"><span class="toc-number">3.4.4.</span> <span class="toc-text">scaling algorithms(缩放算法)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#rendering-%E6%B8%B2%E6%9F%93"><span class="toc-number">3.4.5.</span> <span class="toc-text">rendering(渲染)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%BE%E5%A3%B0"><span class="toc-number">4.</span> <span class="toc-text">尾声</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-Q-A"><span class="toc-number">5.</span> <span class="toc-text">常见问题 Q&amp;A</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype"><img src="/img/mystia.jpg" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「C++笔记」处理类型：别名与auto与decltype"/></a><div class="content"><a class="title" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype">「C++笔记」处理类型：别名与auto与decltype</a><time datetime="2025-08-26T11:40:41.000Z" title="发表于 2025-08-26 19:40:41">2025-08-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/877242c6/index.html" title="「C++笔记」const限定符"><img src="/img/kiana01.png" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「C++笔记」const限定符"/></a><div class="content"><a class="title" href="/posts/877242c6/index.html" title="「C++笔记」const限定符">「C++笔记」const限定符</a><time datetime="2025-08-26T11:39:35.000Z" title="发表于 2025-08-26 19:39:35">2025-08-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2"><img src="/img/girl.jpg" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2"/></a><div class="content"><a class="title" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2">「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2</a><time datetime="2025-08-10T03:32:51.000Z" title="发表于 2025-08-10 11:32:51">2025-08-10</time></div></div></div></div></div></div></main><footer id="footer" style="background: linear-gradient(140deg, #a9defe 0%, #ccbefe 50%, #fe86c6 100%);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Shirano</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/shiranosama/shiranosama.github.io/tree/theme">Arashi 5.4.3</a></span></div><div class="footer_custom_text">当其贯日月，死生安足论</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = {"data-input-position":"top","data-mapping":"url","data-loading":"lazy","data-emit-metadata":0,"data-lang":"zh-CN","data-strict":0}
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'Shiranosama/Shiranosama.github.io',
+      'data-repo-id': 'R_kgDOPVHZuw',
+      'data-category': 'General',
+      'data-category-id': 'DIC_kwDOPVHZu84CtkjH',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !false) {
+    if (false) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="255,204,229" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>

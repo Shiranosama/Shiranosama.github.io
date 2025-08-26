@@ -1,0 +1,303 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>归档 | ✨岚的小窝✨</title><meta name="author" content="Shirano"><meta name="copyright" content="Shirano"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="欢迎来到岚的小窝喵~ 记录一些碎碎念与折腾日常，主要是技术分享和随笔，实际想到啥就写啥ο(&#x3D;•ω＜&#x3D;)ρ⌒☆">
+<meta property="og:type" content="website">
+<meta property="og:title" content="归档">
+<meta property="og:url" content="https://shiranosama.github.io/archives/index.html">
+<meta property="og:site_name" content="✨岚的小窝✨">
+<meta property="og:description" content="欢迎来到岚的小窝喵~ 记录一些碎碎念与折腾日常，主要是技术分享和随笔，实际想到啥就写啥ο(&#x3D;•ω＜&#x3D;)ρ⌒☆">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://shiranosama.github.io/img/avatar.png">
+<meta property="article:author" content="Shirano">
+<meta property="article:tag" content="Shirano, Blog, 初岚, 岚, 博客, 日志">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://shiranosama.github.io/img/avatar.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="https://shiranosama.github.io/archives/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', () => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":-1,"unescape":false,"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":300,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true,
+  dynamic_title: {"enable":true,"leave":["☯ (。-ω-)zzz 少女祈祷中...","⚡️ _(:3 ⌒ﾞ)_ 休伯利安维护中...","🍵 (｡-ω-)ﾉ 轻音部茶会休憩中...","🎸 (｡･ω･｡)ﾉ 演奏休止，静候安可！"],"enter":["⑨ ✧(≖ ◡ ≖✿) 冰雾魔法解冻完成！","⚙️ `(ﾟдﾟ)つ🔥 超限模组激活","🍰 `(●´ω｀●)φ 补给箱抽出草莓派！","🎹 (」・ω・)」 轻音部弦音再响！"]},
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '归档',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'archive'
+}</script><meta name="msvalidate.01" content="111281BED6208D1D45CB65E3D63BFB96" /><meta name="google-site-verification" content="uQSVH71zYWV_Mnp8rQTIBmxni3bS5a4FfqSubjDdGDY" /><meta name="generator" content="Hexo 7.3.0"></head><body><script>window.paceOptions = {
+  restartOnPushState: false
+}
+
+btf.addGlobalFn('pjaxSend', () => {
+  Pace.restart()
+}, 'pace_restart')
+
+</script><link rel="stylesheet" href="/css/loading_bar.css"/><script src="https://cdn.jsdelivr.net/npm/pace-js/pace.min.js"></script><div id="loading-box" onclick="this.classList.add(&quot;loaded&quot;)"><div class="loading-bg"><div class="loading-img"></div><div class="loading-image-dot"></div><div id="hitokoto-text"></div></div></div><script>(()=>{
+  function getHitokoto() {
+    const hitokotoEl = document.getElementById('hitokoto-text');
+    if (!hitokotoEl) return;
+    fetch('https://v1.hitokoto.cn')
+      .then(response => response.json())
+      .then(data => {
+        hitokotoEl.innerText = data.hitokoto;
+      })
+      .catch(() => {
+        hitokotoEl.innerText = '☯ 少女祈祷中...';
+      })
+  }
+  const $loadingBox = document.getElementById('loading-box')
+  const $body = document.body
+  const preloader = {
+    endLoading: () => {
+      $body.style.overflow = ''
+      $loadingBox.classList.add('loaded')
+    },
+    initLoading: () => {
+      $body.style.overflow = 'hidden'
+      $loadingBox.classList.remove('loaded')
+      getHitokoto()
+    }
+  }
+
+  preloader.initLoading()
+  window.addEventListener('load', preloader.endLoading)
+
+  if (false) {
+    btf.addGlobalFn('pjaxSend', preloader.initLoading, 'preloader_init')
+    btf.addGlobalFn('pjaxComplete', preloader.endLoading, 'preloader_end')
+  }
+})()</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comment/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></li></ul></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page" id="page-header" style="background-image: url(/img/mystia.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.png" alt="Logo"><span class="site-name">✨岚的小窝✨</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-house"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-book-bookmark"></i><span> 文章</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-box-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-address-card"></i><span> 关于</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 更多</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></li><li><a class="site-page child" href="/comment/"><i class="fa-fw fas fa-comments"></i><span> 留言</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">归档</h1></div></header><main class="layout" id="content-inner"><div id="archive"><div class="article-sort-title">全部文章 - 8</div><div class="article-sort"><div class="article-sort-item year">2025</div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype"><img src="/img/mystia.jpg" alt="「C++笔记」处理类型：别名与auto与decltype" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-08-26T11:40:41.000Z" title="发表于 2025-08-26 19:40:41">2025-08-26</time></div><a class="article-sort-item-title" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype">「C++笔记」处理类型：别名与auto与decltype</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/877242c6/index.html" title="「C++笔记」const限定符"><img src="/img/kiana01.png" alt="「C++笔记」const限定符" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-08-26T11:39:35.000Z" title="发表于 2025-08-26 19:39:35">2025-08-26</time></div><a class="article-sort-item-title" href="/posts/877242c6/index.html" title="「C++笔记」const限定符">「C++笔记」const限定符</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2"><img src="/img/girl.jpg" alt="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-08-10T03:32:51.000Z" title="发表于 2025-08-10 11:32:51">2025-08-10</time></div><a class="article-sort-item-title" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2">「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/aaa88a44/index.html" title="「折腾日记」Linux发行版的介绍与选择——Linux，计算机不得不品的一环Part1"><img src="/img/MIKU.jpg" alt="「折腾日记」Linux发行版的介绍与选择——Linux，计算机不得不品的一环Part1" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-07-30T11:24:34.000Z" title="发表于 2025-07-30 19:24:34">2025-07-30</time></div><a class="article-sort-item-title" href="/posts/aaa88a44/index.html" title="「折腾日记」Linux发行版的介绍与选择——Linux，计算机不得不品的一环Part1">「折腾日记」Linux发行版的介绍与选择——Linux，计算机不得不品的一环Part1</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/608b9288/index.html" title="「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南"><img src="/img/mystia.jpg" alt="「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-07-20T03:30:39.000Z" title="发表于 2025-07-20 11:30:39">2025-07-20</time></div><a class="article-sort-item-title" href="/posts/608b9288/index.html" title="「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南">「折腾日记」从零开始的MPC-BE+MadVR+LAVFilters的播放器配置指南</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/653f0679/index.html" title="「折腾日记」hexo-butterfly自改记录"><img src="/img/mikuerror.jpg" alt="「折腾日记」hexo-butterfly自改记录" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-06-13T10:41:42.000Z" title="发表于 2025-06-13 18:41:42">2025-06-13</time></div><a class="article-sort-item-title" href="/posts/653f0679/index.html" title="「折腾日记」hexo-butterfly自改记录">「折腾日记」hexo-butterfly自改记录</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/12f010f8/index.html" title="「折腾日记」优质开源软件集"><img src="/img/kiana02.png" alt="「折腾日记」优质开源软件集" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-06-10T12:26:45.000Z" title="发表于 2025-06-10 20:26:45">2025-06-10</time></div><a class="article-sort-item-title" href="/posts/12f010f8/index.html" title="「折腾日记」优质开源软件集">「折腾日记」优质开源软件集</a></div></div><div class="article-sort-item"><a class="article-sort-item-img" href="/posts/58031fe8/index.html" title="「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建"><img src="/img/kiana01.png" alt="「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建" onerror="this.onerror=null;this.src='/img/404Ghost.png'"></a><div class="article-sort-item-info"><div class="article-sort-item-time"><i class="far fa-calendar-alt"></i><time class="post-meta-date-created" datetime="2025-06-10T11:20:15.000Z" title="发表于 2025-06-10 19:20:15">2025-06-10</time></div><a class="article-sort-item-title" href="/posts/58031fe8/index.html" title="「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建">「折腾日记」记录Windows下MSYS2+Nodejs+Python开发环境搭建</a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">Shirano</div><div class="author-info-description">你好，我是岚，喜欢探索新事物，学艺不精，还请包涵</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Shiranosama"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/Shiranosama" target="_blank" title="Github"><i class="fab fa-github-alt" style="color: #586069;"></i></a><a class="social-icon" href="mailto:mufeng319@gmail.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://space.bilibili.com/566755934" target="_blank" title="BiLiBiLi"><i class="fab fa-bilibili" style="color: #f295c7;"></i></a><a class="social-icon" href="https://qm.qq.com/cgi-bin/qm/qr?k=L7ECHESsCur6cEL1PMDEGijvdK6cYvge&amp;jump_from=webapi&amp;authKey=+eQNLGjiAwS9YHJTMONP3LW139sU3WbPJkU6KdwyFTL+wc+GvPpAsxja9iNqik7M" target="_blank" title="QQ"><i class="fab fa-qq" style="color: #0072c6;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">摸鱼日常🐟</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype"><img src="/img/mystia.jpg" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「C++笔记」处理类型：别名与auto与decltype"/></a><div class="content"><a class="title" href="/posts/ab2e220d/index.html" title="「C++笔记」处理类型：别名与auto与decltype">「C++笔记」处理类型：别名与auto与decltype</a><time datetime="2025-08-26T11:40:41.000Z" title="发表于 2025-08-26 19:40:41">2025-08-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/877242c6/index.html" title="「C++笔记」const限定符"><img src="/img/kiana01.png" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「C++笔记」const限定符"/></a><div class="content"><a class="title" href="/posts/877242c6/index.html" title="「C++笔记」const限定符">「C++笔记」const限定符</a><time datetime="2025-08-26T11:39:35.000Z" title="发表于 2025-08-26 19:39:35">2025-08-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2"><img src="/img/girl.jpg" onerror="this.onerror=null;this.src='/img/404Ghost.png'" alt="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2"/></a><div class="content"><a class="title" href="/posts/312fd4e3/index.html" title="「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2">「折腾日记」Linux基本安装与配置——Linux，计算机不得不品的一环Part2</a><time datetime="2025-08-10T03:32:51.000Z" title="发表于 2025-08-10 11:32:51">2025-08-10</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C/"><span class="card-category-list-name">C++</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/"><span class="card-category-list-name">折腾日记</span><span class="card-category-list-count">6</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/Linux%E4%BC%A0%E6%95%99/"><span class="card-category-list-name">Linux传教</span><span class="card-category-list-count">2</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%98%E8%85%BE%E6%97%A5%E8%AE%B0/%E9%95%BF%E6%96%87/"><span class="card-category-list-name">长文</span><span class="card-category-list-count">1</span></a></li></ul></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/C/" style="font-size: 1.45em; color: rgb(177, 127, 97);">C++</a><a href="/tags/Linux/" style="font-size: 1.45em; color: rgb(192, 50, 94);">Linux</a><a href="/tags/hexo/" style="font-size: 1.15em; color: rgb(122, 137, 173);">hexo</a><a href="/tags/Windows/" style="font-size: 1.15em; color: rgb(150, 86, 55);">Windows</a><a href="/tags/%E5%BC%80%E6%BA%90/" style="font-size: 1.15em; color: rgb(161, 184, 69);">开源</a><a href="/tags/MadVR/" style="font-size: 1.15em; color: rgb(81, 172, 50);">MadVR</a><a href="/tags/LAVFilters/" style="font-size: 1.15em; color: rgb(191, 174, 177);">LAVFilters</a><a href="/tags/%E5%BC%80%E5%8F%91/" style="font-size: 1.15em; color: rgb(169, 50, 107);">开发</a><a href="/tags/MSYS2/" style="font-size: 1.15em; color: rgb(50, 132, 111);">MSYS2</a><a href="/tags/Node-js/" style="font-size: 1.15em; color: rgb(128, 50, 94);">Node.js</a><a href="/tags/Qt/" style="font-size: 1.15em; color: rgb(189, 92, 50);">Qt</a><a href="/tags/Python/" style="font-size: 1.15em; color: rgb(92, 50, 192);">Python</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/08/">
+            <span class="card-archive-list-date">
+              2025-08
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/07/">
+            <span class="card-archive-list-date">
+              2025-07
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/06/">
+            <span class="card-archive-list-date">
+              2025-06
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">8</div></div><div class="webinfo-item"><div class="item-name">运行时间 :</div><div class="item-count" id="runtimeshow" data-publishDate="2025-06-15T16:00:00.000Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">20.5k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2025-08-26T12:04:56.374Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer" style="background: linear-gradient(140deg, #a9defe 0%, #ccbefe 50%, #fe86c6 100%);"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Shirano</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/shiranosama/shiranosama.github.io/tree/theme">Arashi 5.4.3</a></span></div><div class="footer_custom_text">当其贯日月，死生安足论</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom/dist/medium-zoom.min.js"></script><div class="js-pjax"><script>(() => {
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = `%%{init:{ 'theme':'${theme}'}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      // mermaid v9 and v10 compatibility
+      typeof renderFn === 'string' ? renderMermaid(renderFn) : renderFn.then(({ svg }) => renderMermaid(svg))
+    })
+  }
+
+  const codeToMermaid = () => {
+    const codeMermaidEle = document.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    if (true) codeToMermaid()
+    const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="255,204,229" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/activate-power-mode.min.js"></script><script>POWERMODE.colorful = true;
+POWERMODE.shake = true;
+POWERMODE.mobile = false;
+document.body.addEventListener('input', POWERMODE);
+</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
