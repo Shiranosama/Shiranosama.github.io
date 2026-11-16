@@ -1,0 +1,1 @@
+(()=>{var e=document.title,t="少女祈祷中……",n="onvisibilitychange"in document?"visibilitychange":"onwebkitvisibilitychange"in document?"webkitvisibilitychange":null;document.addEventListener(n,()=>{document.hidden||(document.title=t,setTimeout(()=>{document.title=e},750))})})()
